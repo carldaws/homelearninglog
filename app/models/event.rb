@@ -14,6 +14,8 @@ class Event < ApplicationRecord
   validates :end_time, comparison: { greater_than: :start_time }, if: -> { start_time.present? && end_time.present? }
   validates :repeats_until, comparison: { greater_than_or_equal_to: :starts_on }, allow_nil: true, if: :starts_on
 
+  before_validation -> { self.repeats_until = nil }, if: :never_repeats?
+
   scope :between, ->(dates) { where(starts_on: ..dates.end).merge(where(repeats_until: nil).or(where(repeats_until: dates.begin..))) }
 
   def occurrences_between(dates)

@@ -63,6 +63,14 @@ class EventTest < ActiveSupport::TestCase
     assert event.errors.of_kind?(:grown_up, :outside_the_family)
   end
 
+  test "an event that stops repeating forgets when it would have stopped" do
+    event = events(:art_class)
+
+    event.update!(repeats: :never, starts_on: event.repeats_until + 1)
+
+    assert_nil event.repeats_until
+  end
+
   test "an unknown repeat is invalid" do
     event = events(:visit)
     event.repeats = "hourly"
