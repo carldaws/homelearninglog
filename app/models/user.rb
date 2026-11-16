@@ -20,6 +20,8 @@ class User < ApplicationRecord
 
   after_update :sign_out_everywhere, if: :saved_change_to_password_digest?
 
+  scope :alphabetically, -> { order(:name) }
+
   def first_name
     name.split.first
   end

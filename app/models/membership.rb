@@ -4,6 +4,8 @@ class Membership < ApplicationRecord
 
   validates :user, uniqueness: { message: :already_in_a_family }
 
+  scope :alphabetically, -> { includes(:user).merge(User.alphabetically).references(:user) }
+
   before_destroy :keep_someone_in_the_family
   after_destroy -> { family.cancel_invitations }
 

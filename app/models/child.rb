@@ -4,6 +4,8 @@ class Child < ApplicationRecord
 
   validates :name, presence: true
 
+  scope :alphabetically, -> { order(:name) }
+
   before_destroy :keep_children_with_entries
 
   private

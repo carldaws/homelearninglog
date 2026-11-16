@@ -23,12 +23,4 @@ class Family < ApplicationRecord
   def log(through: nil)
     Log.new(self, through:)
   end
-
-  def members_by_name
-    members.order(:name)
-  end
-
-  def children_by_name
-    children.order(:name)
-  end
 end

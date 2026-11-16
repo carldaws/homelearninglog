@@ -15,7 +15,7 @@
 
   <% if Current.family.children.any? %>
     <ul class="card card--flush list">
-      <% Current.family.children_by_name.each do |child| %>
+      <% Current.family.children.alphabetically.each do |child| %>
         <li class="row">
           <span class="row-title"><%= child.name %></span>
           <%= link_to t(".edit"), edit_family_child_path(child), class: "link link--muted ml-auto",
@@ -36,7 +36,7 @@
   </div>
 
   <ul class="card card--flush list">
-    <% Current.family.memberships.includes(:user).sort_by { it.user.name }.each do |membership| %>
+    <% Current.family.memberships.alphabetically.each do |membership| %>
       <li class="row flex-wrap">
         <span class="row-title"><%= membership.user.name %></span>
         <% if membership.user == Current.user %>

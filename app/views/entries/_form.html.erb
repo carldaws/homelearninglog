@@ -32,7 +32,7 @@
       <fieldset class="field">
         <legend class="label mb-2"><%= t(".children") %></legend>
         <div class="flex flex-wrap gap-x-6 gap-y-3">
-          <%= form.collection_check_boxes :child_ids, Current.family.children_by_name, :id, :name do |option| %>
+          <%= form.collection_check_boxes :child_ids, Current.family.children.alphabetically, :id, :name do |option| %>
             <%= option.label(class: "choice") { option.check_box(class: "checkbox") + option.text } %>
           <% end %>
         </div>
