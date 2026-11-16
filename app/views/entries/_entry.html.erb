@@ -46,10 +46,7 @@
   <% end %>
 
   <footer class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-    <span class="caption"><%= entry.author.first_name %></span>
-    <% if entry.minutes.present? %>
-      <span class="tag"><%= duration(entry.minutes) %></span>
-    <% end %>
+    <span class="caption"><%= [ entry.author.first_name, (duration(entry.minutes) if entry.minutes.present?) ].compact.join(" · ") %></span>
     <button type="button" class="link link--muted ml-auto cursor-pointer text-sm" aria-expanded="false" aria-controls="<%= dom_id(entry, :new_comment) %>"
             data-reveal-target="button" data-action="reveal#toggle"><%= t(".comment") %></button>
     <%= link_to t(".edit"), edit_child_entry_path(entry.child, entry), class: "link link--muted text-sm" %>

@@ -87,20 +87,18 @@
   --muted: #5b6575;
   --accent: #234f8a;
   --accent-hover: #1d4377;
-  --accent-edge: #163a69;
   --accent-tint: #dfe8f4;
   --accent-ink: #234f8a;
   --on-accent: #ffffff;
   --label: #b2473b;
-  --tag-ink: #234f8a;
   --danger: #a12c2c;
   --danger-tint: #fbe9e7;
   --print: #ffffff;
   --shadow: rgb(27 36 51 / 0.18);
-  --tape-ochre: rgb(183 121 31 / 0.38);
-  --tape-moss: rgb(74 107 58 / 0.32);
-  --tape-slate: rgb(47 85 104 / 0.3);
-  --tape-clay: rgb(138 62 34 / 0.3);
+  --tape-ochre: rgb(214 176 112 / 0.5);
+  --tape-moss: rgb(226 205 160 / 0.6);
+  --tape-slate: rgb(150 180 214 / 0.45);
+  --tape-clay: rgb(226 164 155 / 0.45);
   color-scheme: light;
 }
 
@@ -120,20 +118,18 @@
     --muted: #a3adbb;
     --accent: #3d6fb0;
     --accent-hover: #4a7cbd;
-    --accent-edge: #24497a;
     --accent-tint: #22334a;
     --accent-ink: #9cc0ec;
     --on-accent: #ffffff;
     --label: #e8877a;
-    --tag-ink: #9cc0ec;
     --danger: #f19a8f;
     --danger-tint: #432522;
     --print: #e9e5da;
     --shadow: rgb(0 0 0 / 0.45);
-    --tape-ochre: rgb(214 160 70 / 0.42);
-    --tape-moss: rgb(130 170 105 / 0.38);
-    --tape-slate: rgb(110 150 175 / 0.38);
-    --tape-clay: rgb(200 110 80 / 0.38);
+    --tape-ochre: rgb(214 176 112 / 0.42);
+    --tape-moss: rgb(226 205 160 / 0.38);
+    --tape-slate: rgb(150 180 214 / 0.38);
+    --tape-clay: rgb(226 164 155 / 0.38);
     color-scheme: dark;
   }
 }
@@ -154,11 +150,9 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
-  --color-accent-edge: var(--accent-edge);
   --color-accent-tint: var(--accent-tint);
   --color-accent-ink: var(--accent-ink);
   --color-on-accent: var(--on-accent);
-  --color-tag-ink: var(--tag-ink);
   --color-danger: var(--danger);
   --color-danger-tint: var(--danger-tint);
   --color-print: var(--print);
@@ -204,7 +198,7 @@
   }
 
   .name-label {
-    @apply grid min-w-0 flex-1 rounded-lg border-[1.5px] border-ink bg-card px-4 py-2.5 sm:max-w-md;
+    @apply grid min-w-0 flex-1 rounded-lg border-[1.5px] border-line-strong bg-card px-4 py-2.5 sm:max-w-md;
   }
 
   .name-label-row {
@@ -240,7 +234,7 @@
   }
 
   .tag {
-    @apply inline-flex items-center rounded-[3px] border border-line-strong bg-card px-1.5 font-mono text-xs font-medium tracking-[0.06em] text-tag-ink uppercase;
+    @apply inline-flex items-center rounded-[3px] border border-line-strong bg-card px-1.5 font-mono text-xs font-medium tracking-[0.06em] text-muted uppercase;
   }
 
   .section {
@@ -256,7 +250,7 @@
   }
 
   .week-header {
-    @apply mb-6 flex items-baseline justify-between gap-3 rounded-md bg-cover px-4 py-2.5 text-on-cover;
+    @apply mb-6 flex items-baseline justify-between gap-3 border-b-2 border-accent pb-1.5;
   }
 
   .week-title {
@@ -264,7 +258,7 @@
   }
 
   .week-hours {
-    @apply font-mono text-xs font-medium tracking-[0.08em] uppercase;
+    @apply font-mono text-xs font-medium tracking-[0.08em] text-muted uppercase;
   }
 
   .day {
@@ -361,19 +355,19 @@
 
   .button {
     @apply inline-flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md border border-transparent px-5 text-base font-semibold whitespace-nowrap no-underline transition-colors;
-    @apply bg-accent text-on-accent shadow-[0_3px_0_var(--accent-edge)] hover:bg-accent-hover active:translate-y-px active:shadow-[0_2px_0_var(--accent-edge)];
+    @apply bg-accent text-on-accent hover:bg-accent-hover;
   }
 
   .button--secondary {
-    @apply border-line-strong bg-card text-ink shadow-[0_2px_0_var(--line)] hover:bg-hover active:shadow-[0_1px_0_var(--line)];
+    @apply border-line-strong bg-card text-ink hover:bg-hover;
   }
 
   .button--on-cover {
-    @apply border-on-cover/60 bg-transparent text-on-cover shadow-none hover:bg-on-cover/10 active:shadow-none;
+    @apply border-on-cover/60 bg-transparent text-on-cover hover:bg-on-cover/10;
   }
 
   .button--danger {
-    @apply border-danger/50 bg-card text-danger shadow-none hover:bg-danger-tint active:shadow-none;
+    @apply border-danger/50 bg-card text-danger hover:bg-danger-tint;
   }
 
   .button--small {
@@ -385,7 +379,7 @@
   }
 
   .button--floating {
-    @apply fixed right-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-20 h-13 px-5 shadow-[0_3px_0_var(--accent-edge),0_8px_20px_var(--shadow)] sm:static sm:h-11 sm:shadow-[0_3px_0_var(--accent-edge)];
+    @apply fixed right-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-20 h-13 px-5 shadow-[0_8px_20px_var(--shadow)] sm:static sm:h-11 sm:shadow-none;
   }
 
   .link {
