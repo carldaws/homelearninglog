@@ -44,7 +44,7 @@ class JoinsTest < ActionDispatch::IntegrationTest
     get join_path(@token)
 
     assert_response :not_found
-    assert_select "h1", text: I18n.t("joins.expired.heading")
+    assert_select "h1", text: I18n.t("joins.expired.title")
   end
 
   test "an invite link can be made by anyone in the family" do

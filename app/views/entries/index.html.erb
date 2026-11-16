@@ -13,33 +13,24 @@
       <svg aria-hidden="true" viewBox="0 0 18 18" class="size-4.5"><path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
       <%= t(".add") %>
     <% end %>
+  <% else %>
+    <%= link_to t(".add_child"), new_family_child_path, class: "button" %>
   <% end %>
 </header>
 
-<% if Current.family.children.none? %>
-  <div class="card">
-    <p><%= t(".no_children") %></p>
-    <%= link_to t(".add_child"), new_family_child_path, class: "button mt-4" %>
-  </div>
-<% elsif @log.empty? %>
-  <div class="card">
-    <p><%= t(".empty") %></p>
-  </div>
-<% else %>
-  <% @log.days.each do |date, entries| %>
-    <section aria-labelledby="<%= date.iso8601 %>">
-      <div class="ruled">
-        <h2 id="<%= date.iso8601 %>" class="ruled-title"><%= day_heading(date) %></h2>
-      </div>
-      <div class="stack">
-        <%= render entries %>
-      </div>
-    </section>
-  <% end %>
+<% @log.days.each do |date, entries| %>
+  <section aria-labelledby="<%= date.iso8601 %>">
+    <div class="ruled">
+      <h2 id="<%= date.iso8601 %>" class="ruled-title"><%= day_heading(date) %></h2>
+    </div>
+    <div class="stack">
+      <%= render entries %>
+    </div>
+  </section>
+<% end %>
 
-  <% if @log.earlier.present? %>
-    <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">
-      <%= link_to t(".earlier"), entries_path(through: @log.earlier.iso8601), class: "button button--secondary" %>
-    </nav>
-  <% end %>
+<% if @log.earlier.present? %>
+  <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">
+    <%= link_to t(".earlier"), entries_path(through: @log.earlier.iso8601), class: "button button--secondary" %>
+  </nav>
 <% end %>

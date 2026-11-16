@@ -1,9 +1,4 @@
-<section class="mt-10 sm:mt-16">
-  <h1 class="page-title max-w-lg sm:text-5xl"><%= t(".heading") %></h1>
-  <p class="mt-4 max-w-lg text-muted"><%= t(".intro") %></p>
-
-  <div class="form-actions">
-    <%= link_to t(".register"), new_registration_path, class: "button" %>
-    <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
-  </div>
-</section>
+<div class="form-actions mt-10">
+  <%= link_to t(".register"), new_registration_path, class: "button" %>
+  <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
+</div>

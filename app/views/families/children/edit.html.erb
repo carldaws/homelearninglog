@@ -1,14 +1,14 @@
-<% content_for :title, t(".title", name: @child.name_in_database) %>
+<% content_for :title, @child.name_in_database %>
 
-<div class="narrow">
-  <header class="page-header">
-    <h1 class="page-title"><%= t(".heading", name: @child.name_in_database) %></h1>
-  </header>
+<header class="page-header">
+  <h1 class="page-title"><%= @child.name_in_database %></h1>
+</header>
 
-  <div class="card">
-    <%= render "form", child: @child %>
-  </div>
-
-  <%= button_to t(".remove", name: @child.name_in_database), family_child_path(@child), method: :delete, class: "button button--danger button--wide mt-6",
-        form: { data: { turbo_confirm: t(".remove_confirm", name: @child.name_in_database) } } %>
+<div class="card">
+  <%= render "form", child: @child %>
 </div>
+
+<% if @child.entries.none? %>
+  <%= button_to t(".remove"), family_child_path(@child), method: :delete, class: "button button--danger button--wide mt-6",
+        form: { data: { turbo_confirm: t(".remove_confirm", name: @child.name_in_database) } } %>
+<% end %>

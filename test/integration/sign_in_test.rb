@@ -1,11 +1,11 @@
 require "test_helper"
 
 class SignInTest < ActionDispatch::IntegrationTest
-  test "signed-out people see what it's for" do
+  test "signed-out people can create an account or sign in" do
     get root_path
 
-    assert_select "h1", text: I18n.t("home.show.heading")
     assert_select "main a[href=?]", new_registration_path
+    assert_select "main a[href=?]", new_session_path
   end
 
   test "signing in" do

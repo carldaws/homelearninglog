@@ -16,7 +16,7 @@ class EntriesController < ApplicationController
     @entry = Current.family.entries.build(entry_params.merge(author: Current.user))
 
     if @entry.save
-      redirect_to entries_path, notice: t(".added")
+      redirect_to entries_path
     else
       render :new, status: :unprocessable_content
     end
@@ -27,7 +27,7 @@ class EntriesController < ApplicationController
 
   def update
     if @entry.update(entry_params)
-      redirect_to entries_path, notice: t(".saved")
+      redirect_to entries_path
     else
       render :edit, status: :unprocessable_content
     end
@@ -35,7 +35,7 @@ class EntriesController < ApplicationController
 
   def destroy
     @entry.destroy!
-    redirect_to entries_path, notice: t(".deleted"), status: :see_other
+    redirect_to entries_path, status: :see_other
   end
 
   private

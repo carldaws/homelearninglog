@@ -1,17 +1,15 @@
 <% content_for :title, t(".title") %>
 
-<div class="narrow">
-  <header class="page-header">
-    <div>
-      <p class="caption"><%= l(@entry.happened_on_in_database, format: :short_day) %> · <%= @entry.author.first_name %></p>
-      <h1 class="page-title mt-1"><%= t(".heading") %></h1>
-    </div>
-  </header>
-
-  <div class="card">
-    <%= render "form", entry: @entry %>
+<header class="page-header">
+  <div>
+    <p class="caption"><%= l(@entry.happened_on_in_database, format: :short_day) %> · <%= @entry.author.first_name %></p>
+    <h1 class="page-title mt-1"><%= t(".title") %></h1>
   </div>
+</header>
 
-  <%= button_to t(".delete"), entry_path(@entry), method: :delete, class: "button button--danger button--wide mt-6",
-        form: { data: { turbo_confirm: t(".delete_confirm") } } %>
+<div class="card">
+  <%= render "form", entry: @entry %>
 </div>
+
+<%= button_to t(".delete"), entry_path(@entry), method: :delete, class: "button button--danger button--wide mt-6",
+      form: { data: { turbo_confirm: t(".delete_confirm") } } %>

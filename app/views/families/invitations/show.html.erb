@@ -1,16 +1,10 @@
 <% content_for :title, t(".title") %>
 <% turbo_exempts_page_from_cache %>
 
-<div class="narrow">
-  <header class="page-header">
-    <div>
-      <h1 class="page-title"><%= t(".heading") %></h1>
-      <p class="mt-1 text-muted"><%= t(".intro", family: Current.family.name) %></p>
-    </div>
-  </header>
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
 
-  <div class="card">
-    <%= render "shared/share_link", url: @invitation_link, title: t(".share_title", family: Current.family.name, app: t("app.name")) %>
-    <p class="hint mt-5"><%= t(".expiry") %></p>
-  </div>
+<div class="card">
+  <%= render "shared/share_link", url: @invitation_link, title: t("app.name") %>
 </div>

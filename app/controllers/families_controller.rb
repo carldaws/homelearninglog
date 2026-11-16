@@ -15,7 +15,7 @@ class FamiliesController < ApplicationController
     @family = Current.user.start_family(family_params)
 
     if @family.persisted?
-      redirect_to new_family_child_path, notice: t(".started")
+      redirect_to new_family_child_path
     else
       render :new, status: :unprocessable_content
     end
@@ -26,7 +26,7 @@ class FamiliesController < ApplicationController
 
   def update
     if Current.family.update(family_params)
-      redirect_to family_path, notice: t(".renamed")
+      redirect_to family_path
     else
       render :edit, status: :unprocessable_content
     end

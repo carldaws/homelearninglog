@@ -1,23 +1,17 @@
-<% content_for :title, t(".title", family: @family.name) %>
+<% content_for :title, @family.name %>
 
-<div class="narrow mt-6 sm:mt-10">
-  <div class="card text-center">
-    <p class="caption"><%= t(".invited") %></p>
-    <h1 class="page-title mt-2"><%= @family.name %></h1>
-    <p class="mt-2 text-muted"><%= t(".members", names: @family.members.alphabetically.map(&:first_name).to_sentence) %></p>
+<div class="card mt-6 text-center sm:mt-10">
+  <h1 class="page-title"><%= @family.name %></h1>
+  <p class="caption mt-3"><%= @family.members.alphabetically.map(&:first_name).to_sentence %></p>
 
-    <div class="mt-8 grid gap-3">
-      <% if !authenticated? %>
-        <%= link_to t(".register"), new_registration_path, class: "button" %>
-        <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
-      <% elsif Current.family == @family %>
-        <p class="text-muted"><%= t(".already_member") %></p>
-        <%= link_to t(".open"), entries_path, class: "button" %>
-      <% elsif Current.family.present? %>
-        <p class="text-muted"><%= t(".in_another_family", family: Current.family.name) %></p>
-      <% else %>
-        <%= button_to t(".join", family: @family.name), joins_path, params: { token: params[:token] }, class: "button w-full" %>
-      <% end %>
-    </div>
+  <div class="mt-8 grid gap-3">
+    <% if !authenticated? %>
+      <%= link_to t(".register"), new_registration_path, class: "button" %>
+      <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
+    <% elsif Current.family == @family %>
+      <%= link_to t(".open"), entries_path, class: "button" %>
+    <% elsif Current.family.nil? %>
+      <%= button_to t(".join", family: @family.name), joins_path, params: { token: params[:token] }, class: "button w-full" %>
+    <% end %>
   </div>
 </div>

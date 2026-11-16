@@ -117,6 +117,7 @@ class FamiliesTest < ActionDispatch::IntegrationTest
     sign_in_as users(:bob)
 
     delete family_membership_path(memberships(:bob_in_oaks))
+    follow_redirect!
 
     assert_redirected_to new_family_path
     assert_nil users(:bob).reload.family
@@ -170,5 +171,21 @@ class FamiliesTest < ActionDispatch::IntegrationTest
 
     get link
     assert_response :not_found
+  end
+
+  test "the last grown-up isn't offered a way to leave" do
+    sign_in_as users(:carol)
+
+    get family_path
+
+    assert_select "form[action=?]", family_membership_path(memberships(:carol_in_elms)), count: 0
+  end
+
+  test "children in the log aren't offered for removal" do
+    sign_in_as users(:alice)
+
+    get edit_family_child_path(children(:sam))
+
+    assert_select "form[action=?]:has(input[name=_method][value=delete])", family_child_path(children(:sam)), count: 0
   end
 end

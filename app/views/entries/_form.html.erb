@@ -18,14 +18,12 @@
           <% end %>
         </div>
       <% end %>
-      <%= form.file_field :photos, multiple: true, accept: "image/*", class: "input", aria: { describedby: "photos-hint" } %>
-      <p id="photos-hint" class="hint"><%= t(".photos_hint") %></p>
+      <%= form.file_field :photos, multiple: true, accept: "image/*", class: "input" %>
     </div>
 
     <div class="field">
       <%= form.label :notes, t(".notes"), class: "label" %>
-      <%= form.textarea :notes, rows: 4, class: "input", aria: { describedby: "notes-hint" } %>
-      <p id="notes-hint" class="hint"><%= t(".notes_hint") %></p>
+      <%= form.textarea :notes, rows: 4, class: "input" %>
     </div>
 
     <% if Current.family.children.many? %>
@@ -49,7 +47,7 @@
 
       <div class="field">
         <%= form.label :minutes, t(".minutes"), class: "label" %>
-        <%= form.select :minutes, duration_options(entry.minutes), { include_blank: t(".no_minutes") }, class: "input select" %>
+        <%= form.select :minutes, duration_options(entry.minutes), { include_blank: true }, class: "input select" %>
       </div>
     </div>
   </div>

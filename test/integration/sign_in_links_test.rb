@@ -33,7 +33,7 @@ class SignInLinksTest < ActionDispatch::IntegrationTest
     get edit_password_path(@token)
 
     assert_response :not_found
-    assert_select "h1", text: I18n.t("passwords.expired.heading")
+    assert_select "h1", text: I18n.t("passwords.expired.title")
   end
 
   test "a made-up link doesn't work" do

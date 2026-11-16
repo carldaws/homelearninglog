@@ -1,10 +1,7 @@
 <% content_for :title, Current.family.name %>
 
 <header class="page-header">
-  <div>
-    <p class="caption"><%= t(".kicker") %></p>
-    <h1 class="page-title mt-1"><%= Current.family.name %></h1>
-  </div>
+  <h1 class="page-title"><%= Current.family.name %></h1>
   <%= link_to t(".rename"), edit_family_path, class: "button button--secondary button--small" %>
 </header>
 
@@ -23,8 +20,6 @@
         </li>
       <% end %>
     </ul>
-  <% else %>
-    <p class="empty"><%= t(".no_children") %></p>
   <% end %>
 
   <%= link_to t(".add_child"), new_family_child_path, class: "button button--secondary mt-4" %>
@@ -41,8 +36,10 @@
         <span class="row-title"><%= membership.user.name %></span>
         <% if membership.user == Current.user %>
           <span class="caption"><%= t(".you") %></span>
-          <%= button_to t(".leave"), family_membership_path(membership), method: :delete, class: "link link--muted ml-auto cursor-pointer",
-                form: { class: "ml-auto", data: { turbo_confirm: t(".leave_confirm", family: Current.family.name) } } %>
+          <% if Current.family.memberships.many? %>
+            <%= button_to t(".leave"), family_membership_path(membership), method: :delete, class: "link link--muted cursor-pointer",
+                  form: { class: "ml-auto", data: { turbo_confirm: t(".leave_confirm", family: Current.family.name) } } %>
+          <% end %>
         <% else %>
           <div class="ml-auto flex items-center gap-4">
             <%= link_to t(".sign_in_link"), family_membership_sign_in_link_path(membership), class: "link link--muted" %>

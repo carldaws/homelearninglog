@@ -4,8 +4,7 @@
 
   <div class="field">
     <%= form.label :name, t(".name"), class: "label" %>
-    <%= form.text_field :name, required: true, autofocus: true, autocomplete: "off", class: "input", aria: { describedby: "name-hint" } %>
-    <p id="name-hint" class="hint"><%= t(".name_hint") %></p>
+    <%= form.text_field :name, required: true, autofocus: true, autocomplete: "off", class: "input" %>
   </div>
 
   <div class="form-actions">

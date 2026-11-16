@@ -2,7 +2,7 @@ class Membership < ApplicationRecord
   belongs_to :family
   belongs_to :user
 
-  validates :user, uniqueness: { message: :already_in_a_family }
+  validates :user, uniqueness: true
 
   scope :alphabetically, -> { includes(:user).merge(User.alphabetically).references(:user) }
 

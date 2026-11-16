@@ -11,7 +11,7 @@ class Families::ChildrenController < ApplicationController
     @child = Current.family.children.build(child_params)
 
     if @child.save
-      redirect_to family_path, notice: t(".added", name: @child.name)
+      redirect_to family_path
     else
       render :new, status: :unprocessable_content
     end
@@ -22,7 +22,7 @@ class Families::ChildrenController < ApplicationController
 
   def update
     if @child.update(child_params)
-      redirect_to family_path, notice: t(".renamed", name: @child.name)
+      redirect_to family_path
     else
       render :edit, status: :unprocessable_content
     end
@@ -30,7 +30,7 @@ class Families::ChildrenController < ApplicationController
 
   def destroy
     if @child.destroy
-      redirect_to family_path, notice: t(".removed", name: @child.name), status: :see_other
+      redirect_to family_path, status: :see_other
     else
       redirect_to edit_family_child_path(@child), alert: @child.errors.full_messages.to_sentence, status: :see_other
     end

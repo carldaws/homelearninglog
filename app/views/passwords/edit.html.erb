@@ -1,31 +1,25 @@
 <% content_for :title, t(".title") %>
 <% turbo_exempts_page_from_cache %>
 
-<div class="narrow">
-  <header class="page-header">
-    <div>
-      <h1 class="page-title"><%= t(".heading", name: @user.first_name) %></h1>
-      <p class="mt-1 text-muted"><%= t(".intro") %></p>
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= form_with model: @user, url: password_path(params[:token]), method: :patch do |form| %>
+    <%= render "shared/errors", record: @user %>
+
+    <div class="fields">
+      <div class="field">
+        <%= form.label :email_address, t(".email_address"), class: "label" %>
+        <%= form.email_field :email_address, readonly: true, autocomplete: "username", class: "input" %>
+      </div>
+
+      <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password", label: t(".password") %>
     </div>
-  </header>
 
-  <div class="card">
-    <%= form_with model: @user, url: password_path(params[:token]), method: :patch do |form| %>
-      <%= render "shared/errors", record: @user %>
-
-      <div class="fields">
-        <div class="field">
-          <%= form.label :email_address, t(".email_address"), class: "label" %>
-          <%= form.email_field :email_address, readonly: true, autocomplete: "username", class: "input" %>
-        </div>
-
-        <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password",
-              label: t(".password"), hint: t(".password_hint") %>
-      </div>
-
-      <div class="form-actions">
-        <%= form.submit t(".submit"), class: "button w-full" %>
-      </div>
-    <% end %>
-  </div>
+    <div class="form-actions">
+      <%= form.submit t(".submit"), class: "button button--wide" %>
+    </div>
+  <% end %>
 </div>
