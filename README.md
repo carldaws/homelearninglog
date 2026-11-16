@@ -1,24 +1,26 @@
-# README
+# Learning Log
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Free, open source software for families who home educate. Keep a shared log of what the children did, with photos, and plan around their interests rather than a curriculum.
 
-Things you may want to cover:
+No ads, no email. It's a work in progress.
 
-* Ruby version
+## Running it locally
 
-* System dependencies
+You need Ruby (see `.ruby-version`), PostgreSQL and libvips.
 
-* Configuration
+```sh
+bin/setup
+```
 
-* Database creation
+That installs gems, prepares the database and starts the app at http://localhost:1611.
 
-* Database initialization
+## Tests
 
-* How to run the test suite
+```sh
+bin/rails test
+bin/rubocop
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## Licence
 
-* Deployment instructions
-
-* ...
+[AGPL-3.0](LICENSE). If you run a modified copy as a website, you have to publish your changes under the same licence.
