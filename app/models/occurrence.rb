@@ -20,8 +20,12 @@ class Occurrence
     event.cancellations.where(cancelled_on: date).destroy_all
   end
 
+  def started?
+    starts_at.present? ? !starts_at.future? : date <= Date.current
+  end
+
   def due?
-    date <= Date.current && !cancelled? && !logged?
+    started? && !cancelled? && !logged?
   end
 
   def logged?

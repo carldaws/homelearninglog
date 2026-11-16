@@ -100,9 +100,13 @@ class EventTest < ActiveSupport::TestCase
     assert_equal [ children(:sam) ], entry.children.to_a
   end
 
-  test "a date is due once it's passed and until it's logged" do
-    travel_to Date.new(2026, 11, 16)
+  test "a date is due once it's started and until it's logged" do
     occurrence = events(:art_class).occurrence_on(Date.new(2026, 11, 16))
+
+    travel_to Time.zone.local(2026, 11, 16, 9, 59)
+    assert_not occurrence.due?
+
+    travel_to Time.zone.local(2026, 11, 16, 10)
     assert occurrence.due?
     assert_not events(:art_class).occurrence_on(Date.new(2026, 11, 23)).due?
 
