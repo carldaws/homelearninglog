@@ -72,4 +72,23 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal user, User.authenticate_by_recovery_code(email_address: user.email_address, recovery_code: FixturePasswords::RECOVERY_CODE)
   end
+
+  test "deleting someone removes the children only they look after, with everything recorded about them" do
+    wren, den = children(:wren), entries(:den)
+
+    users(:carol).destroy!
+
+    assert_not Child.exists?(wren.id)
+    assert_not Entry.exists?(den.id)
+  end
+
+  test "deleting someone keeps what they wrote in other children's logs, without their name" do
+    users(:bob).destroy!
+
+    assert Child.exists?(children(:sam).id)
+    assert_nil entries(:moon).reload.author
+    assert_nil comments(:leaks).reload.author
+    assert_nil events(:art_class).reload.grown_up
+    assert_equal [ users(:alice) ], children(:sam).grown_ups.reload
+  end
 end

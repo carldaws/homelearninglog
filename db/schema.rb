@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_232000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -76,7 +76,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
 
   create_table "comments", force: :cascade do |t|
     t.bigint "entry_id", null: false
-    t.bigint "author_id", null: false
+    t.bigint "author_id"
     t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -86,7 +86,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
 
   create_table "entries", force: :cascade do |t|
     t.bigint "child_id", null: false
-    t.bigint "author_id", null: false
+    t.bigint "author_id"
     t.date "happened_on", null: false
     t.text "what_we_did"
     t.text "what_was_learned"
@@ -162,13 +162,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
   add_foreign_key "children_invitations", "children"
   add_foreign_key "children_invitations", "invitations"
   add_foreign_key "comments", "entries"
-  add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "comments", "users", column: "author_id", on_delete: :nullify
   add_foreign_key "entries", "children"
   add_foreign_key "entries", "events"
   add_foreign_key "entries", "ideas", column: "followed_idea_id"
-  add_foreign_key "entries", "users", column: "author_id"
+  add_foreign_key "entries", "users", column: "author_id", on_delete: :nullify
   add_foreign_key "events", "children"
-  add_foreign_key "events", "users", column: "grown_up_id"
+  add_foreign_key "events", "users", column: "grown_up_id", on_delete: :nullify
   add_foreign_key "ideas", "entries"
   add_foreign_key "invitations", "users", column: "inviter_id"
   add_foreign_key "sessions", "users"

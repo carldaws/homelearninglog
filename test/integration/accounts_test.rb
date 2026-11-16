@@ -82,4 +82,24 @@ class AccountsTest < ActionDispatch::IntegrationTest
     assert_nil User.authenticate_by_recovery_code(email_address: users(:alice).email_address, recovery_code: FixturePasswords::RECOVERY_CODE)
     assert_equal users(:alice), User.authenticate_by_recovery_code(email_address: users(:alice).email_address, recovery_code:)
   end
+
+  test "the deletion page lists the children who'd go too" do
+    delete session_path
+    sign_in_as users(:carol)
+
+    get new_account_deletion_path
+
+    assert_select "li", text: children(:wren).name
+  end
+
+  test "deleting your account needs your current password, then signs you out" do
+    delete account_path, params: { user: { current_password: "not my password" } }
+    assert_response :unprocessable_content
+    assert User.exists?(users(:alice).id)
+
+    delete account_path, params: { user: { current_password: FixturePasswords::PASSWORD } }
+    assert_redirected_to root_path
+    assert_not User.exists?(users(:alice).id)
+    assert_not_signed_in
+  end
 end

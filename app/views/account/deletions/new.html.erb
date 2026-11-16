@@ -1,0 +1,29 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= form_with model: @user, url: account_path, method: :delete do |form| %>
+    <%= render "shared/errors", record: @user %>
+
+    <% if @user.children_without_other_grown_ups.any? %>
+      <div class="field mb-6">
+        <span class="label"><%= t(".removed_too") %></span>
+        <ul class="list-disc pl-5">
+          <% @user.children_without_other_grown_ups.alphabetically.each do |child| %>
+            <li><%= child.name %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= render "shared/password_field", form:, field: :current_password, autocomplete: "current-password", label: t(".current_password") %>
+
+    <div class="form-actions">
+      <%= form.submit t(".submit"), class: "button button--danger button--wide" %>
+      <%= link_to t(".cancel"), account_path, class: "button button--secondary button--wide" %>
+    </div>
+  <% end %>
+</div>

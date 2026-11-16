@@ -17,6 +17,18 @@ class AccountsController < ApplicationController
     end
   end
 
+  def destroy
+    @user.assign_attributes(params.expect(user: [ :current_password ]))
+
+    if @user.valid?(:account_deletion)
+      terminate_session
+      @user.destroy!
+      redirect_to root_path, status: :see_other
+    else
+      render "account/deletions/new", status: :unprocessable_content
+    end
+  end
+
   private
     def set_user
       @user = Current.user

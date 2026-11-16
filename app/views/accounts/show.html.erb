@@ -22,3 +22,5 @@
   <%# A full page load clears Turbo's cached copies of signed-in pages %>
   <%= button_to t(".sign_out"), session_path, method: :delete, form: { data: { turbo: false } }, class: "button button--secondary" %>
 </div>
+
+<%= link_to t(".delete"), new_account_deletion_path, class: "button button--danger button--small mt-10" %>

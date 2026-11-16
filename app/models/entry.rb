@@ -3,7 +3,7 @@ class Entry < ApplicationRecord
   SUGGESTED_MINUTES = [ 15, 30, 45, 60, 90, 120, 150, 180, 240, 300, 360 ].freeze
 
   belongs_to :child
-  belongs_to :author, class_name: "User"
+  belongs_to :author, class_name: "User", optional: true
   belongs_to :event, optional: true
   belongs_to :followed_idea, class_name: "Idea", optional: true, inverse_of: :follow_ups
   has_many :ideas, -> { order(:id) }, dependent: :destroy
@@ -16,6 +16,9 @@ class Entry < ApplicationRecord
     attachable.variant :large, resize_to_limit: [ 2000, 2000 ], format: :webp, saver: { strip: true }
   end
 
+  delegate :first_name, to: :author, prefix: true, allow_nil: true
+
+  validates :author, presence: true, on: :create
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validates :photos, photo: true

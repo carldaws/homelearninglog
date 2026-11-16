@@ -1,7 +1,7 @@
 <%# locals: (comment:) %>
 <li id="<%= dom_id(comment) %>" class="rounded-md bg-hover px-3 py-2.5">
   <div class="flex flex-wrap items-center gap-x-3">
-    <span class="caption"><%= comment.author.first_name %></span>
+    <span class="caption"><%= comment.author_first_name %></span>
     <span class="caption"><%= l(comment.created_at.to_date, format: :short) %></span>
     <% if comment.author == Current.user %>
       <%= link_to t(".edit"), edit_child_entry_comment_path(comment.entry.child, comment.entry, comment), class: "link link--muted ml-auto text-sm" %>

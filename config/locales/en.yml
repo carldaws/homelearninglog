@@ -175,6 +175,7 @@ en:
       change_password: Change password
       new_recovery_code: New recovery code
       sign_out: Sign out
+      delete: Delete account
     edit:
       title: Edit your details
       name: Name
@@ -196,6 +197,13 @@ en:
         title: New recovery code
         current_password: Current password
         submit: Make a new code
+        cancel: Cancel
+    deletions:
+      new:
+        title: Delete your account
+        removed_too: Removed with your account
+        current_password: Current password
+        submit: Delete account
         cancel: Cancel
 
   recovery_codes:

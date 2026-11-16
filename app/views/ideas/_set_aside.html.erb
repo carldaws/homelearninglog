@@ -12,7 +12,7 @@
         <div class="min-w-0 flex-1">
           <p class="caption">
             <%= link_to l(idea.entry.happened_on, format: :short), entry_in_log_path(idea.entry), class: "text-muted no-underline hover:underline" %>
-            · <%= idea.entry.author.first_name %>
+            <% if idea.entry.author_first_name.present? %>· <%= idea.entry.author_first_name %><% end %>
           </p>
           <p class="mt-1 break-words"><%= idea.description %></p>
         </div>

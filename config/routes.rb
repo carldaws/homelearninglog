@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   resource :registration, only: %i[ new create ]
   resource :password, only: %i[ new create ]
   resource :recovery_code, only: :show
-  resource :account, only: %i[ show edit update ]
+  resource :account, only: %i[ show edit update destroy ]
   namespace :account do
     resource :password, only: %i[ edit update ]
     resource :recovery_code, only: %i[ new create ]
+    resource :deletion, only: :new
   end
 
   resources :children, only: %i[ show new create edit update destroy ] do
