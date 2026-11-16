@@ -43,11 +43,9 @@ en:
       messages:
         not_a_photo: "%{filename} isn't a photo"
         photo_too_big: "%{filename} is over %{size}"
+        restrict_dependent_destroy:
+          has_many: "%{record} are recorded"
       models:
-        child:
-          attributes:
-            base:
-              in_use: "%{name} has things recorded against them"
         entry:
           attributes:
             base:

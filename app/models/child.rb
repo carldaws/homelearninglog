@@ -1,16 +1,15 @@
 class Child < ApplicationRecord
+  has_many :entries, dependent: :restrict_with_error
+  has_many :ideas, through: :entries
+  has_many :events, dependent: :restrict_with_error
+  # Removing a child takes everyone's access with it, so Access's last-grown-up check mustn't run
   has_many :accesses, dependent: :delete_all
   has_many :grown_ups, through: :accesses, source: :user
-  has_many :entries, dependent: :destroy
-  has_many :ideas, through: :entries
-  has_many :events, dependent: :destroy
   has_and_belongs_to_many :invitations
 
   validates :name, presence: true
 
   scope :alphabetically, -> { order(:name) }
-
-  before_destroy :keep_children_in_use, prepend: true
 
   def draft_entry(**attributes)
     entries.build(happened_on: Date.current, **attributes)
@@ -45,12 +44,4 @@ class Child < ApplicationRecord
   def removable?
     entries.none? && events.none?
   end
-
-  private
-    def keep_children_in_use
-      unless removable?
-        errors.add(:base, :in_use, name:)
-        throw :abort
-      end
-    end
 end

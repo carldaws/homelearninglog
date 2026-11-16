@@ -20,7 +20,7 @@ class ChildTest < ActiveSupport::TestCase
 
   test "children with entries or events can't be removed" do
     assert_not children(:sam).destroy
-    assert children(:sam).errors.of_kind?(:base, :in_use)
+    assert children(:sam).errors.of_kind?(:base, :"restrict_dependent_destroy.has_many")
 
     entries(:den).destroy!
     assert_not children(:wren).destroy
