@@ -69,6 +69,9 @@ en:
   layouts:
     sign_out:
       sign_out: Sign out
+    footer:
+      credit_html: Free and %{open_source}, by %{author}.
+      open_source: open source
     child_switcher:
       add_child: Add a child
     tabs:

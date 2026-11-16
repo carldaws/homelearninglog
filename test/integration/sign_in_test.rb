@@ -13,6 +13,7 @@ class SignInTest < ActionDispatch::IntegrationTest
 
     assert_select "h1", text: I18n.t("home.show.heading")
     assert_select "main ol > li", count: I18n.t("home.show.steps").size
+    assert_select "footer a[href=?]", "https://github.com/carldaws/homelearninglog"
   end
 
   test "signing in" do
