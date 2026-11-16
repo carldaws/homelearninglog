@@ -1,13 +1,7 @@
-<%# locals: (entry:, show_activity: true) %>
+<%# locals: (entry:) %>
 <article id="<%= dom_id(entry) %>" class="card">
-  <% if show_activity && entry.heading.present? %>
-    <h3 class="mb-3 text-[1.4rem] leading-tight font-semibold">
-      <% if entry.activity.present? %>
-        <%= link_to entry.heading, entry.activity, class: "text-ink no-underline hover:underline" %>
-      <% else %>
-        <%= entry.heading %>
-      <% end %>
-    </h3>
+  <% if entry.heading.present? %>
+    <h3 class="mb-3 text-[1.4rem] leading-tight font-semibold"><%= entry.heading %></h3>
   <% end %>
 
   <% if entry.photos.attached? %>
@@ -22,14 +16,6 @@
 
   <% if entry.notes.present? %>
     <div class="grid gap-3"><%= notes_with_links(entry.notes) %></div>
-  <% end %>
-
-  <% if entry.pursuits.any? %>
-    <p class="mt-3 flex flex-wrap gap-x-3 gap-y-1">
-      <% entry.pursuits.sort_by(&:name).each do |pursuit| %>
-        <%= link_to pursuit.name, pursuit, class: "link text-sm" %>
-      <% end %>
-    </p>
   <% end %>
 
   <footer class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">

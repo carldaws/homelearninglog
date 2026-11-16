@@ -258,16 +258,8 @@
     @apply flex items-center gap-3 px-4 py-3.5 sm:px-5;
   }
 
-  .row--link {
-    @apply text-ink no-underline transition-colors hover:bg-hover;
-  }
-
   .row-title {
     @apply font-semibold break-words;
-  }
-
-  .empty {
-    @apply text-muted;
   }
 
   .stack {
@@ -335,10 +327,6 @@
 
   .button--floating {
     @apply fixed right-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-20 h-13 px-5 shadow-[0_3px_0_var(--accent-edge),0_8px_20px_var(--shadow)] sm:static sm:h-11 sm:shadow-[0_3px_0_var(--accent-edge)];
-  }
-
-  .icon-button {
-    @apply inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted no-underline transition-colors hover:bg-hover hover:text-ink;
   }
 
   .link {

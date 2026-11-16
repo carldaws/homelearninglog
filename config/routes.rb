@@ -19,10 +19,6 @@ Rails.application.routes.draw do
     resources :photos, only: :show, module: :entries
   end
 
-  resource :week, only: :show do
-    resource :reflection, only: :update, module: :weeks
-  end
-
   resource :calendar, only: :show do
     resource :subscription, only: %i[ show update ], module: :calendars
   end
@@ -34,23 +30,6 @@ Rails.application.routes.draw do
         resource :cancellation, only: %i[ create destroy ]
         resources :entries, only: :new
       end
-    end
-  end
-
-  resource :kids_mode, only: %i[ new create destroy ]
-  resource :kids_menu, path: "kids", only: :show
-  resources :choices, only: %i[ create show ]
-  resource :surprise, only: :create
-
-  resources :pursuits do
-    resource :finish, only: %i[ create destroy ], module: :pursuits
-  end
-
-  resources :activities do
-    scope module: :activities do
-      resources :entries, only: :new
-      resources :events, only: :new
-      resources :pictures, only: :show
     end
   end
 

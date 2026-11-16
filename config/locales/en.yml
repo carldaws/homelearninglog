@@ -16,15 +16,8 @@ en:
 
   activerecord:
     attributes:
-      pursuit:
-        name: Name
-        notes: Notes
-        started_on: Started
-        finished_on: Finished
-        children: Children
       event:
         title: Title
-        activity: Activity
         grown_up: Grown-up
         starts_on: Date
         start_time: Starts
@@ -33,14 +26,7 @@ en:
         repeats_until: Until
         children: Children
         notes: Notes
-      activity:
-        name: Name
-        minutes: Usual length
-        notes: Notes
-        picture: Picture
-        for_children: Kids' menu
       entry:
-        activity: Activity
         event: Event
         happened_on: Date
         notes: Notes
@@ -72,12 +58,6 @@ en:
               too_many_photos: Up to %{count} photos
             happened_on:
               less_than_or_equal_to: can't be in the future
-        pursuit:
-          attributes:
-            started_on:
-              less_than_or_equal_to: can't be in the future
-            finished_on:
-              greater_than_or_equal_to: can't be before it started
         event:
           attributes:
             end_time:
@@ -92,14 +72,11 @@ en:
   layouts:
     account_menu:
       family: Family
-      kids_mode: Kids' mode
       sign_out: Sign out
     tabs:
       label: Sections
       log: Log
       calendar: Calendar
-      activities: Activities
-      pursuits: Pursuits
     signed_out_nav:
       sign_in: Sign in
       register: Create an account
@@ -108,8 +85,6 @@ en:
     password_field:
       show: Show
       hide: Hide
-    pursuit_choices:
-      pursuits: Pursuits
     share_link:
       share: Share link
       copy: Copy link
@@ -213,7 +188,6 @@ en:
       minutes: "%{count} min"
     index:
       title: Log
-      week: This week
       this_week: "%{time} this week"
       add: Add to the log
       add_child: Add a child
@@ -230,7 +204,6 @@ en:
       keep: Keep
       notes: Notes
       children: Children
-      activity: Activity
       happened_on: Date
       minutes: Time spent
       add: Add to the log
@@ -243,33 +216,6 @@ en:
       title: Edit entry
       delete: Delete entry
       delete_confirm: Delete this entry?
-
-  activities:
-    index:
-      title: Activities
-      add: Add an activity
-    show:
-      edit: Edit
-      log: We did this
-      schedule: Add to calendar
-      for_children: Kids' menu
-      chosen:
-        one: Chosen once
-        other: Chosen %{count} times
-    form:
-      name: Name
-      minutes: Usual length
-      notes: Notes
-      for_children: Kids' menu
-      picture: Picture
-      add: Add
-      save: Save
-      cancel: Cancel
-    new:
-      title: Add an activity
-    edit:
-      delete: Delete
-      delete_confirm: Delete %{name}?
 
   calendars:
     subscriptions:
@@ -294,7 +240,6 @@ en:
   events:
     form:
       title: Title
-      activity: Activity
       starts_on: Date
       start_time: Starts
       end_time: Ends
@@ -315,61 +260,3 @@ en:
     edit:
       delete: Delete
       delete_confirm: Delete %{title}?
-
-  pursuits:
-    index:
-      title: Pursuits
-      add: Add a pursuit
-      finished: Finished
-    show:
-      edit: Edit
-      finish: Finish
-      pick_up: Pick up again
-      activities: Activities
-    form:
-      name: Name
-      children: Children
-      started_on: Started
-      notes: Notes
-      add: Add
-      save: Save
-      cancel: Cancel
-    new:
-      title: Add a pursuit
-    edit:
-      delete: Delete
-      delete_confirm: Delete %{name}?
-
-  kids_modes:
-    new:
-      title: Kids' mode
-
-  kids_menus:
-    show:
-      surprise: Surprise me
-      grown_ups: Grown-ups
-      password: Password
-      leave: Leave kids' mode
-
-  choices:
-    show:
-      back: Back
-
-  weeks:
-    show:
-      title: Week
-      days_logged:
-        one: 1 day
-        other: "%{count} days"
-      weeks: Weeks
-      previous: Previous
-      this_week: This week
-      next: Next
-      grown_ups: Grown-ups
-      pursuits: Pursuits
-      entries:
-        one: 1 entry
-        other: "%{count} entries"
-      choices: Chosen
-      notes: Notes
-      save: Save

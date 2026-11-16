@@ -28,13 +28,6 @@ class EntryTest < ActiveSupport::TestCase
     assert @entry.errors.of_kind?(:children, :outside_the_family)
   end
 
-  test "an entry's activity has to be the family's own" do
-    @entry.assign_attributes(notes: entries(:painting).notes, activity: activities(:dens))
-
-    assert_not @entry.valid?
-    assert @entry.errors.of_kind?(:activity, :outside_the_family)
-  end
-
   test "an entry's event has to be the family's own" do
     @entry.assign_attributes(notes: entries(:painting).notes, event: events(:swimming))
 

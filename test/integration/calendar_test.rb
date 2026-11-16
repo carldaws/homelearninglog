@@ -107,13 +107,6 @@ class CalendarTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", new_event_occurrence_entry_path(events(:art_class), "2026-11-16"), count: 0
   end
 
-  test "an activity can be put on the calendar" do
-    get new_activity_event_path(activities(:painting))
-
-    assert_select "#event_title[value=?]", activities(:painting).name
-    assert_select "#event_activity_id option[selected][value=?]", activities(:painting).id.to_s
-  end
-
   test "people without a family are sent to start one, even from an old link" do
     delete session_path
     sign_in_as users(:dan)
@@ -148,9 +141,6 @@ class CalendarTest < ActionDispatch::IntegrationTest
     assert_response :not_found
 
     delete event_occurrence_cancellation_path(events(:swimming), "2026-11-18")
-    assert_response :not_found
-
-    get new_activity_event_path(activities(:dens))
     assert_response :not_found
 
     post event_occurrence_cancellation_path(events(:swimming), "2026-11-18")

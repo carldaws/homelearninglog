@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_172833) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,24 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "activities", force: :cascade do |t|
-    t.bigint "family_id", null: false
-    t.string "name", null: false
-    t.text "notes"
-    t.integer "minutes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "for_children", default: false, null: false
-    t.index ["family_id"], name: "index_activities_on_family_id"
-  end
-
-  create_table "activities_pursuits", id: false, force: :cascade do |t|
-    t.bigint "activity_id", null: false
-    t.bigint "pursuit_id", null: false
-    t.index ["activity_id"], name: "index_activities_pursuits_on_activity_id"
-    t.index ["pursuit_id", "activity_id"], name: "index_activities_pursuits_on_pursuit_id_and_activity_id", unique: true
   end
 
   create_table "cancellations", force: :cascade do |t|
@@ -90,22 +72,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
     t.index ["event_id", "child_id"], name: "index_children_events_on_event_id_and_child_id", unique: true
   end
 
-  create_table "children_pursuits", id: false, force: :cascade do |t|
-    t.bigint "child_id", null: false
-    t.bigint "pursuit_id", null: false
-    t.index ["child_id"], name: "index_children_pursuits_on_child_id"
-    t.index ["pursuit_id", "child_id"], name: "index_children_pursuits_on_pursuit_id_and_child_id", unique: true
-  end
-
-  create_table "choices", force: :cascade do |t|
-    t.bigint "child_id", null: false
-    t.bigint "activity_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_id"], name: "index_choices_on_activity_id"
-    t.index ["child_id"], name: "index_choices_on_child_id"
-  end
-
   create_table "entries", force: :cascade do |t|
     t.bigint "family_id", null: false
     t.bigint "author_id", null: false
@@ -114,24 +80,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
     t.integer "minutes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "activity_id"
     t.bigint "event_id"
-    t.index ["activity_id"], name: "index_entries_on_activity_id"
     t.index ["author_id"], name: "index_entries_on_author_id"
     t.index ["event_id"], name: "index_entries_on_event_id"
     t.index ["family_id", "happened_on"], name: "index_entries_on_family_id_and_happened_on"
   end
 
-  create_table "entries_pursuits", id: false, force: :cascade do |t|
-    t.bigint "entry_id", null: false
-    t.bigint "pursuit_id", null: false
-    t.index ["entry_id"], name: "index_entries_pursuits_on_entry_id"
-    t.index ["pursuit_id", "entry_id"], name: "index_entries_pursuits_on_pursuit_id_and_entry_id", unique: true
-  end
-
   create_table "events", force: :cascade do |t|
     t.bigint "family_id", null: false
-    t.bigint "activity_id"
     t.bigint "grown_up_id"
     t.string "title", null: false
     t.date "starts_on", null: false
@@ -142,7 +98,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["activity_id"], name: "index_events_on_activity_id"
     t.index ["family_id"], name: "index_events_on_family_id"
     t.index ["grown_up_id"], name: "index_events_on_grown_up_id"
   end
@@ -165,34 +120,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
     t.index ["user_id"], name: "index_memberships_on_user_id", unique: true
   end
 
-  create_table "pursuits", force: :cascade do |t|
-    t.bigint "family_id", null: false
-    t.string "name", null: false
-    t.text "notes"
-    t.date "started_on", null: false
-    t.date "finished_on"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["family_id"], name: "index_pursuits_on_family_id"
-  end
-
-  create_table "reflections", force: :cascade do |t|
-    t.bigint "family_id", null: false
-    t.date "week_of", null: false
-    t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["family_id", "week_of"], name: "index_reflections_on_family_id_and_week_of", unique: true
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "choosing_child_id"
-    t.index ["choosing_child_id"], name: "index_sessions_on_choosing_child_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -207,32 +140,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "activities", "families"
-  add_foreign_key "activities_pursuits", "activities"
-  add_foreign_key "activities_pursuits", "pursuits"
   add_foreign_key "cancellations", "events"
   add_foreign_key "children", "families"
   add_foreign_key "children_entries", "children"
   add_foreign_key "children_entries", "entries"
   add_foreign_key "children_events", "children"
   add_foreign_key "children_events", "events"
-  add_foreign_key "children_pursuits", "children"
-  add_foreign_key "children_pursuits", "pursuits"
-  add_foreign_key "choices", "activities"
-  add_foreign_key "choices", "children"
-  add_foreign_key "entries", "activities"
   add_foreign_key "entries", "events"
   add_foreign_key "entries", "families"
   add_foreign_key "entries", "users", column: "author_id"
-  add_foreign_key "entries_pursuits", "entries"
-  add_foreign_key "entries_pursuits", "pursuits"
-  add_foreign_key "events", "activities"
   add_foreign_key "events", "families"
   add_foreign_key "events", "users", column: "grown_up_id"
   add_foreign_key "memberships", "families"
   add_foreign_key "memberships", "users"
-  add_foreign_key "pursuits", "families"
-  add_foreign_key "reflections", "families"
-  add_foreign_key "sessions", "children", column: "choosing_child_id", on_delete: :nullify
   add_foreign_key "sessions", "users"
 end

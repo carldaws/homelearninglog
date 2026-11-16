@@ -40,15 +40,6 @@
       <%= form.hidden_field :child_ids, multiple: true, value: Current.family.children.first.id %>
     <% end %>
 
-    <%= render "shared/pursuit_choices", form:, record: entry %>
-
-    <% if Current.family.activities.any? %>
-      <div class="field">
-        <%= form.label :activity_id, t(".activity"), class: "label" %>
-        <%= form.collection_select :activity_id, Current.family.activities.alphabetically, :id, :name, { include_blank: true }, class: "input select" %>
-      </div>
-    <% end %>
-
     <div class="grid gap-6 sm:grid-cols-2">
       <div class="field">
         <%= form.label :happened_on, t(".happened_on"), class: "label" %>

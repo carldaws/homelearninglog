@@ -1,7 +1,6 @@
 painting:
   family: oaks
   author: alice
-  activity: painting
   happened_on: <%= Date.current %>
   notes: Painted the view from the back window.
   minutes: 60

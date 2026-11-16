@@ -2,12 +2,8 @@ class Family < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :members, through: :memberships, source: :user
   has_many :children, dependent: :destroy
-  has_many :choices, through: :children
   has_many :entries, dependent: :destroy
-  has_many :activities, dependent: :destroy
   has_many :events, dependent: :destroy
-  has_many :pursuits, dependent: :destroy
-  has_many :reflections, dependent: :destroy
 
   has_secure_token :invitation_code
   has_secure_token :calendar_token
@@ -24,10 +20,6 @@ class Family < ApplicationRecord
 
   def cancel_invitations
     regenerate_invitation_code
-  end
-
-  def draft_pursuit
-    pursuits.build(started_on: Date.current, children:)
   end
 
   def draft_event(on: nil, **attributes)

@@ -8,13 +8,6 @@
       <%= form.text_field :title, required: true, autofocus: event.title.blank?, class: "input" %>
     </div>
 
-    <% if Current.family.activities.any? %>
-      <div class="field">
-        <%= form.label :activity_id, t(".activity"), class: "label" %>
-        <%= form.collection_select :activity_id, Current.family.activities.alphabetically, :id, :name, { include_blank: true }, class: "input select" %>
-      </div>
-    <% end %>
-
     <div class="grid gap-6 sm:grid-cols-3">
       <div class="field">
         <%= form.label :starts_on, t(".starts_on"), class: "label" %>

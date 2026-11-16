@@ -60,13 +60,12 @@ class EventTest < ActiveSupport::TestCase
     assert event.errors.of_kind?(:repeats_until, :greater_than_or_equal_to)
   end
 
-  test "children, activities and grown-ups have to be the family's own" do
+  test "children and grown-ups have to be the family's own" do
     event = events(:art_class)
-    event.assign_attributes(children: [ children(:wren) ], activity: activities(:dens), grown_up: users(:carol))
+    event.assign_attributes(children: [ children(:wren) ], grown_up: users(:carol))
 
     assert event.invalid?
     assert event.errors.of_kind?(:children, :outside_the_family)
-    assert event.errors.of_kind?(:activity, :outside_the_family)
     assert event.errors.of_kind?(:grown_up, :outside_the_family)
   end
 
@@ -94,7 +93,6 @@ class EventTest < ActiveSupport::TestCase
     entry = events(:art_class).occurrence_on(Date.new(2026, 11, 16)).draft_entry
 
     assert_equal events(:art_class), entry.event
-    assert_equal activities(:painting), entry.activity
     assert_equal Date.new(2026, 11, 16), entry.happened_on
     assert_equal 90, entry.minutes
     assert_equal [ children(:sam) ], entry.children.to_a
@@ -110,7 +108,7 @@ class EventTest < ActiveSupport::TestCase
     assert occurrence.due?
     assert_not events(:art_class).occurrence_on(Date.new(2026, 11, 23)).due?
 
-    families(:oaks).entries.create!(occurrence.draft_entry.attributes.slice("happened_on", "minutes", "event_id", "activity_id")
+    families(:oaks).entries.create!(occurrence.draft_entry.attributes.slice("happened_on", "minutes", "event_id")
       .merge(author: users(:bob), notes: entries(:painting).notes, children: [ children(:sam) ]))
     assert_not occurrence.due?
   end
