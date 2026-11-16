@@ -6,7 +6,7 @@ class Entry < ApplicationRecord
   belongs_to :author, class_name: "User"
   belongs_to :event, optional: true
   belongs_to :followed_idea, class_name: "Idea", optional: true, inverse_of: :follow_ups
-  has_many :ideas, -> { order(:id) }, dependent: :destroy, inverse_of: :entry
+  has_many :ideas, -> { order(:id) }, dependent: :destroy
   has_many :comments, -> { order(:created_at, :id) }, dependent: :destroy
 
   accepts_nested_attributes_for :ideas, reject_if: :new_and_blank_idea?

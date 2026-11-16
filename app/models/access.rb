@@ -6,7 +6,7 @@ class Access < ApplicationRecord
 
   validates :user, uniqueness: { scope: :child }
 
-  scope :alphabetically, -> { includes(:user).merge(User.alphabetically).references(:user) }
+  scope :alphabetically, -> { eager_load(:user).merge(User.alphabetically) }
 
   before_destroy :keep_a_grown_up
   after_destroy :leave_events

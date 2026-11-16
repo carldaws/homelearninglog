@@ -1,5 +1,5 @@
 <%# locals: (entry:, comment:) %>
-<%= form_with model: comment, url: (comment.persisted? ? child_entry_comment_path(entry.child_id, entry, comment) : child_entry_comments_path(entry.child_id, entry)) do |form| %>
+<%= form_with model: [ entry.child, entry, comment ] do |form| %>
   <%= render "shared/errors", record: comment %>
 
   <div class="field">

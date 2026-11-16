@@ -6,7 +6,7 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    @invitation = Current.user.invitations.build(children: Current.user.children.where(id: invitation_params[:child_ids]))
+    @invitation = Current.user.invitations.build(invitation_params)
 
     if @invitation.save
       redirect_to @invitation

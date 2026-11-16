@@ -1,10 +1,10 @@
-<%# locals: (comment:, entry:) %>
+<%# locals: (comment:) %>
 <li id="<%= dom_id(comment) %>">
   <div class="flex flex-wrap items-center gap-x-3">
     <span class="caption"><%= comment.author.first_name %></span>
     <span class="caption"><%= l(comment.created_at.to_date, format: :short) %></span>
     <% if comment.author == Current.user %>
-      <%= link_to t(".edit"), edit_child_entry_comment_path(entry.child_id, entry, comment), class: "link link--muted ml-auto text-sm" %>
+      <%= link_to t(".edit"), edit_child_entry_comment_path(comment.entry.child, comment.entry, comment), class: "link link--muted ml-auto text-sm" %>
     <% end %>
   </div>
   <div class="mt-1 grid gap-2 break-words"><%= text_with_links(comment.body) %></div>

@@ -1,8 +1,7 @@
-<% children = @invitation.offered_children.alphabetically %>
-<% content_for :title, children.map(&:name).to_sentence %>
+<% content_for :title, @invitation.offered_children.alphabetically.map(&:name).to_sentence %>
 
 <div class="card mt-6 text-center sm:mt-10">
-  <h1 class="page-title"><%= children.map(&:name).to_sentence %></h1>
+  <h1 class="page-title"><%= content_for :title %></h1>
   <p class="caption mt-3"><%= @invitation.inviter.first_name %></p>
 
   <div class="mt-8 grid gap-3">
@@ -12,7 +11,7 @@
     <% elsif @invitation.joined_by?(Current.user) %>
       <%= link_to t(".open"), root_path, class: "button" %>
     <% else %>
-      <%= button_to t(".join"), joins_path, params: { token: params[:token] }, class: "button w-full" %>
+      <%= button_to t(".join"), joins_path, params: { token: @invitation.token }, class: "button w-full" %>
     <% end %>
   </div>
 </div>
