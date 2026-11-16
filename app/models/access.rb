@@ -2,6 +2,8 @@ class Access < ApplicationRecord
   belongs_to :child
   belongs_to :user
 
+  has_secure_token :calendar_token
+
   validates :user, uniqueness: { scope: :child }
 
   scope :alphabetically, -> { includes(:user).merge(User.alphabetically).references(:user) }

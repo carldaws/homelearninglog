@@ -6,8 +6,6 @@ class Child < ApplicationRecord
   has_many :events, dependent: :destroy
   has_and_belongs_to_many :invitations
 
-  has_secure_token :calendar_token
-
   validates :name, presence: true
 
   scope :alphabetically, -> { order(:name) }

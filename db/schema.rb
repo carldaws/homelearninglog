@@ -17,8 +17,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
   create_table "accesses", force: :cascade do |t|
     t.bigint "child_id", null: false
     t.bigint "user_id", null: false
+    t.string "calendar_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["calendar_token"], name: "index_accesses_on_calendar_token", unique: true
     t.index ["child_id", "user_id"], name: "index_accesses_on_child_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_accesses_on_user_id"
   end
@@ -61,10 +63,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
 
   create_table "children", force: :cascade do |t|
     t.string "name", null: false
-    t.string "calendar_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["calendar_token"], name: "index_children_on_calendar_token", unique: true
   end
 
   create_table "children_invitations", id: false, force: :cascade do |t|

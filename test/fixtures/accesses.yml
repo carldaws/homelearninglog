@@ -1,19 +1,24 @@
 alice_for_sam:
   child: sam
   user: alice
+  calendar_token: alice-for-sam-calendar-token
 
 bob_for_sam:
   child: sam
   user: bob
+  calendar_token: bob-for-sam-calendar-token
 
 alice_for_ivy:
   child: ivy
   user: alice
+  calendar_token: alice-for-ivy-calendar-token
 
 bob_for_ivy:
   child: ivy
   user: bob
+  calendar_token: bob-for-ivy-calendar-token
 
 carol_for_wren:
   child: wren
   user: carol
+  calendar_token: carol-for-wren-calendar-token
