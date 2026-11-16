@@ -1,30 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
   <head>
-    <title><%= content_for(:title) || "Learninglog" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= safe_join([ content_for(:title), t("app.name") ].compact, " · ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Learninglog">
+    <meta name="application-name" content="<%= t("app.name") %>">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#f1ecdf" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1b1c17" media="(prefers-color-scheme: dark)">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icon.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= preload_link_tag "instrument-sans.woff2" %>
+    <%= preload_link_tag "fraunces.woff2" %>
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="flex min-h-dvh flex-col">
+    <header class="page flex items-center justify-between gap-3 pt-[max(1rem,env(safe-area-inset-top))]">
+      <%= link_to root_path, class: "wordmark" do %>
+        <svg aria-hidden="true" viewBox="0 0 28 28" class="size-7 shrink-0"><rect width="28" height="28" rx="4" fill="#4a6b3a"/><path d="M14 22V14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M14 15.5c0-4.5-3-7.5-7.5-7.5 0 4.5 3 7.5 7.5 7.5zM14 14c0-4.5 3-7.5 7.5-7.5 0 4.5-3 7.5-7.5 7.5z" fill="#fff"/></svg>
+        <%= t("app.name") %>
+      <% end %>
+    </header>
+
+    <main class="page flex-1 pb-28 sm:pb-16">
+      <%= render "layouts/flash" %>
       <%= yield %>
     </main>
   </body>
