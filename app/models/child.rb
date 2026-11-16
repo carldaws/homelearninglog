@@ -2,6 +2,7 @@ class Child < ApplicationRecord
   has_many :accesses, dependent: :delete_all
   has_many :grown_ups, through: :accesses, source: :user
   has_many :entries, dependent: :destroy
+  has_many :ideas, through: :entries
   has_many :events, dependent: :destroy
   has_and_belongs_to_many :invitations
 
@@ -19,6 +20,10 @@ class Child < ApplicationRecord
 
   def draft_event(on: nil, **attributes)
     events.build(starts_on: DateParam.cast(on) || Date.current, **attributes)
+  end
+
+  def suggestions
+    ideas.suggested.reorder(created_at: :desc, id: :desc).includes(entry: :author)
   end
 
   def log(through: nil)

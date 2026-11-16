@@ -84,9 +84,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "event_id"
+    t.bigint "suggestion_id"
     t.index ["author_id"], name: "index_entries_on_author_id"
     t.index ["child_id", "happened_on"], name: "index_entries_on_child_id_and_happened_on"
     t.index ["event_id"], name: "index_entries_on_event_id"
+    t.index ["suggestion_id"], name: "index_entries_on_suggestion_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -108,6 +110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
   create_table "ideas", force: :cascade do |t|
     t.bigint "entry_id", null: false
     t.text "description", null: false
+    t.datetime "set_aside_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["entry_id"], name: "index_ideas_on_entry_id"
@@ -150,6 +153,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
   add_foreign_key "children_invitations", "invitations"
   add_foreign_key "entries", "children"
   add_foreign_key "entries", "events"
+  add_foreign_key "entries", "ideas", column: "suggestion_id"
   add_foreign_key "entries", "users", column: "author_id"
   add_foreign_key "events", "children"
   add_foreign_key "events", "users", column: "grown_up_id"

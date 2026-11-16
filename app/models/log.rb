@@ -12,6 +12,10 @@ class Log
     dates.index_with { |date| entries.fetch(date, []) }
   end
 
+  def suggestions
+    @suggestions ||= latest? ? child.suggestions.to_a : []
+  end
+
   def unlogged
     @unlogged ||= latest? ? recently_due.group_by(&:date) : {}
   end

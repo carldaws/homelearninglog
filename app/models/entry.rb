@@ -5,6 +5,7 @@ class Entry < ApplicationRecord
   belongs_to :child
   belongs_to :author, class_name: "User"
   belongs_to :event, optional: true
+  belongs_to :suggestion, class_name: "Idea", optional: true, inverse_of: :follow_ups
   has_many :ideas, -> { order(:id) }, dependent: :destroy, inverse_of: :entry
 
   accepts_nested_attributes_for :ideas, reject_if: :new_and_blank_idea?
@@ -19,10 +20,11 @@ class Entry < ApplicationRecord
   validates :photos, photo: true
   validate :says_what_we_did
   validate :event_belongs_to_the_child
+  validate :suggestion_belongs_to_the_child
   validate :not_too_many_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
-  scope :preloaded, -> { includes(:author, :event, :ideas).with_attached_photos }
+  scope :preloaded, -> { includes(:author, :event, suggestion: :entry, ideas: :follow_ups).with_attached_photos }
 
   before_validation :forget_blanked_ideas
 
@@ -49,6 +51,10 @@ class Entry < ApplicationRecord
 
     def event_belongs_to_the_child
       errors.add(:event, :invalid) if event.present? && event.child_id != child_id
+    end
+
+    def suggestion_belongs_to_the_child
+      errors.add(:suggestion, :invalid) if suggestion.present? && suggestion.entry.child_id != child_id
     end
 
     def not_too_many_photos

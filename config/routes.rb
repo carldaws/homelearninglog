@@ -22,6 +22,13 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :ideas, only: [] do
+      scope module: :ideas do
+        resource :set_aside, only: :create
+        resources :entries, only: :new
+      end
+    end
+
     resources :accesses, path: "grown-ups", only: %i[ index destroy ]
   end
 

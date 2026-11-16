@@ -16,6 +16,17 @@
   <% end %>
 </header>
 
+<% if @log.suggestions.any? %>
+  <section class="day" aria-labelledby="suggestions">
+    <div class="ruled">
+      <h2 id="suggestions" class="ruled-title"><%= t(".suggestions") %></h2>
+    </div>
+    <div class="stack">
+      <%= render partial: "ideas/suggestion", collection: @log.suggestions, as: :idea %>
+    </div>
+  </section>
+<% end %>
+
 <%= render "entries/days", days: @log.days, unlogged: @log.unlogged %>
 
 <% if @log.earlier.present? %>

@@ -135,6 +135,7 @@ en:
       this_week: "%{time} this week"
       edit: Edit
       add: Add to the log
+      suggestions: Suggestions
       pagination: Earlier days
       earlier: Earlier
     form:
@@ -188,11 +189,13 @@ en:
     unlogged:
       log: Log it
     entry:
+      following_on_from: Following on from
       open_photo: Open photo %{number}
       what_was_learned: What was learned
       what_could_come_next: What could come next
       edit: Edit
     form:
+      following_on_from: Following on from
       what_we_did: What we did
       photos: Photos
       photo: Photo %{number}
@@ -213,6 +216,11 @@ en:
       title: Edit entry
       delete: Delete entry
       delete_confirm: Delete this entry?
+
+  ideas:
+    suggestion:
+      log: Log it
+      set_aside: Set aside
 
   calendars:
     subscriptions:

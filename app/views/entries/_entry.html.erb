@@ -4,6 +4,13 @@
     <h3 class="mb-3 text-[1.4rem] leading-tight font-semibold"><%= entry.heading %></h3>
   <% end %>
 
+  <% if entry.suggestion.present? %>
+    <p class="mb-3 text-sm">
+      <span class="caption"><%= t(".following_on_from") %></span>
+      <%= link_to entry.suggestion.description, entry_in_log_path(entry.suggestion.entry), class: "link link--muted" %>
+    </p>
+  <% end %>
+
   <% if entry.photos.attached? %>
     <div class="prints mb-4">
       <% entry.photos.each.with_index(1) do |photo, number| %>
@@ -30,7 +37,13 @@
       <h4 class="caption"><%= t(".what_could_come_next") %></h4>
       <ul class="mt-1 grid list-disc gap-1 pl-5 marker:text-muted">
         <% entry.ideas.each do |idea| %>
-          <li id="<%= dom_id(idea) %>" class="break-words"><%= idea.description %></li>
+          <li id="<%= dom_id(idea) %>" class="break-words <%= "text-muted" if idea.set_aside? %>">
+            <% if idea.follow_ups.any? %>
+              <%= link_to idea.description, entry_in_log_path(idea.follow_ups.first), class: "link" %>
+            <% else %>
+              <%= idea.description %>
+            <% end %>
+          </li>
         <% end %>
       </ul>
     </section>

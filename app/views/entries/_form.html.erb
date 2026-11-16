@@ -2,8 +2,16 @@
 <%= form_with model: [ entry.child, entry ] do |form| %>
   <%= render "shared/errors", record: entry %>
   <%= form.hidden_field :event_id if entry.event.present? %>
+  <%= form.hidden_field :suggestion_id if entry.suggestion.present? %>
 
   <div class="fields">
+    <% if entry.suggestion.present? %>
+      <div class="field">
+        <span class="label"><%= t(".following_on_from") %></span>
+        <p class="break-words"><%= entry.suggestion.description %></p>
+      </div>
+    <% end %>
+
     <div class="field">
       <%= form.label :what_we_did, t(".what_we_did"), class: "label" %>
       <%= form.textarea :what_we_did, rows: 4, class: "input" %>
