@@ -255,7 +255,7 @@
   }
 
   .card--dashed {
-    @apply border-dashed border-line-strong bg-transparent shadow-none;
+    @apply border-dashed border-line-strong shadow-none;
   }
 
   .card--flush {
