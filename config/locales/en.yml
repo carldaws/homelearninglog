@@ -40,7 +40,7 @@ en:
               empty: Add a photo or write something.
               too_many_photos: That's too many photos. Each entry can have up to %{count}.
               not_a_photo: "%{filename} isn't a photo we can show."
-              photo_too_big: "%{filename} is too big. Photos can be up to 25 MB."
+              photo_too_big: "%{filename} is too big. Photos can be up to %{size}."
             happened_on:
               less_than_or_equal_to: can't be in the future
             children:

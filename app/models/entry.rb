@@ -36,7 +36,7 @@ class Entry < ApplicationRecord
 
       photos.each do |photo|
         errors.add(:base, :not_a_photo, filename: photo.filename) unless photo.content_type.in?(PHOTO_CONTENT_TYPES)
-        errors.add(:base, :photo_too_big, filename: photo.filename) if photo.byte_size > MAXIMUM_PHOTO_SIZE
+        errors.add(:base, :photo_too_big, filename: photo.filename, size: MAXIMUM_PHOTO_SIZE.to_fs(:human_size)) if photo.byte_size > MAXIMUM_PHOTO_SIZE
       end
     end
 end
