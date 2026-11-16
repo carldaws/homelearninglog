@@ -95,6 +95,7 @@ class EventTest < ActiveSupport::TestCase
     assert_equal Date.new(2026, 11, 16), entry.happened_on
     assert_equal 90, entry.minutes
     assert_equal children(:sam), entry.child
+    assert_equal events(:art_class).title, entry.what_we_did
   end
 
   test "a date is due once it's started and until it's logged" do

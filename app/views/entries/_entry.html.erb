@@ -1,9 +1,5 @@
 <%# locals: (entry:) %>
 <article id="<%= dom_id(entry) %>" class="card">
-  <% if entry.heading.present? %>
-    <h4 class="mb-3 font-display text-[1.4rem] leading-tight font-semibold"><%= entry.heading %></h4>
-  <% end %>
-
   <% if entry.suggestion.present? %>
     <p class="mb-3 text-sm">
       <span class="caption"><%= t(".following_on_from") %></span>

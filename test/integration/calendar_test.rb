@@ -91,6 +91,7 @@ class CalendarTest < ActionDispatch::IntegrationTest
 
     assert_select "input[type=hidden][name=?][value=?]", "entry[event_id]", events(:art_class).id.to_s
     assert_select "#entry_happened_on[value=?]", "2026-11-16"
+    assert_select "#entry_what_we_did", text: events(:art_class).title
   end
 
   test "a started event asks to be logged on the child's page until it is" do

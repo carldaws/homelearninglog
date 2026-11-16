@@ -45,7 +45,7 @@ class Occurrence
   end
 
   def draft_entry
-    child.draft_entry(event:, happened_on: date, minutes:)
+    child.draft_entry(event:, happened_on: date, minutes:, what_we_did: title)
   end
 
   def starts_at

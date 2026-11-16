@@ -25,13 +25,9 @@ class Entry < ApplicationRecord
   validate :not_too_many_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
-  scope :preloaded, -> { includes(:author, :event, suggestion: :entry, ideas: :follow_ups, comments: :author).with_attached_photos }
+  scope :preloaded, -> { includes(:author, suggestion: :entry, ideas: :follow_ups, comments: :author).with_attached_photos }
 
   before_validation :forget_blanked_ideas
-
-  def heading
-    event.title if event.present?
-  end
 
   def saved_photos
     photos.select(&:persisted?)
