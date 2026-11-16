@@ -73,26 +73,30 @@
 }
 
 :root {
-  --paper: #f1ecdf;
-  --dots: #d3cbb8;
-  --card: #fbf8f1;
+  --paper: #f3f0e8;
+  --cover: #2c5a8c;
+  --on-cover: #ffffff;
+  --rule: #dbe5f1;
+  --margin: #e2a49b;
+  --card: #ffffff;
   --field: #ffffff;
-  --hover: #f3eddf;
-  --line: #e3dbcb;
-  --line-strong: #bfb59f;
-  --ink: #2b2a24;
-  --muted: #5f5b4e;
-  --accent: #4a6b3a;
-  --accent-hover: #3e5a30;
-  --accent-edge: #34502a;
-  --accent-tint: #dce5d3;
-  --accent-ink: #3e5a30;
+  --hover: #eef3f9;
+  --line: #d5dbe3;
+  --line-strong: #b8c2cf;
+  --ink: #1b2433;
+  --muted: #5b6575;
+  --accent: #234f8a;
+  --accent-hover: #1d4377;
+  --accent-edge: #163a69;
+  --accent-tint: #dfe8f4;
+  --accent-ink: #234f8a;
   --on-accent: #ffffff;
-  --tag-ink: #6e4a0c;
+  --label: #b2473b;
+  --tag-ink: #234f8a;
   --danger: #a12c2c;
   --danger-tint: #fbe9e7;
   --print: #ffffff;
-  --shadow: rgb(60 50 30 / 0.2);
+  --shadow: rgb(27 36 51 / 0.18);
   --tape-ochre: rgb(183 121 31 / 0.38);
   --tape-moss: rgb(74 107 58 / 0.32);
   --tape-slate: rgb(47 85 104 / 0.3);
@@ -102,22 +106,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #1b1c17;
-    --dots: #34362d;
-    --card: #24261f;
-    --field: #1f211b;
-    --hover: #2d3027;
-    --line: #383b31;
-    --line-strong: #575b4c;
-    --ink: #eceadf;
-    --muted: #ada996;
-    --accent: #4e7d3e;
-    --accent-hover: #44703a;
-    --accent-edge: #2f4a25;
-    --accent-tint: #2a3524;
-    --accent-ink: #b5d39c;
+    --paper: #141920;
+    --cover: #1d3a5c;
+    --on-cover: #e8eef6;
+    --rule: #263243;
+    --margin: #74403a;
+    --card: #1b222c;
+    --field: #161c24;
+    --hover: #222b37;
+    --line: #2b3542;
+    --line-strong: #46536a;
+    --ink: #e6e9ee;
+    --muted: #a3adbb;
+    --accent: #3d6fb0;
+    --accent-hover: #4a7cbd;
+    --accent-edge: #24497a;
+    --accent-tint: #22334a;
+    --accent-ink: #9cc0ec;
     --on-accent: #ffffff;
-    --tag-ink: #e2c48a;
+    --label: #e8877a;
+    --tag-ink: #9cc0ec;
     --danger: #f19a8f;
     --danger-tint: #432522;
     --print: #e9e5da;
@@ -132,7 +140,11 @@
 
 @theme inline {
   --color-paper: var(--paper);
-  --color-dots: var(--dots);
+  --color-cover: var(--cover);
+  --color-on-cover: var(--on-cover);
+  --color-rule: var(--rule);
+  --color-margin: var(--margin);
+  --color-label: var(--label);
   --color-card: var(--card);
   --color-field: var(--field);
   --color-hover: var(--hover);
@@ -163,9 +175,6 @@
 
   body {
     @apply bg-paper font-sans text-base leading-normal text-ink antialiased sm:text-lg;
-    background-image: radial-gradient(circle, var(--dots) 1px, transparent 1.3px);
-    background-size: 18px 18px;
-    background-position: 9px 9px;
   }
 
   p {
@@ -186,8 +195,32 @@
 }
 
 @layer components {
+  .cover {
+    @apply bg-cover text-on-cover;
+  }
+
   .wordmark {
-    @apply inline-flex items-center gap-2.5 font-display text-[1.45rem] font-semibold text-ink no-underline;
+    @apply inline-flex items-center gap-2 font-display text-[1.2rem] font-semibold whitespace-nowrap text-on-cover no-underline sm:gap-2.5 sm:text-[1.45rem];
+  }
+
+  .name-label {
+    @apply grid min-w-0 flex-1 rounded-lg border-[1.5px] border-ink bg-card px-4 py-2.5 sm:max-w-md;
+  }
+
+  .name-label-row {
+    @apply flex items-baseline gap-3 py-1;
+  }
+
+  .name-label-row + .name-label-row {
+    @apply border-t border-dotted border-muted;
+  }
+
+  .name-label-row .caption {
+    @apply w-12 shrink-0;
+  }
+
+  .name-label-name {
+    @apply min-w-0 text-[2rem] leading-tight font-semibold break-words;
   }
 
   .page {
@@ -215,7 +248,7 @@
   }
 
   .ruled {
-    @apply mb-4 flex items-center gap-3;
+    @apply mb-4 border-b-[1.5px] border-rule pb-0.5;
   }
 
   .week {
@@ -223,11 +256,15 @@
   }
 
   .week-header {
-    @apply mb-6 flex items-baseline justify-between gap-3 border-b-2 border-ink pb-2;
+    @apply mb-6 flex items-baseline justify-between gap-3 rounded-md bg-cover px-4 py-2.5 text-on-cover;
   }
 
   .week-title {
-    @apply text-[2rem] leading-tight font-semibold;
+    @apply text-[1.75rem] leading-tight font-semibold;
+  }
+
+  .week-hours {
+    @apply font-mono text-xs font-medium tracking-[0.08em] uppercase;
   }
 
   .day {
@@ -243,15 +280,25 @@
   }
 
   .ruled-title {
-    @apply text-[1.75rem] font-medium italic;
-  }
-
-  .ruled::after {
-    @apply flex-1 border-t-[1.5px] border-dashed border-line-strong content-[''];
+    @apply text-[1.6rem] font-medium italic;
   }
 
   .card {
-    @apply rounded-md border border-line bg-card p-4 shadow-[0_1px_2px_var(--shadow)] sm:p-5;
+    @apply rounded-md border border-line bg-card p-4 sm:p-5;
+  }
+
+  .card--ruled {
+    @apply pl-11 sm:pl-12;
+    background-image: linear-gradient(to right, transparent 1.75rem, var(--margin) 1.75rem, var(--margin) calc(1.75rem + 1.5px), transparent calc(1.75rem + 1.5px));
+  }
+
+  .ruled-text {
+    @apply leading-7;
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.75rem - 1px), var(--rule) calc(1.75rem - 1px), var(--rule) 1.75rem);
+  }
+
+  .entry-label {
+    @apply font-mono text-xs font-medium tracking-[0.08em] text-label uppercase;
   }
 
   .card--dashed {
@@ -325,6 +372,10 @@
     @apply border-line-strong bg-card text-ink shadow-[0_2px_0_var(--line)] hover:bg-hover active:shadow-[0_1px_0_var(--line)];
   }
 
+  .button--on-cover {
+    @apply border-on-cover/60 bg-transparent text-on-cover shadow-none hover:bg-on-cover/10 active:shadow-none;
+  }
+
   .button--danger {
     @apply border-danger/50 bg-card text-danger shadow-none hover:bg-danger-tint active:shadow-none;
   }
@@ -393,14 +444,14 @@
 
   .select {
     @apply appearance-none bg-no-repeat pr-9;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%235f5b4e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%235b6575' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
     background-position: right 0.75rem center;
     background-size: 1.125rem;
   }
 
   @media (prefers-color-scheme: dark) {
     .select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23ada996' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23a3adbb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
     }
   }
 

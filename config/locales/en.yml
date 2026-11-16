@@ -73,9 +73,6 @@ en:
       log: Log
       calendar: Calendar
       manage: Manage
-    signed_out_nav:
-      sign_in: Sign in
-      register: Create an account
 
   shared:
     password_field:
@@ -97,6 +94,7 @@ en:
       email_address: Email address
       password: Password
       submit: Sign in
+      register: Create an account
       forgotten_password: Forgotten password
     create:
       invalid: Wrong email address or password
@@ -109,6 +107,7 @@ en:
       email_address: Email address
       password: Password
       submit: Create account
+      sign_in: Sign in
     create:
       rate_limited: Too many attempts
 
@@ -130,6 +129,8 @@ en:
 
   children:
     show:
+      name: Name
+      date: Date
       add: Add to the log
       today: Today
       suggestions: Suggestions

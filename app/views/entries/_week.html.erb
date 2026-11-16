@@ -3,7 +3,7 @@
   <header class="week-header">
     <h2 id="week-<%= week.starts_on.iso8601 %>" class="week-title"><%= week_heading(week.starts_on) %></h2>
     <% if week.minutes.positive? %>
-      <span class="tag"><%= duration(week.minutes) %></span>
+      <span class="week-hours"><%= duration(week.minutes) %></span>
     <% end %>
   </header>
 
