@@ -1,7 +1,82 @@
 en:
   app:
     name: Learning Log
+
+  activerecord:
+    attributes:
+      user:
+        name: Name
+        email_address: Email address
+        password: Password
+    errors:
+      models:
+        user:
+          attributes:
+            email_address:
+              taken: is already used by another account
+
+  layouts:
+    account_menu:
+      sign_out: Sign out
+    signed_out_nav:
+      sign_in: Sign in
+      register: Create an account
+
+  shared:
+    password_field:
+      show: Show
+      hide: Hide
+
   home:
     show:
       heading: A shared notebook for home education
       intro: Log what the children got up to with a photo and a line or two. Look back to see what they're into, what's working and what isn't. Free, open source and no email.
+      register: Get started
+      sign_in: Sign in
+
+  sessions:
+    new:
+      title: Sign in
+      heading: Sign in
+      email_address: Email address
+      password: Password
+      submit: Sign in
+      forgotten: Forgotten your password? Ask someone else in your family to make you a new sign-in link.
+      new_here: New here?
+      register: Create an account
+    create:
+      invalid: That email address and password don't match. Check for typos and try again.
+      rate_limited: Too many tries. Please wait a few minutes and try again.
+
+  registrations:
+    new:
+      title: Create an account
+      heading: Create an account
+      intro: It's free, and it takes a minute.
+      name: What should we call you?
+      name_hint: This is how the rest of your family will see you in the log. A first name works well.
+      email_address: Email address
+      email_address_hint: You'll use this to sign in. We'll never send you email.
+      password: Choose a password
+      password_hint: At least 8 characters. Your phone or browser can remember it for you.
+      submit: Create my account
+      have_account: Already have an account?
+      sign_in: Sign in
+    create:
+      rate_limited: Too many accounts made from here recently. Please wait a few minutes and try again.
+
+  passwords:
+    edit:
+      title: Choose a new password
+      heading: Hello again, %{name}
+      intro: Choose a new password and you'll be signed in.
+      email_address: Email address
+      password: New password
+      password_hint: At least 8 characters. Your phone or browser can remember it for you.
+      submit: Save and sign in
+    update:
+      rate_limited: Too many tries. Please wait a few minutes and try again.
+    expired:
+      title: Link expired
+      heading: This link has expired
+      intro: Sign-in links work once and only for three days. Ask someone else in your family to make you a new one.

@@ -1,0 +1,8 @@
+<%# locals: (record:) %>
+<% if record.errors.any? %>
+  <div role="alert" class="notice notice--danger mb-6 grid gap-1">
+    <% record.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+  </div>
+<% end %>

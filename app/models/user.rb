@@ -1,0 +1,27 @@
+class User < ApplicationRecord
+  has_secure_password reset_token: false
+
+  has_many :sessions, dependent: :destroy
+
+  generates_token_for :sign_in_link, expires_in: 3.days do
+    password_salt.last(10)
+  end
+
+  normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
+
+  validates :name, presence: true
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
+  validates :password, presence: true, on: :password_change
+  validates :password, length: { minimum: 8 }, allow_nil: true
+
+  after_update :sign_out_everywhere, if: :saved_change_to_password_digest?
+
+  def first_name
+    name.split.first
+  end
+
+  private
+    def sign_out_everywhere
+      sessions.destroy_all
+    end
+end
