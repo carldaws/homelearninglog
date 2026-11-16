@@ -23,7 +23,7 @@
         <div class="prints mb-2">
           <% entry.saved_photos.each.with_index(1) do |photo, number| %>
             <label class="print cursor-pointer">
-              <%= image_tag child_entry_photo_path(entry.child, entry, photo, size: :thumbnail), alt: t(".photo", number:), class: "h-24 w-auto" %>
+              <%= image_tag child_entry_photo_path(entry.child, entry, photo, size: :thumbnail), alt: t(".photo", number:), class: "h-24 w-auto", **photo_size(photo) %>
               <span class="absolute right-2 bottom-2 flex items-center gap-1.5 rounded-[3px] bg-card/90 px-1.5 py-1">
                 <%= check_box_tag "entry[photos][]", photo.signed_id, true, id: dom_id(photo), class: "checkbox" %>
                 <span class="caption text-ink"><%= t(".keep") %></span>

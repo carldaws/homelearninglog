@@ -24,6 +24,10 @@ module EntriesHelper
     end
   end
 
+  def photo_size(photo)
+    photo.metadata.slice("width", "height").symbolize_keys
+  end
+
   def duration(minutes)
     hours, remainder = minutes.divmod(60)
 

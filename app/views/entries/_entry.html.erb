@@ -11,7 +11,7 @@
     <div class="prints mb-4">
       <% entry.photos.each.with_index(1) do |photo, number| %>
         <%= link_to child_entry_photo_path(entry.child, entry, photo), class: "print", target: "_blank", aria: { label: t(".open_photo", number:) } do %>
-          <%= image_tag child_entry_photo_path(entry.child, entry, photo, size: :thumbnail), alt: "", loading: "lazy", class: "h-28 w-auto max-w-full sm:h-36" %>
+          <%= image_tag child_entry_photo_path(entry.child, entry, photo, size: :thumbnail), alt: "", loading: "lazy", class: "h-28 w-auto max-w-full sm:h-36", **photo_size(photo) %>
         <% end %>
       <% end %>
     </div>

@@ -183,6 +183,16 @@ class EntriesTest < ActionDispatch::IntegrationTest
     assert response.cache_control[:private]
   end
 
+  test "photos keep their shape while they load" do
+    entries(:painting).photos.attach(io: file_fixture("photo.jpg").open, filename: "photo.jpg")
+    entries(:painting).photos.first.analyze
+    sign_in_as users(:alice)
+
+    get child_log_path(children(:sam))
+
+    assert_select "##{dom_id(entries(:painting))} img[width='64'][height='48']"
+  end
+
   test "photos are private to the child's grown-ups" do
     entries(:painting).photos.attach(io: file_fixture("photo.jpg").open, filename: "photo.jpg")
     photo = entries(:painting).photos.first
