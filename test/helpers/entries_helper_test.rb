@@ -26,7 +26,7 @@ class EntriesHelperTest < ActionView::TestCase
 
   test "links in notes can be followed" do
     url = "https://example.com/moon?phase=full"
-    link = Nokogiri::HTML5.fragment(notes_with_links("Watched #{url}.")).at_css("p a")
+    link = Nokogiri::HTML5.fragment(notes_with_links("Watched (#{url}).")).at_css("p a")
 
     assert_equal url, link["href"]
     assert_equal url, link.text

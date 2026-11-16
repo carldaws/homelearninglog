@@ -1,5 +1,6 @@
 module EntriesHelper
-  LINK = %r{(https?://[^\s<]+[^\s<.,;:!?)\]'"])}
+  TRAILING_PUNCTUATION = %q{.,;:!?)]'"}
+  LINK = %r{https?://[^\s<]*[^\s<#{Regexp.escape(TRAILING_PUNCTUATION)}]}
 
   def day_heading(date)
     if date == Date.current
@@ -13,7 +14,11 @@ module EntriesHelper
 
   def duration(minutes)
     hours, remainder = minutes.divmod(60)
-    [ (t("entries.duration.hours", count: hours) if hours.positive?), (t("entries.duration.minutes", count: remainder) if remainder.positive?) ].compact.join(" ")
+
+    parts = []
+    parts << t("entries.duration.hours", count: hours) if hours.positive?
+    parts << t("entries.duration.minutes", count: remainder) if remainder.positive?
+    parts.join(" ")
   end
 
   def duration_options(selected)
@@ -21,6 +26,10 @@ module EntriesHelper
   end
 
   def notes_with_links(notes)
-    simple_format(safe_join(notes.split(LINK).map { it.match?(LINK) ? link_to(it, it, class: "link break-all", rel: "noopener", target: "_blank") : it }), {}, sanitize: false)
+    parts = notes.split(/(#{LINK})/).map do |part|
+      part.match?(LINK) ? link_to(part, part, class: "link break-all", rel: "noopener", target: "_blank") : part
+    end
+
+    simple_format safe_join(parts), {}, sanitize_options: { attributes: %w[ href class rel target ] }
   end
 end
