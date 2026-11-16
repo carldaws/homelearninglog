@@ -2,6 +2,10 @@ en:
   app:
     name: Home Learning Log
 
+  manifests:
+    show:
+      short_name: Learning Log
+
   date:
     formats:
       short: "%-d %b"

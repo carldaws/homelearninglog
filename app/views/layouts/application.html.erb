@@ -14,10 +14,10 @@
     <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
     <%= yield :head %>
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <link rel="manifest" href="/manifest.webmanifest">
+    <%= favicon_link_tag "icon.svg", type: "image/svg+xml" %>
+    <%= favicon_link_tag "icon.png", type: "image/png" %>
+    <%= favicon_link_tag "icon.png", rel: "apple-touch-icon", type: "image/png" %>
+    <%= tag.link rel: "manifest", href: manifest_path(format: :json) %>
 
     <%= preload_link_tag "instrument-sans.woff2" %>
     <%= preload_link_tag "crimson-pro.woff2" %>

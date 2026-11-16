@@ -47,6 +47,8 @@ Rails.application.routes.draw do
   resources :joins, path: "join", only: %i[ show create ], param: :token
   resources :feeds, only: :show, param: :token
 
+  resource :manifest, only: :show
+
   root "home#show"
 
   resource :up, only: :show, controller: "rails/health"
