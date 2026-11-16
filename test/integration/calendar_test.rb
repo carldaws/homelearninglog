@@ -9,16 +9,16 @@ class CalendarTest < ActionDispatch::IntegrationTest
   test "the calendar shows the family's week" do
     get calendar_path
 
-    assert_select "h3 a[href=?]", edit_event_path(events(:art_class))
-    assert_select "h3 a[href=?]", edit_event_path(events(:visit))
-    assert_select "h3 a[href=?]", edit_event_path(events(:swimming)), count: 0
+    assert_select "h3 a[href^=?]", edit_event_path(events(:art_class))
+    assert_select "h3 a[href^=?]", edit_event_path(events(:visit))
+    assert_select "h3 a[href^=?]", edit_event_path(events(:swimming)), count: 0
   end
 
   test "moving between weeks" do
     get calendar_path(week: "2026-11-23")
 
-    assert_select "h3 a[href=?]", edit_event_path(events(:art_class))
-    assert_select "h3 a[href=?]", edit_event_path(events(:visit)), count: 0
+    assert_select "h3 a[href^=?]", edit_event_path(events(:art_class))
+    assert_select "h3 a[href^=?]", edit_event_path(events(:visit)), count: 0
   end
 
   test "adding a repeating event" do
@@ -42,7 +42,25 @@ class CalendarTest < ActionDispatch::IntegrationTest
   test "editing an event" do
     patch event_path(events(:art_class)), params: { event: { repeats_until: "2027-07-19" } }
 
+    assert_redirected_to calendar_path(week: events(:art_class).starts_on)
     assert_equal Date.new(2027, 7, 19), events(:art_class).reload.repeats_until
+  end
+
+  test "editing an event returns to the week it was opened from" do
+    get calendar_path(week: "2026-11-30")
+    assert_select "a[href=?]", edit_event_path(events(:art_class), week: Date.new(2026, 11, 30))
+
+    patch event_path(events(:art_class), week: "2026-11-30"), params: { event: { title: events(:visit).title } }
+
+    assert_redirected_to calendar_path(week: "2026-11-30")
+  end
+
+  test "adding an event from another week starts in that week" do
+    get calendar_path(week: "2026-12-09")
+    assert_select "a[href=?]", new_event_path(date: Date.new(2026, 12, 7))
+
+    get new_event_path(date: "2026-12-07")
+    assert_select "#event_starts_on[value=?]", "2026-12-07"
   end
 
   test "deleting an event" do

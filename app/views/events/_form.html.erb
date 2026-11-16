@@ -1,5 +1,5 @@
 <%# locals: (event:) %>
-<%= form_with model: event, class: "group" do |form| %>
+<%= form_with model: event, url: (event.persisted? ? event_path(event, week: params[:week]) : events_path), class: "group" do |form| %>
   <%= render "shared/errors", record: event %>
 
   <div class="fields">
@@ -70,6 +70,6 @@
 
   <div class="form-actions">
     <%= form.submit (event.persisted? ? t(".save") : t(".add")), class: "button button--wide" %>
-    <%= link_to t(".cancel"), calendar_path(week: event.starts_on_in_database || event.starts_on), class: "button button--secondary button--wide" %>
+    <%= link_to t(".cancel"), calendar_path(week: params[:week].presence || event.starts_on_in_database || event.starts_on), class: "button button--secondary button--wide" %>
   </div>
 <% end %>

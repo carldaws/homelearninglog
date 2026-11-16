@@ -23,7 +23,7 @@ class EventsController < ApplicationController
 
   def update
     if @event.update(event_params)
-      redirect_to calendar_path(week: @event.starts_on)
+      redirect_to calendar_path(week: params[:week].presence || @event.starts_on)
     else
       render :edit, status: :unprocessable_content
     end
@@ -31,7 +31,7 @@ class EventsController < ApplicationController
 
   def destroy
     @event.destroy!
-    redirect_to calendar_path, status: :see_other
+    redirect_to calendar_path(week: params[:week]), status: :see_other
   end
 
   private

@@ -5,7 +5,7 @@
     <p class="caption"><%= l(@week.dates.first, format: :short) %> – <%= l(@week.dates.last, format: :short) %></p>
     <h1 class="page-title mt-1"><%= t(".title") %></h1>
   </div>
-  <%= link_to t(".add"), new_event_path, class: "button" %>
+  <%= link_to t(".add"), new_event_path(date: (@week.starts_on unless @week.current?)), class: "button" %>
 </header>
 
 <nav class="mb-8 flex flex-wrap gap-2" aria-label="<%= t(".weeks") %>">

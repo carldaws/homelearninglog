@@ -3,7 +3,7 @@
   <div class="min-w-0 flex-1">
     <%= render "calendars/occurrence_details", occurrence: %>
     <h3 class="mt-1 text-[1.35rem] leading-tight font-semibold <%= "line-through" if occurrence.cancelled? %>">
-      <%= link_to occurrence.title, edit_event_path(occurrence.event), class: "text-ink no-underline hover:underline" %>
+      <%= link_to occurrence.title, edit_event_path(occurrence.event, week: occurrence.date), class: "text-ink no-underline hover:underline" %>
     </h3>
   </div>
 
