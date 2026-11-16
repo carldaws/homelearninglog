@@ -38,6 +38,23 @@ class CalendarFeedTest < ActiveSupport::TestCase
     assert_not_includes vevents.map { it["SUMMARY"] }, events(:swimming).title
   end
 
+  test "the description says who's going" do
+    art_class = vevents.find { it["SUMMARY"] == events(:art_class).title }
+    description = art_class.fetch("DESCRIPTION")
+
+    assert_includes description, children(:sam).name
+    assert_includes description, users(:bob).name
+  end
+
+  test "an event with no end time has no end" do
+    events(:art_class).update!(end_time: nil)
+
+    art_class = vevents.find { it["SUMMARY"] == events(:art_class).title }
+
+    assert art_class.key?("DTSTART")
+    assert_not art_class.key?("DTEND")
+  end
+
   test "text is escaped and long lines are folded" do
     title = "Gran; Grandad, and a very long line of text that goes on and on well past the limit"
     events(:visit).update!(title:)

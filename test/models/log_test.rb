@@ -53,6 +53,24 @@ class LogTest < ActiveSupport::TestCase
     assert_empty families(:oaks).log.unlogged
   end
 
+  test "a day can have events waiting alongside its entries" do
+    travel_to Date.new(2027, 3, 3)
+    family = families(:oaks)
+    family.events.create!(title: events(:visit).title, starts_on: Date.current, children: [ children(:sam) ])
+    entry = family.entries.create!(author: users(:alice), happened_on: Date.current, notes: entries(:painting).notes, children: [ children(:sam) ])
+    log = family.log
+
+    assert_equal [ entry ], log.days.fetch(Date.current)
+    assert_equal 1, log.unlogged.fetch(Date.current).size
+  end
+
+  test "events from before yesterday don't wait to be logged" do
+    travel_to Date.new(2027, 3, 3)
+    families(:oaks).events.create!(title: events(:visit).title, starts_on: Date.current - 2, children: [ children(:sam) ])
+
+    assert_empty families(:oaks).log.unlogged
+  end
+
   test "earlier pages don't ask for anything to be logged" do
     travel_to Date.new(2027, 3, 3)
     families(:oaks).events.create!(title: events(:visit).title, starts_on: Date.current, children: [ children(:sam) ])

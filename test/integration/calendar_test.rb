@@ -125,8 +125,32 @@ class CalendarTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_family_path
   end
 
+  test "a cancelled date can be restored, and one-off events can't be cancelled" do
+    events(:art_class).occurrence_on(Date.new(2026, 11, 16)).cancel
+
+    get calendar_path
+
+    assert_select "form[action=?]:has(input[name=_method][value=delete])", event_occurrence_cancellation_path(events(:art_class), "2026-11-16")
+    assert_select "form[action=?]", event_occurrence_cancellation_path(events(:visit), "2026-11-21"), count: 0
+  end
+
+  test "only dates that have started can be logged" do
+    get calendar_path(week: "2026-11-23")
+
+    assert_select "a[href=?]", new_event_occurrence_entry_path(events(:art_class), "2026-11-23"), count: 0
+  end
+
   test "other families' events are out of reach" do
     get edit_event_path(events(:swimming))
+    assert_response :not_found
+
+    get new_event_occurrence_entry_path(events(:swimming), "2026-11-18")
+    assert_response :not_found
+
+    delete event_occurrence_cancellation_path(events(:swimming), "2026-11-18")
+    assert_response :not_found
+
+    get new_activity_event_path(activities(:dens))
     assert_response :not_found
 
     post event_occurrence_cancellation_path(events(:swimming), "2026-11-18")

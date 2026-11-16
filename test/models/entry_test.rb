@@ -35,6 +35,13 @@ class EntryTest < ActiveSupport::TestCase
     assert @entry.errors.of_kind?(:activity, :outside_the_family)
   end
 
+  test "an entry's event has to be the family's own" do
+    @entry.assign_attributes(notes: entries(:painting).notes, event: events(:swimming))
+
+    assert_not @entry.valid?
+    assert @entry.errors.of_kind?(:event, :outside_the_family)
+  end
+
   test "entries can't be in the future" do
     @entry.assign_attributes(notes: entries(:painting).notes, happened_on: Date.tomorrow)
 

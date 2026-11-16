@@ -17,6 +17,7 @@ class EntriesHelperTest < ActionView::TestCase
 
     assert_equal I18n.t("entries.days.today"), day_heading(Date.current)
     assert_equal I18n.t("entries.days.yesterday"), day_heading(Date.yesterday)
+    assert_equal I18n.t("entries.days.tomorrow"), day_heading(Date.tomorrow)
     assert_equal I18n.l(Date.new(2025, 12, 30), format: :day_with_year), day_heading(Date.new(2025, 12, 30))
 
     travel_to Date.new(2026, 6, 15)
