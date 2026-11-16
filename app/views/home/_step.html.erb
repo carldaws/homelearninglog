@@ -1,0 +1,13 @@
+<%# locals: (number:, name:) %>
+<li class="card grid gap-4">
+  <div class="flex items-baseline gap-3">
+    <span class="font-mono text-sm font-medium text-label"><%= number %></span>
+    <div>
+      <h3 class="text-[1.45rem] leading-tight font-semibold"><%= t("home.show.steps.#{name}.heading") %></h3>
+      <p class="mt-1 text-muted"><%= t("home.show.steps.#{name}.body") %></p>
+    </div>
+  </div>
+  <div class="rounded-md bg-paper p-3 sm:p-4" aria-hidden="true">
+    <%= yield %>
+  </div>
+</li>

@@ -8,6 +8,13 @@ class SignInTest < ActionDispatch::IntegrationTest
     assert_select "main a[href=?]", new_session_path
   end
 
+  test "the home page explains what it's for before anyone signs in" do
+    get root_path
+
+    assert_select "h1", text: I18n.t("home.show.heading")
+    assert_select "main ol > li", count: I18n.t("home.show.steps").size
+  end
+
   test "signing in" do
     sign_in_as users(:alice)
 

@@ -1,4 +1,92 @@
-<div class="form-actions mt-10">
-  <%= link_to t(".register"), new_registration_path, class: "button" %>
-  <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
-</div>
+<% content_for :title, t(".title") %>
+
+<section class="card mt-6 sm:mt-10">
+  <h1 class="page-title"><%= t(".heading") %></h1>
+  <p class="mt-3 text-muted"><%= t(".intro") %></p>
+  <div class="mt-6 flex flex-wrap gap-3">
+    <%= link_to t(".register"), new_registration_path, class: "button" %>
+    <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
+  </div>
+  <p class="mt-4 text-base text-muted"><%= t(".invited") %></p>
+</section>
+
+<section class="mt-10" aria-labelledby="how">
+  <div class="ruled">
+    <h2 id="how" class="ruled-title"><%= t(".how") %></h2>
+  </div>
+
+  <ol class="grid gap-4">
+    <%= render "home/step", number: 1, name: "log" do %>
+      <div class="card card--ruled">
+        <div class="ruled-text"><p><%= t("home.show.demo.what_we_did") %></p></div>
+        <h4 class="entry-label mt-4"><%= t("entries.entry.what_was_learned") %></h4>
+        <div class="ruled-text mt-1"><p><%= t("home.show.demo.what_was_learned") %></p></div>
+        <h4 class="entry-label mt-4"><%= t("entries.entry.what_could_come_next") %></h4>
+        <ul class="ruled-text mt-1 list-disc pl-5 marker:text-muted"><li><%= t("home.show.demo.idea") %></li></ul>
+        <p class="caption mt-3"><%= t("home.show.demo.author") %> · <%= duration(75) %></p>
+      </div>
+    <% end %>
+
+    <%= render "home/step", number: 2, name: "suggestions" do %>
+      <div class="card flex flex-wrap items-center gap-x-4 gap-y-3">
+        <div class="min-w-0 flex-[1_1_12rem]">
+          <p class="caption"><%= t("home.show.demo.author") %></p>
+          <p class="mt-1 font-semibold break-words"><%= t("home.show.demo.idea") %></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="button button--secondary button--small"><%= t("ideas.suggestion.log") %></span>
+          <span class="button button--secondary button--small"><%= t("ideas.suggestion.set_aside") %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render "home/step", number: 3, name: "comments" do %>
+      <div class="card">
+        <div class="rounded-md bg-hover px-3 py-2.5">
+          <p class="caption"><%= t("home.show.demo.other_grown_up") %></p>
+          <p class="mt-1"><%= t("home.show.demo.comment") %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render "home/step", number: 4, name: "calendar" do %>
+      <div class="card flex flex-wrap items-center gap-x-4 gap-y-3">
+        <div class="min-w-0 flex-1">
+          <p class="caption"><%= t("home.show.demo.event_time") %> · <%= t("home.show.demo.other_grown_up") %></p>
+          <h4 class="mt-1 font-display text-[1.35rem] leading-tight font-semibold"><%= t("home.show.demo.event") %></h4>
+        </div>
+        <span class="button button--small"><%= t("children.occurrence.log") %></span>
+      </div>
+    <% end %>
+
+    <%= render "home/step", number: 5, name: "look_back" do %>
+      <div class="card">
+        <div class="week-header mb-3">
+          <h4 class="week-title font-display"><%= t("entries.weeks.this_week") %></h4>
+          <span class="week-hours"><%= duration(375) %></span>
+        </div>
+        <div class="week-header mb-0">
+          <h4 class="week-title font-display"><%= t("entries.weeks.last_week") %></h4>
+          <span class="week-hours"><%= duration(420) %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render "home/step", number: 6, name: "grown_ups" do %>
+      <ul class="card card--flush list">
+        <li class="row"><span class="row-title"><%= t("home.show.demo.author") %></span><span class="caption"><%= t("settings.show.you") %></span></li>
+        <li class="row"><span class="row-title"><%= t("home.show.demo.other_grown_up") %></span></li>
+        <li class="row"><span class="row-title"><%= t("home.show.demo.grandparent") %></span></li>
+      </ul>
+    <% end %>
+  </ol>
+</section>
+
+<section class="card mt-10 text-center" aria-labelledby="free">
+  <h2 id="free" class="text-[1.75rem] leading-tight font-semibold"><%= t(".free_heading") %></h2>
+  <p class="mt-2 text-muted"><%= t(".free_body") %></p>
+  <div class="mt-5 flex flex-wrap justify-center gap-3">
+    <%= link_to t(".register"), new_registration_path, class: "button" %>
+    <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
+  </div>
+</section>

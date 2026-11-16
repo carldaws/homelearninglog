@@ -89,8 +89,44 @@ en:
 
   home:
     show:
+      title: A learning log for home education
+      heading: Keep a record of your child's home education
+      intro: Write down what your child did, what they learned and what could come next. Share it with the grown-ups who help, and look back on it whenever you need to.
       register: Create an account
       sign_in: Sign in
+      invited: Been sent an invite? Open the link to join.
+      how: How it works
+      steps:
+        log:
+          heading: Write down what happened
+          body: A sentence or a photo is enough. Add what was learned and what could come next when you have a moment, then or later.
+        suggestions:
+          heading: Build on it
+          body: Ideas for what could come next become suggestions, ready for when you're looking for something to do. Pick one up, or set it aside for another time.
+        comments:
+          heading: Keep each other in the loop
+          body: Whoever wasn't there can read about it later, add a comment and pick up where you left off.
+        calendar:
+          heading: Share the week
+          body: Put clubs, groups and trips on each child's calendar, say who's taking them, and see it all on your phone's calendar.
+        look_back:
+          heading: Look back
+          body: The log is kept week by week with the time spent, so when you want to see how things have gone, or someone asks, it's all there.
+        grown_ups:
+          heading: Invite the grown-ups
+          body: Each child has their own log. Invite the other grown-ups who help, to just the children they look after.
+      free_heading: Free, with no catch
+      free_body: It's free and open source, with no charges and no ads. Everything you write and every photo you add stays between you and the grown-ups you invite.
+      demo:
+        what_we_did: Baked bread and talked about why it rises.
+        what_was_learned: Yeast makes gas, and the dough traps it.
+        idea: Bake a loaf without yeast and compare
+        author: Alex
+        other_grown_up: Jo
+        grandparent: Gran
+        comment: We made flatbread today and talked about why it stayed flat.
+        event: Swimming
+        event_time: "09:30"
 
   sessions:
     new:
