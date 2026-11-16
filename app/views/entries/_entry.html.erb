@@ -1,9 +1,9 @@
 <%# locals: (entry:) %>
 <article id="<%= dom_id(entry) %>" class="card">
-  <% if entry.suggestion.present? %>
+  <% if entry.followed_idea.present? %>
     <p class="mb-3 text-sm">
       <span class="caption"><%= t(".following_on_from") %></span>
-      <%= link_to entry.suggestion.description, entry_in_log_path(entry.suggestion.entry), class: "link link--muted" %>
+      <%= link_to entry.followed_idea.description, entry_in_log_path(entry.followed_idea.entry), class: "link link--muted" %>
     </p>
   <% end %>
 

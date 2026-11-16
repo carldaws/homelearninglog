@@ -21,11 +21,11 @@ class IdeaTest < ActiveSupport::TestCase
 
     ideas(:boat_in_the_bath).destroy!
 
-    assert_nil entry.reload.suggestion
+    assert_nil entry.reload.followed_idea
   end
 
   private
     def follow_up(idea)
-      children(:sam).entries.create!(author: users(:alice), happened_on: Date.current, what_we_did: entries(:moon).what_we_did, suggestion: idea)
+      children(:sam).entries.create!(author: users(:alice), happened_on: Date.current, what_we_did: entries(:moon).what_we_did, followed_idea: idea)
     end
 end

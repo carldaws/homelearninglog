@@ -2,13 +2,13 @@
 <%= form_with model: [ entry.child, entry ] do |form| %>
   <%= render "shared/errors", record: entry %>
   <%= form.hidden_field :event_id if entry.event.present? %>
-  <%= form.hidden_field :suggestion_id if entry.suggestion.present? %>
+  <%= form.hidden_field :followed_idea_id if entry.followed_idea.present? %>
 
   <div class="fields">
-    <% if entry.suggestion.present? %>
+    <% if entry.followed_idea.present? %>
       <div class="field">
         <span class="label"><%= t(".following_on_from") %></span>
-        <p class="break-words"><%= entry.suggestion.description %></p>
+        <p class="break-words"><%= entry.followed_idea.description %></p>
       </div>
     <% end %>
 

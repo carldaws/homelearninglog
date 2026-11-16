@@ -17,14 +17,14 @@ class SuggestionsTest < ActionDispatch::IntegrationTest
 
   test "logging from a suggestion follows on from it, and it stops being suggested" do
     get new_child_idea_entry_path(children(:sam), ideas(:boat_in_the_bath))
-    assert_select "input[type=hidden][name=?][value=?]", "entry[suggestion_id]", ideas(:boat_in_the_bath).id.to_s
+    assert_select "input[type=hidden][name=?][value=?]", "entry[followed_idea_id]", ideas(:boat_in_the_bath).id.to_s
 
-    post child_entries_path(children(:sam)), params: { entry: { suggestion_id: ideas(:boat_in_the_bath).id, happened_on: Date.current,
+    post child_entries_path(children(:sam)), params: { entry: { followed_idea_id: ideas(:boat_in_the_bath).id, happened_on: Date.current,
       what_we_did: ideas(:boat_in_the_bath).description } }
     follow_redirect!
 
     follow_up = children(:sam).entries.last
-    assert_equal ideas(:boat_in_the_bath), follow_up.suggestion
+    assert_equal ideas(:boat_in_the_bath), follow_up.followed_idea
     assert_select "##{dom_id(ideas(:boat_in_the_bath), :suggestion)}", count: 0
     assert_select "##{dom_id(ideas(:boat_in_the_bath))} a[href$=?]", "##{dom_id(follow_up)}"
     assert_select "##{dom_id(follow_up)} a[href$=?]", "##{dom_id(entries(:painting))}"
@@ -56,7 +56,7 @@ class SuggestionsTest < ActionDispatch::IntegrationTest
 
   test "an entry can't follow on from another child's idea" do
     assert_no_difference -> { Entry.count } do
-      post child_entries_path(children(:sam)), params: { entry: { suggestion_id: ideas(:forest_map).id, happened_on: Date.current,
+      post child_entries_path(children(:sam)), params: { entry: { followed_idea_id: ideas(:forest_map).id, happened_on: Date.current,
         what_we_did: entries(:painting).what_we_did } }
     end
 

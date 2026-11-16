@@ -5,7 +5,7 @@ class Entry < ApplicationRecord
   belongs_to :child
   belongs_to :author, class_name: "User"
   belongs_to :event, optional: true
-  belongs_to :suggestion, class_name: "Idea", optional: true, inverse_of: :follow_ups
+  belongs_to :followed_idea, class_name: "Idea", optional: true, inverse_of: :follow_ups
   has_many :ideas, -> { order(:id) }, dependent: :destroy, inverse_of: :entry
   has_many :comments, -> { order(:created_at, :id) }, dependent: :destroy
 
@@ -21,11 +21,11 @@ class Entry < ApplicationRecord
   validates :photos, photo: true
   validate :says_what_we_did
   validate :event_belongs_to_the_child
-  validate :suggestion_belongs_to_the_child
+  validate :followed_idea_belongs_to_the_child
   validate :not_too_many_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
-  scope :preloaded, -> { includes(:author, suggestion: :entry, ideas: :follow_ups, comments: :author).with_attached_photos }
+  scope :preloaded, -> { includes(:author, followed_idea: :entry, ideas: :follow_ups, comments: :author).with_attached_photos }
 
   before_validation :forget_blanked_ideas
 
@@ -50,8 +50,8 @@ class Entry < ApplicationRecord
       errors.add(:event, :invalid) if event.present? && event.child_id != child_id
     end
 
-    def suggestion_belongs_to_the_child
-      errors.add(:suggestion, :invalid) if suggestion.present? && suggestion.entry.child_id != child_id
+    def followed_idea_belongs_to_the_child
+      errors.add(:followed_idea, :invalid) if followed_idea.present? && followed_idea.entry.child_id != child_id
     end
 
     def not_too_many_photos

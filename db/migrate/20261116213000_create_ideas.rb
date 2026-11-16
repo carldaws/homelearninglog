@@ -8,6 +8,6 @@ class CreateIdeas < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_reference :entries, :suggestion, foreign_key: { to_table: :ideas }
+    add_reference :entries, :followed_idea, foreign_key: { to_table: :ideas }
   end
 end
