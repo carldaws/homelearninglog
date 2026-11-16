@@ -101,7 +101,7 @@ class CalendarTest < ActionDispatch::IntegrationTest
     get child_path(children(:sam))
     assert_select "a[href=?]", new_child_event_occurrence_entry_path(children(:sam), events(:art_class), "2026-11-16")
 
-    post child_entries_path(children(:sam)), params: { entry: { event_id: events(:art_class).id, happened_on: "2026-11-16", notes: entries(:painting).notes } }
+    post child_entries_path(children(:sam)), params: { entry: { event_id: events(:art_class).id, happened_on: "2026-11-16", what_we_did: entries(:painting).what_we_did } }
     get child_path(children(:sam))
     assert_select "a[href=?]", new_child_event_occurrence_entry_path(children(:sam), events(:art_class), "2026-11-16"), count: 0
   end

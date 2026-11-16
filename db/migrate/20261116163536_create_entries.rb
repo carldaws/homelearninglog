@@ -4,7 +4,8 @@ class CreateEntries < ActiveRecord::Migration[8.1]
       t.references :child, null: false, foreign_key: true, index: false
       t.references :author, null: false, foreign_key: { to_table: :users }
       t.date :happened_on, null: false
-      t.text :notes
+      t.text :what_we_did
+      t.text :what_was_learned
       t.integer :minutes
 
       t.timestamps

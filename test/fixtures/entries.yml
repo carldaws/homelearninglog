@@ -2,17 +2,17 @@ painting:
   child: sam
   author: alice
   happened_on: <%= Date.current %>
-  notes: Painted the view from the back window.
+  what_we_did: Painted the view from the back window.
   minutes: 60
 
 moon:
   child: sam
   author: bob
   happened_on: <%= Date.yesterday %>
-  notes: Asked why the Moon was out in the daytime.
+  what_we_did: Asked why the Moon was out in the daytime.
 
 den:
   child: wren
   author: carol
   happened_on: <%= Date.current %>
-  notes: Built a den at forest school.
+  what_we_did: Built a den at forest school.

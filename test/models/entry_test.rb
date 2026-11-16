@@ -6,7 +6,7 @@ class EntryTest < ActiveSupport::TestCase
     @entry = children(:sam).entries.build(author: users(:alice), happened_on: Date.current)
   end
 
-  test "an entry needs notes or a photo" do
+  test "an entry needs what we did or a photo" do
     assert_not @entry.valid?
     assert @entry.errors.of_kind?(:base, :empty)
 
@@ -15,21 +15,37 @@ class EntryTest < ActiveSupport::TestCase
   end
 
   test "an entry's event has to be the child's own" do
-    @entry.assign_attributes(notes: entries(:painting).notes, event: events(:swimming))
+    @entry.assign_attributes(what_we_did: entries(:painting).what_we_did, event: events(:swimming))
 
     assert_not @entry.valid?
     assert @entry.errors.of_kind?(:event, :invalid)
   end
 
+  test "ideas for what could come next are kept one by one, in order, skipping blanks" do
+    @entry.assign_attributes(what_we_did: entries(:painting).what_we_did,
+      ideas_attributes: [ { description: ideas(:famous_paintings).description }, { description: "" }, { description: ideas(:boat_in_the_bath).description } ])
+    @entry.save!
+
+    assert_equal [ ideas(:famous_paintings).description, ideas(:boat_in_the_bath).description ], @entry.reload.ideas.map(&:description)
+  end
+
+  test "blanking an idea removes it" do
+    entry = entries(:painting)
+
+    entry.update!(ideas_attributes: [ { id: ideas(:boat_in_the_bath).id, description: "" } ])
+
+    assert_equal [ ideas(:famous_paintings) ], entry.reload.ideas
+  end
+
   test "entries can't be in the future" do
-    @entry.assign_attributes(notes: entries(:painting).notes, happened_on: Date.tomorrow)
+    @entry.assign_attributes(what_we_did: entries(:painting).what_we_did, happened_on: Date.tomorrow)
 
     assert_not @entry.valid?
     assert @entry.errors.of_kind?(:happened_on, :less_than_or_equal_to)
   end
 
   test "time spent is optional but sensible" do
-    @entry.notes = entries(:painting).notes
+    @entry.what_we_did = entries(:painting).what_we_did
 
     @entry.minutes = nil
     assert @entry.valid?

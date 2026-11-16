@@ -5,6 +5,11 @@
 
   <div class="fields">
     <div class="field">
+      <%= form.label :what_we_did, t(".what_we_did"), class: "label" %>
+      <%= form.textarea :what_we_did, rows: 4, class: "input" %>
+    </div>
+
+    <div class="field">
       <%= form.label :photos, t(".photos"), class: "label" %>
       <% if entry.saved_photos.any? %>
         <div class="prints mb-2">
@@ -23,9 +28,24 @@
     </div>
 
     <div class="field">
-      <%= form.label :notes, t(".notes"), class: "label" %>
-      <%= form.textarea :notes, rows: 4, class: "input" %>
+      <%= form.label :what_was_learned, t(".what_was_learned"), class: "label" %>
+      <%= form.textarea :what_was_learned, rows: 3, class: "input" %>
     </div>
+
+    <fieldset class="field" data-controller="ideas">
+      <legend class="label mb-2"><%= t(".what_could_come_next") %></legend>
+      <div class="grid gap-2" data-ideas-target="list">
+        <%= form.fields_for :ideas, entry.ideas.reject(&:marked_for_destruction?).including(Idea.new) do |idea_form| %>
+          <%= idea_form.text_field :description, autocomplete: "off", class: "input", aria: { label: t(".idea") } %>
+        <% end %>
+      </div>
+      <template data-ideas-target="template">
+        <%= form.fields_for :ideas, Idea.new, child_index: "NEW_IDEA" do |idea_form| %>
+          <%= idea_form.text_field :description, autocomplete: "off", class: "input", aria: { label: t(".idea") } %>
+        <% end %>
+      </template>
+      <button type="button" class="button button--secondary button--small mt-2" data-action="ideas#add"><%= t(".add_idea") %></button>
+    </fieldset>
 
     <div class="grid gap-6 sm:grid-cols-2">
       <div class="field">

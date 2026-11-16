@@ -28,7 +28,9 @@ en:
       entry:
         event: Event
         happened_on: Date
-        notes: Notes
+        what_we_did: What we did
+        what_was_learned: What was learned
+        ideas: What could come next
         photos: Photos
         minutes: Time spent
       child:
@@ -49,7 +51,7 @@ en:
         entry:
           attributes:
             base:
-              empty: Add a photo or notes
+              empty: Add what we did or a photo
               too_many_photos: Up to %{count} photos
             happened_on:
               less_than_or_equal_to: can't be in the future
@@ -187,12 +189,18 @@ en:
       log: Log it
     entry:
       open_photo: Open photo %{number}
+      what_was_learned: What was learned
+      what_could_come_next: What could come next
       edit: Edit
     form:
+      what_we_did: What we did
       photos: Photos
       photo: Photo %{number}
       keep: Keep
-      notes: Notes
+      what_was_learned: What was learned
+      what_could_come_next: What could come next
+      idea: Idea
+      add_idea: Add another
       happened_on: Date
       minutes: Time spent
       add: Add to the log

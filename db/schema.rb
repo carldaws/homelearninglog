@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_172325) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -78,7 +78,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172325) do
     t.bigint "child_id", null: false
     t.bigint "author_id", null: false
     t.date "happened_on", null: false
-    t.text "notes"
+    t.text "what_we_did"
+    t.text "what_was_learned"
     t.integer "minutes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -102,6 +103,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172325) do
     t.datetime "updated_at", null: false
     t.index ["child_id"], name: "index_events_on_child_id"
     t.index ["grown_up_id"], name: "index_events_on_grown_up_id"
+  end
+
+  create_table "ideas", force: :cascade do |t|
+    t.bigint "entry_id", null: false
+    t.text "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_ideas_on_entry_id"
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -144,6 +153,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172325) do
   add_foreign_key "entries", "users", column: "author_id"
   add_foreign_key "events", "children"
   add_foreign_key "events", "users", column: "grown_up_id"
+  add_foreign_key "ideas", "entries"
   add_foreign_key "invitations", "users", column: "inviter_id"
   add_foreign_key "sessions", "users"
 end

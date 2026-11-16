@@ -25,16 +25,16 @@ class EntriesHelperTest < ActionView::TestCase
     assert_equal I18n.l(Date.new(2026, 6, 1), format: :day), day_heading(Date.new(2026, 6, 1))
   end
 
-  test "links in notes can be followed" do
+  test "links in text can be followed" do
     url = "https://example.com/moon?phase=full"
-    link = Nokogiri::HTML5.fragment(notes_with_links("Watched (#{url}).")).at_css("p a")
+    link = Nokogiri::HTML5.fragment(text_with_links("Watched (#{url}).")).at_css("p a")
 
     assert_equal url, link["href"]
     assert_equal url, link.text
   end
 
-  test "notes can't sneak in HTML" do
-    html = Nokogiri::HTML5.fragment(notes_with_links("<script>alert(1)</script>"))
+  test "text can't sneak in HTML" do
+    html = Nokogiri::HTML5.fragment(text_with_links("<script>alert(1)</script>"))
 
     assert_empty html.css("script")
   end

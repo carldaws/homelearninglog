@@ -16,7 +16,7 @@ class LogTest < ActiveSupport::TestCase
   test "older days are on earlier pages" do
     child = children(:sam)
     (2..Log::DAYS_PER_PAGE).each do |days_ago|
-      child.entries.create!(author: users(:alice), happened_on: Date.current - days_ago, notes: entries(:painting).notes)
+      child.entries.create!(author: users(:alice), happened_on: Date.current - days_ago, what_we_did: entries(:painting).what_we_did)
     end
 
     first_page = child.log
@@ -32,7 +32,7 @@ class LogTest < ActiveSupport::TestCase
   end
 
   test "time is added up for this week" do
-    children(:sam).entries.create!(author: users(:alice), happened_on: Date.current.prev_week, minutes: 90, notes: entries(:moon).notes)
+    children(:sam).entries.create!(author: users(:alice), happened_on: Date.current.prev_week, minutes: 90, what_we_did: entries(:moon).what_we_did)
 
     assert_equal entries(:painting).minutes, children(:sam).log.minutes_this_week
   end
@@ -48,7 +48,7 @@ class LogTest < ActiveSupport::TestCase
     travel_to Date.new(2027, 3, 3)
     logged = children(:sam).events.create!(title: events(:visit).title, starts_on: Date.current)
     cancelled = children(:sam).events.create!(title: events(:visit).title, starts_on: Date.current, repeats: :weekly)
-    children(:sam).entries.create!(author: users(:alice), event: logged, happened_on: Date.current, notes: entries(:painting).notes)
+    children(:sam).entries.create!(author: users(:alice), event: logged, happened_on: Date.current, what_we_did: entries(:painting).what_we_did)
     cancelled.occurrence_on(Date.current).cancel
 
     assert_empty children(:sam).log.unlogged
@@ -58,7 +58,7 @@ class LogTest < ActiveSupport::TestCase
     travel_to Date.new(2027, 3, 3)
     child = children(:sam)
     child.events.create!(title: events(:visit).title, starts_on: Date.current)
-    entry = child.entries.create!(author: users(:alice), happened_on: Date.current, notes: entries(:painting).notes)
+    entry = child.entries.create!(author: users(:alice), happened_on: Date.current, what_we_did: entries(:painting).what_we_did)
     log = child.log
 
     assert_equal [ entry ], log.days.fetch(Date.current)

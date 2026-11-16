@@ -27,8 +27,8 @@ module EntriesHelper
     Entry::SUGGESTED_MINUTES.including(selected).compact.uniq.sort.map { [ duration(it), it ] }
   end
 
-  def notes_with_links(notes)
-    parts = notes.split(/(#{LINK})/).map do |part|
+  def text_with_links(text)
+    parts = text.split(/(#{LINK})/).map do |part|
       part.match?(LINK) ? link_to(part, part, class: "link break-words", rel: "noopener", target: "_blank") : part
     end
 

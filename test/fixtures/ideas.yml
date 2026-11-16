@@ -1,0 +1,11 @@
+boat_in_the_bath:
+  entry: painting
+  description: Float a boat in the bath and see where water gets in.
+
+famous_paintings:
+  entry: painting
+  description: Look up some famous paintings.
+
+forest_map:
+  entry: den
+  description: Draw a map of the forest.

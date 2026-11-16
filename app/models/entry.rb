@@ -5,6 +5,9 @@ class Entry < ApplicationRecord
   belongs_to :child
   belongs_to :author, class_name: "User"
   belongs_to :event, optional: true
+  has_many :ideas, -> { order(:id) }, dependent: :destroy, inverse_of: :entry
+
+  accepts_nested_attributes_for :ideas, reject_if: :new_and_blank_idea?
 
   has_many_attached :photos do |attachable|
     attachable.variant :thumbnail, resize_to_limit: [ 600, 600 ], format: :webp, saver: { strip: true }
@@ -14,12 +17,14 @@ class Entry < ApplicationRecord
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validates :photos, photo: true
-  validate :has_notes_or_photos
+  validate :says_what_we_did
   validate :event_belongs_to_the_child
   validate :not_too_many_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
-  scope :preloaded, -> { includes(:author, :event).with_attached_photos }
+  scope :preloaded, -> { includes(:author, :event, :ideas).with_attached_photos }
+
+  before_validation :forget_blanked_ideas
 
   def heading
     event.title if event.present?
@@ -30,8 +35,16 @@ class Entry < ApplicationRecord
   end
 
   private
-    def has_notes_or_photos
-      errors.add(:base, :empty) if notes.blank? && !photos.attached?
+    def new_and_blank_idea?(attributes)
+      attributes["id"].blank? && attributes["description"].blank?
+    end
+
+    def forget_blanked_ideas
+      ideas.each { it.mark_for_destruction if it.description.blank? }
+    end
+
+    def says_what_we_did
+      errors.add(:base, :empty) if what_we_did.blank? && !photos.attached?
     end
 
     def event_belongs_to_the_child

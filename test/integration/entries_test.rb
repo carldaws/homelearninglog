@@ -17,13 +17,53 @@ class EntriesTest < ActionDispatch::IntegrationTest
     sign_in_as users(:bob)
 
     assert_difference -> { children(:ivy).entries.count } do
-      post child_entries_path(children(:ivy)), params: { entry: { notes: entries(:moon).notes, happened_on: Date.current, minutes: 30 } }
+      post child_entries_path(children(:ivy)), params: { entry: { what_we_did: entries(:moon).what_we_did, happened_on: Date.current, minutes: 30 } }
     end
 
     assert_redirected_to child_path(children(:ivy))
     entry = children(:ivy).entries.last
     assert_equal users(:bob), entry.author
     assert_equal 30, entry.minutes
+  end
+
+  test "an entry can say what was learned and what could come next" do
+    sign_in_as users(:alice)
+
+    learned = "Water finds the gaps"
+
+    post child_entries_path(children(:sam)), params: { entry: { happened_on: Date.current, what_we_did: entries(:painting).what_we_did,
+      what_was_learned: learned, ideas_attributes: { "0" => { description: ideas(:boat_in_the_bath).description }, "1" => { description: "" } } } }
+    follow_redirect!
+
+    entry = children(:sam).entries.last
+    assert_equal learned, entry.what_was_learned
+    assert_equal [ ideas(:boat_in_the_bath).description ], entry.ideas.map(&:description)
+    assert_select "##{dom_id(entry)} li", text: ideas(:boat_in_the_bath).description
+  end
+
+  test "editing an entry's ideas" do
+    sign_in_as users(:bob)
+    changed, added = "Float a cork", "Paint the garden"
+
+    get edit_child_entry_path(children(:sam), entries(:painting))
+    assert_select "[data-ideas-target=list] input[type=text]", count: 3
+
+    patch child_entry_path(children(:sam), entries(:painting)), params: { entry: { ideas_attributes: {
+      "0" => { id: ideas(:boat_in_the_bath).id, description: changed },
+      "1" => { id: ideas(:famous_paintings).id, description: "" },
+      "2" => { description: added } } } }
+
+    assert_redirected_to child_path(children(:sam))
+    assert_equal [ changed, added ], entries(:painting).reload.ideas.map(&:description)
+  end
+
+  test "another entry's ideas can't be changed through this one" do
+    sign_in_as users(:alice)
+
+    patch child_entry_path(children(:sam), entries(:painting)), params: { entry: { ideas_attributes: { "0" => { id: ideas(:forest_map).id, description: ideas(:famous_paintings).description } } } }
+
+    assert_response :not_found
+    assert_not_equal ideas(:famous_paintings).description, ideas(:forest_map).reload.description
   end
 
   test "adding photos to the log" do
@@ -40,7 +80,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     sign_in_as users(:alice)
 
     assert_no_difference -> { Entry.count } do
-      post child_entries_path(children(:sam)), params: { entry: { notes: "", happened_on: Date.current } }
+      post child_entries_path(children(:sam)), params: { entry: { what_we_did: "", happened_on: Date.current } }
     end
 
     assert_response :unprocessable_content
@@ -49,10 +89,10 @@ class EntriesTest < ActionDispatch::IntegrationTest
   test "editing an entry" do
     sign_in_as users(:bob)
 
-    patch child_entry_path(children(:sam), entries(:painting)), params: { entry: { notes: entries(:moon).notes, minutes: "" } }
+    patch child_entry_path(children(:sam), entries(:painting)), params: { entry: { what_we_did: entries(:moon).what_we_did, minutes: "" } }
 
     assert_redirected_to child_path(children(:sam))
-    assert_equal entries(:moon).notes, entries(:painting).reload.notes
+    assert_equal entries(:moon).what_we_did, entries(:painting).reload.what_we_did
     assert_nil entries(:painting).minutes
   end
 
@@ -85,7 +125,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     get child_path(children(:wren))
     assert_response :not_found
 
-    post child_entries_path(children(:wren)), params: { entry: { notes: entries(:den).notes, happened_on: Date.current } }
+    post child_entries_path(children(:wren)), params: { entry: { what_we_did: entries(:den).what_we_did, happened_on: Date.current } }
     assert_response :not_found
 
     get edit_child_entry_path(children(:wren), entries(:den))

@@ -108,7 +108,7 @@ class EventTest < ActiveSupport::TestCase
     assert_not events(:art_class).occurrence_on(Date.new(2026, 11, 23)).due?
 
     children(:sam).entries.create!(occurrence.draft_entry.attributes.slice("happened_on", "minutes", "event_id")
-      .merge(author: users(:bob), notes: entries(:painting).notes))
+      .merge(author: users(:bob), what_we_did: entries(:painting).what_we_did))
     assert_not occurrence.due?
   end
 end
