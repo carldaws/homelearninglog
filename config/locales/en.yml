@@ -173,6 +173,7 @@ en:
       name: Name
       email_address: Email
       change_password: Change password
+      new_recovery_code: New recovery code
       sign_out: Sign out
     edit:
       title: Edit your details
@@ -189,6 +190,12 @@ en:
         current_password: Current password
         password: New password
         save: Save
+        cancel: Cancel
+    recovery_codes:
+      new:
+        title: New recovery code
+        current_password: Current password
+        submit: Make a new code
         cancel: Cancel
 
   recovery_codes:

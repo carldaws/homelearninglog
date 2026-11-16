@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resource :account, only: %i[ show edit update ]
   namespace :account do
     resource :password, only: %i[ edit update ]
+    resource :recovery_code, only: %i[ new create ]
   end
 
   resources :children, only: %i[ show new create edit update destroy ] do

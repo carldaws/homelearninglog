@@ -7,7 +7,7 @@ module User::Recoverable
   included do
     has_secure_password :recovery_code, validations: false, reset_token: false
 
-    before_validation :replace_recovery_code, on: %i[ create password_reset ]
+    before_validation :replace_recovery_code, on: %i[ create password_reset recovery_code_renewal ]
   end
 
   class_methods do

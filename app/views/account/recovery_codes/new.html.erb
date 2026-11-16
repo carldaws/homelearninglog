@@ -1,0 +1,18 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= form_with model: @user, url: account_recovery_code_path, method: :post do |form| %>
+    <%= render "shared/errors", record: @user %>
+
+    <%= render "shared/password_field", form:, field: :current_password, autocomplete: "current-password", label: t(".current_password") %>
+
+    <div class="form-actions">
+      <%= form.submit t(".submit"), class: "button button--wide" %>
+      <%= link_to t(".cancel"), account_path, class: "button button--secondary button--wide" %>
+    </div>
+  <% end %>
+</div>

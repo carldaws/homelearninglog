@@ -67,4 +67,19 @@ class AccountsTest < ActionDispatch::IntegrationTest
 
     assert_equal 1, users(:alice).sessions.count
   end
+
+  test "a new recovery code needs your current password, and replaces the old one" do
+    post account_recovery_code_path, params: { user: { current_password: "not my password" } }
+    assert_response :unprocessable_content
+    assert User.authenticate_by_recovery_code(email_address: users(:alice).email_address, recovery_code: FixturePasswords::RECOVERY_CODE)
+
+    post account_recovery_code_path, params: { user: { current_password: FixturePasswords::PASSWORD } }
+    assert_redirected_to recovery_code_path
+    follow_redirect!
+    recovery_code = css_select(".select-all").first.text
+    assert_select "a[href=?]", account_url
+
+    assert_nil User.authenticate_by_recovery_code(email_address: users(:alice).email_address, recovery_code: FixturePasswords::RECOVERY_CODE)
+    assert_equal users(:alice), User.authenticate_by_recovery_code(email_address: users(:alice).email_address, recovery_code:)
+  end
 end

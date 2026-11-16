@@ -18,7 +18,7 @@ class User < ApplicationRecord
   # has_secure_password ignores a blank password on update rather than rejecting it
   validates :password, presence: true, on: %i[ password_reset password_change ]
   validates :current_password, current_password: true, on: :account_change, if: :will_save_change_to_email_address?
-  validates :current_password, current_password: true, on: :password_change
+  validates :current_password, current_password: true, on: %i[ password_change recovery_code_renewal ]
 
   after_update :sign_out_everywhere, if: :saved_change_to_password_digest?
 
