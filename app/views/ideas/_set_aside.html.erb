@@ -1,0 +1,26 @@
+<%# locals: (ideas:) %>
+<details id="set_aside_ideas" class="card card--flush group">
+  <summary class="row cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+    <span class="row-title"><%= t(".title") %></span>
+    <span class="tag"><%= ideas.size %></span>
+    <svg aria-hidden="true" viewBox="0 0 16 16" class="ml-auto size-4 text-muted transition-transform group-open:rotate-180"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </summary>
+
+  <ul class="list border-t border-line">
+    <% ideas.each do |idea| %>
+      <li id="<%= dom_id(idea, :set_aside) %>" class="row flex-wrap">
+        <div class="min-w-0 flex-1">
+          <p class="caption">
+            <%= link_to l(idea.entry.happened_on, format: :short), entry_in_log_path(idea.entry), class: "text-muted no-underline hover:underline" %>
+            · <%= idea.entry.author.first_name %>
+          </p>
+          <p class="mt-1 break-words"><%= idea.description %></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= link_to t(".log"), new_child_idea_entry_path(idea.entry.child_id, idea), class: "button button--secondary button--small" %>
+          <%= button_to t(".bring_back"), child_idea_set_aside_path(idea.entry.child_id, idea), method: :delete, class: "button button--secondary button--small" %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</details>

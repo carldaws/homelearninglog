@@ -16,6 +16,10 @@ class Log
     @suggestions ||= latest? ? child.suggestions.to_a : []
   end
 
+  def set_aside_ideas
+    @set_aside_ideas ||= latest? ? child.set_aside_ideas.to_a : []
+  end
+
   def weeks
     @weeks ||= shown_week_starts.map { Week.new(starts_on: it, entries: entries_by_week.fetch(it, [])) }
   end

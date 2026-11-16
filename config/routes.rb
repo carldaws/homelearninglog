@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
     resources :ideas, only: [] do
       scope module: :ideas do
-        resource :set_aside, only: :create
+        resource :set_aside, only: %i[ create destroy ]
         resources :entries, only: :new
       end
     end

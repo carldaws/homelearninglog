@@ -236,6 +236,10 @@ en:
     suggestion:
       log: Log it
       set_aside: Set aside
+    set_aside:
+      title: Set aside
+      log: Log it
+      bring_back: Bring back
 
   calendars:
     subscriptions:

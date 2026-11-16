@@ -30,13 +30,32 @@ class SuggestionsTest < ActionDispatch::IntegrationTest
     assert_select "##{dom_id(follow_up)} a[href$=?]", "##{dom_id(entries(:painting))}"
   end
 
-  test "setting a suggestion aside" do
+  test "setting a suggestion aside keeps it, out of the way" do
     post child_idea_set_aside_path(children(:sam), ideas(:boat_in_the_bath))
 
     assert_redirected_to child_path(children(:sam))
     follow_redirect!
     assert_select "##{dom_id(ideas(:boat_in_the_bath), :suggestion)}", count: 0
-    assert_select "##{dom_id(ideas(:boat_in_the_bath))}"
+    assert_select "#set_aside_ideas ##{dom_id(ideas(:boat_in_the_bath), :set_aside)}"
+  end
+
+  test "bringing back an idea that was set aside" do
+    ideas(:boat_in_the_bath).set_aside
+
+    delete child_idea_set_aside_path(children(:sam), ideas(:boat_in_the_bath))
+
+    assert_redirected_to child_path(children(:sam))
+    follow_redirect!
+    assert_select "##{dom_id(ideas(:boat_in_the_bath), :suggestion)}"
+    assert_select "#set_aside_ideas", count: 0
+  end
+
+  test "an idea that was set aside can still be logged from" do
+    ideas(:boat_in_the_bath).set_aside
+
+    get child_path(children(:sam))
+
+    assert_select "#set_aside_ideas a[href=?]", new_child_idea_entry_path(children(:sam), ideas(:boat_in_the_bath))
   end
 
   test "suggestions are only on the latest page of the log" do
@@ -52,6 +71,11 @@ class SuggestionsTest < ActionDispatch::IntegrationTest
     post child_idea_set_aside_path(children(:wren), ideas(:forest_map))
     assert_response :not_found
     assert_not ideas(:forest_map).reload.set_aside?
+
+    ideas(:forest_map).set_aside
+    delete child_idea_set_aside_path(children(:sam), ideas(:forest_map))
+    assert_response :not_found
+    assert ideas(:forest_map).reload.set_aside?
   end
 
   test "an entry can't follow on from another child's idea" do

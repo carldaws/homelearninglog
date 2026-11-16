@@ -23,6 +23,10 @@ class Child < ApplicationRecord
     Idea.suggested.where(entry: entries).order(created_at: :desc, id: :desc).includes(entry: :author)
   end
 
+  def set_aside_ideas
+    Idea.set_aside.where(entry: entries).order(set_aside_at: :desc).includes(entry: :author)
+  end
+
   def log(through: nil)
     Log.new(self, through:)
   end
