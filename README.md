@@ -1,4 +1,4 @@
-# Learning Log
+# Home Learning Log
 
 Free, open source software for families who home educate. Keep a shared log of what the children did, with photos, and plan around their interests rather than a curriculum.
 

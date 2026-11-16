@@ -1,11 +1,11 @@
 {
-  "name": "Learning Log",
+  "name": "Home Learning Log",
   "short_name": "Learning Log",
   "icons": [
     { "src": "/icon.png", "type": "image/png", "sizes": "512x512" },
     { "src": "/icon.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
   ],
-  "start_url": "/log",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f1ecdf",
   "theme_color": "#f1ecdf"
