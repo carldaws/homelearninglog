@@ -26,30 +26,30 @@ class ChildrenTest < ActionDispatch::IntegrationTest
 
     patch child_path(children(:sam)), params: { child: { name: children(:wren).name } }
 
-    assert_redirected_to edit_child_path(children(:sam))
+    assert_redirected_to child_settings_path(children(:sam))
     assert_equal children(:wren).name, children(:sam).reload.name
   end
 
-  test "removing a child with nothing recorded" do
+  test "removing a child, everything recorded about them and all, once their name is typed" do
     sign_in_as users(:alice)
 
-    assert_difference -> { users(:alice).children.count }, -1 do
-      delete child_path(children(:ivy))
-    end
+    get new_child_removal_path(children(:sam))
+    assert_select "form[action=?]:has(input[name=_method][value=delete])", child_path(children(:sam))
 
+    assert_difference -> { Child.count } => -1, -> { Entry.count } => -2, -> { Event.count } => -2 do
+      delete child_path(children(:sam)), params: { confirmation: children(:sam).name }
+    end
     assert_redirected_to root_path
   end
 
-  test "children with things recorded can't be removed, and aren't offered for removal" do
+  test "a child isn't removed without their name typed" do
     sign_in_as users(:alice)
 
-    get edit_child_path(children(:sam))
-    assert_select "form[action=?]:has(input[name=_method][value=delete])", child_path(children(:sam)), count: 0
-
     assert_no_difference -> { Child.count } do
-      delete child_path(children(:sam))
+      delete child_path(children(:sam)), params: { confirmation: children(:ivy).name }
     end
-    assert_redirected_to edit_child_path(children(:sam))
+
+    assert_redirected_to new_child_removal_path(children(:sam))
   end
 
   test "other people's children are out of reach" do
@@ -61,7 +61,7 @@ class ChildrenTest < ActionDispatch::IntegrationTest
     patch child_path(children(:wren)), params: { child: { name: children(:sam).name } }
     assert_response :not_found
 
-    delete child_path(children(:wren))
+    delete child_path(children(:wren)), params: { confirmation: children(:wren).name }
     assert_response :not_found
     assert Child.exists?(children(:wren).id)
   end
@@ -77,14 +77,15 @@ class ChildrenTest < ActionDispatch::IntegrationTest
     assert_select "#child_switcher a[href=?]", new_child_path
   end
 
-  test "the Manage page renames the child, lists their grown-ups and can remove them" do
+  test "the Manage page lists the grown-ups, and links to renaming and removing the child" do
     sign_in_as users(:alice)
 
-    get edit_child_path(children(:ivy))
+    get child_settings_path(children(:ivy))
 
-    assert_select "nav .tab[aria-current=page][href=?]", edit_child_path(children(:ivy))
-    assert_select "#child_name[value=?]", children(:ivy).name
+    assert_select "nav .tab[aria-current=page][href=?]", child_settings_path(children(:ivy))
+    assert_select "h1", text: children(:ivy).name
+    assert_select "a[href=?]", edit_child_path(children(:ivy))
+    assert_select "a[href=?]", new_child_removal_path(children(:ivy))
     assert_select "a[href=?]", new_invitation_path(child_id: children(:ivy).id)
-    assert_select "form[action=?]:has(input[name=_method][value=delete])", child_path(children(:ivy))
   end
 end

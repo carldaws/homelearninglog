@@ -34,6 +34,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :settings, path: "manage", only: :show
+    resource :removal, only: :new
     resources :accesses, path: "grown-ups", only: :destroy
   end
 

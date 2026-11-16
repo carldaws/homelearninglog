@@ -43,8 +43,6 @@ en:
       messages:
         not_a_photo: "%{filename} isn't a photo"
         photo_too_big: "%{filename} is over %{size}"
-        restrict_dependent_destroy:
-          has_many: "%{record} are recorded"
       models:
         entry:
           attributes:
@@ -141,10 +139,17 @@ en:
       name: Name
       add: Add
       save: Save
+      cancel: Cancel
     new:
       title: Add a child
     edit:
-      title: Manage
+      title: Rename
+    destroy:
+      unconfirmed: The name didn't match
+
+  settings:
+    show:
+      rename: Rename
       grown_ups: Grown-ups
       you: You
       leave: Leave
@@ -153,7 +158,13 @@ en:
       remove_grown_up_confirm: Remove %{name}?
       invite: Invite a grown-up
       remove: Remove %{name}
-      remove_confirm: Remove %{name}?
+
+  removals:
+    new:
+      title: Remove %{name}
+      confirmation: Type %{name} to confirm
+      submit: Remove %{name}
+      cancel: Cancel
 
   logs:
     show:

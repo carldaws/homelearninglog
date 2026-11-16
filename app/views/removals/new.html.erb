@@ -1,0 +1,19 @@
+<% content_for :title, t(".title", name: @child.name) %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title", name: @child.name) %></h1>
+</header>
+
+<div class="card">
+  <%= form_with url: child_path(@child), method: :delete do |form| %>
+    <div class="field">
+      <%= form.label :confirmation, t(".confirmation", name: @child.name), class: "label" %>
+      <%= form.text_field :confirmation, required: true, autocomplete: "off", autofocus: true, class: "input" %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit t(".submit", name: @child.name), class: "button button--danger button--wide" %>
+      <%= link_to t(".cancel"), child_settings_path(@child), class: "button button--secondary button--wide" %>
+    </div>
+  <% end %>
+</div>

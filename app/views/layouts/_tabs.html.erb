@@ -5,6 +5,6 @@
     <%= tab_to t(".now"), child_path(child), controllers: %w[ children#show ideas/entries ] %>
     <%= tab_to t(".log"), child_log_path(child), controllers: %w[ logs entries entries/comments events/occurrences/entries ] %>
     <%= tab_to t(".calendar"), child_calendar_path(child), controllers: %w[ calendars calendars/subscriptions events ] %>
-    <%= tab_to t(".manage"), edit_child_path(child), controllers: %w[ children#edit children#update ] %>
+    <%= tab_to t(".manage"), child_settings_path(child), controllers: %w[ settings removals children#edit children#update ] %>
   </div>
 </nav>

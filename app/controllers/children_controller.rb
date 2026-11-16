@@ -24,17 +24,18 @@ class ChildrenController < ApplicationController
 
   def update
     if @child.update(child_params)
-      redirect_to edit_child_path(@child)
+      redirect_to child_settings_path(@child)
     else
       render :edit, status: :unprocessable_content
     end
   end
 
   def destroy
-    if @child.destroy
+    if params[:confirmation] == @child.name
+      @child.destroy!
       redirect_to root_path, status: :see_other
     else
-      redirect_to edit_child_path(@child), alert: @child.errors.full_messages.to_sentence, status: :see_other
+      redirect_to new_child_removal_path(@child), alert: t(".unconfirmed"), status: :see_other
     end
   end
 

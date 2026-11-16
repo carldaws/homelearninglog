@@ -4,37 +4,6 @@
   <h1 class="page-title"><%= t(".title") %></h1>
 </header>
 
-<div class="card section">
+<div class="card">
   <%= render "form", child: @child %>
 </div>
-
-<section class="section" aria-labelledby="grown-ups">
-  <div class="ruled">
-    <h2 id="grown-ups" class="ruled-title"><%= t(".grown_ups") %></h2>
-  </div>
-
-  <ul class="card card--flush list">
-    <% @child.accesses.alphabetically.each do |access| %>
-      <li class="row flex-wrap">
-        <span class="row-title"><%= access.user.name %></span>
-        <% if access.user == Current.user %>
-          <span class="caption"><%= t(".you") %></span>
-          <% if @child.accesses.many? %>
-            <%= button_to t(".leave"), child_access_path(@child, access), method: :delete, class: "link link--muted cursor-pointer",
-                  form: { class: "ml-auto", data: { turbo_confirm: t(".leave_confirm") } } %>
-          <% end %>
-        <% else %>
-          <%= button_to t(".remove_grown_up"), child_access_path(@child, access), method: :delete, class: "link link--muted cursor-pointer",
-                form: { class: "ml-auto", data: { turbo_confirm: t(".remove_grown_up_confirm", name: access.user.name) } } %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-
-  <%= link_to t(".invite"), new_invitation_path(child_id: @child.id), class: "button mt-4" %>
-</section>
-
-<% if @child.removable? %>
-  <%= button_to t(".remove", name: @child.name_in_database), child_path(@child), method: :delete, class: "button button--danger button--wide",
-        form: { data: { turbo_confirm: t(".remove_confirm", name: @child.name_in_database) } } %>
-<% end %>

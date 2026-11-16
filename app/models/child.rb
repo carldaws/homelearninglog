@@ -1,7 +1,7 @@
 class Child < ApplicationRecord
-  has_many :entries, dependent: :restrict_with_error
+  has_many :entries, dependent: :destroy
   has_many :ideas, through: :entries
-  has_many :events, dependent: :restrict_with_error
+  has_many :events, dependent: :destroy
   # Removing a child takes everyone's access with it, so Access's last-grown-up check mustn't run
   has_many :accesses, dependent: :delete_all
   has_many :grown_ups, through: :accesses, source: :user
@@ -47,9 +47,5 @@ class Child < ApplicationRecord
     events.between(dates).includes(:cancellations, :grown_up, :entries)
       .flat_map { it.occurrences_between(dates) }
       .sort_by { [ it.date, it.all_day? ? 0 : 1, it.start_time.to_i ] }
-  end
-
-  def removable?
-    entries.none? && events.none?
   end
 end

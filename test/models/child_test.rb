@@ -14,16 +14,18 @@ class ChildTest < ActiveSupport::TestCase
     assert_equal [ users(:dan) ], child.grown_ups
   end
 
-  test "children with nothing recorded can be removed" do
-    assert children(:ivy).destroy
-  end
+  test "removing a child removes everything recorded about them" do
+    sam = children(:sam)
+    entry_ids, event_ids = sam.entry_ids, sam.event_ids
 
-  test "children with entries or events can't be removed" do
-    assert_not children(:sam).destroy
-    assert children(:sam).errors.of_kind?(:base, :"restrict_dependent_destroy.has_many")
+    sam.destroy!
 
-    entries(:den).destroy!
-    assert_not children(:wren).destroy
+    assert_empty Entry.where(id: entry_ids)
+    assert_empty Idea.where(entry_id: entry_ids)
+    assert_empty Comment.where(entry_id: entry_ids)
+    assert_empty Event.where(id: event_ids)
+    assert_empty Access.where(child_id: sam.id)
+    assert Entry.exists?(entries(:den).id)
   end
 
   test "a day's events start with the all-day ones, then go by time" do
