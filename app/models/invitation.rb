@@ -21,6 +21,7 @@ class Invitation < ApplicationRecord
 
   def accept(user)
     transaction do
+      lock!
       offered_children.each { it.accesses.find_or_create_by!(user:) }
       destroy!
     end

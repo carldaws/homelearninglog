@@ -13,6 +13,8 @@ class Access < ApplicationRecord
 
   private
     def keep_a_grown_up
+      child.lock!
+
       if child.accesses.excluding(self).none?
         errors.add(:base, :last_grown_up, name: child.name)
         throw :abort
