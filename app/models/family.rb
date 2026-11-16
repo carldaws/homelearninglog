@@ -7,6 +7,7 @@ class Family < ApplicationRecord
   has_many :events, dependent: :destroy
 
   has_secure_token :invitation_code
+  has_secure_token :calendar_token
 
   generates_token_for :invitation, expires_in: 7.days do
     invitation_code

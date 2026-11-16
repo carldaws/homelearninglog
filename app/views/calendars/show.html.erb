@@ -14,6 +14,7 @@
     <%= link_to t(".this_week"), calendar_path, class: "button button--secondary button--small" %>
   <% end %>
   <%= link_to t(".next"), calendar_path(week: @week.following), class: "button button--secondary button--small" %>
+  <%= link_to t(".subscribe"), calendar_subscription_path, class: "button button--secondary button--small sm:ml-auto" %>
 </nav>
 
 <% @week.days.each do |date, occurrences| %>

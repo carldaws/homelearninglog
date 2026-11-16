@@ -1,0 +1,14 @@
+<% content_for :title, t(".title") %>
+<% turbo_exempts_page_from_cache %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card grid gap-3">
+  <%= link_to t(".subscribe"), feed_url(Current.family.calendar_token, format: :ics, protocol: "webcal"), class: "button button--wide" %>
+  <%= render "shared/share_link", url: feed_url(Current.family.calendar_token, format: :ics), title: Current.family.name %>
+</div>
+
+<%= button_to t(".replace"), calendar_subscription_path, method: :patch, class: "button button--secondary button--wide mt-6",
+      form: { data: { turbo_confirm: t(".replace_confirm") } } %>

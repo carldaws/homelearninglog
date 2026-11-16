@@ -1,7 +1,9 @@
 oaks:
   name: The Oaks
   invitation_code: oaks-invitation-code
+  calendar_token: oaks-calendar-token
 
 elms:
   name: The Elms
   invitation_code: elms-invitation-code
+  calendar_token: elms-calendar-token

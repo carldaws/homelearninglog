@@ -19,7 +19,10 @@ Rails.application.routes.draw do
     resources :photos, only: :show, module: :entries
   end
 
-  resource :calendar, only: :show
+  resource :calendar, only: :show do
+    resource :subscription, only: %i[ show update ], module: :calendars
+  end
+  resources :feeds, only: :show, param: :token
 
   resources :events, only: %i[ new create edit update destroy ] do
     resources :occurrences, only: [], param: :date, constraints: { occurrence_date: /\d{4}-\d{2}-\d{2}/ } do

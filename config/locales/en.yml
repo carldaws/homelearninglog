@@ -246,6 +246,12 @@ en:
       delete_confirm: Delete %{name}?
 
   calendars:
+    subscriptions:
+      show:
+        title: Subscribe
+        subscribe: Subscribe
+        replace: New link
+        replace_confirm: Replace the link?
     show:
       title: Calendar
       add: Add an event
@@ -253,6 +259,7 @@ en:
       previous: Previous
       this_week: This week
       next: Next
+      subscribe: Subscribe
     occurrence:
       log: Log it
       cancel: Cancel
