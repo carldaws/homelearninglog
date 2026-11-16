@@ -140,39 +140,6 @@ class FamiliesTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "making a sign-in link for another grown-up" do
-    sign_in_as users(:alice)
-
-    get family_membership_sign_in_link_path(memberships(:bob_in_oaks))
-
-    assert_response :success
-    link = css_select("[data-share-url-value]").first["data-share-url-value"]
-    token = Rails.application.routes.recognize_path(link)[:token]
-    assert_equal users(:bob), User.find_by_token_for(:sign_in_link, token)
-  end
-
-  test "you can't make a sign-in link for someone in another family" do
-    sign_in_as users(:alice)
-
-    get family_membership_sign_in_link_path(memberships(:carol_in_elms))
-
-    assert_response :not_found
-  end
-
-  test "a removed grown-up's sign-in links stop working" do
-    sign_in_as users(:bob)
-    get family_membership_sign_in_link_path(memberships(:alice_in_oaks))
-    link = css_select("[data-share-url-value]").first["data-share-url-value"]
-    delete session_path
-
-    sign_in_as users(:alice)
-    delete family_membership_path(memberships(:bob_in_oaks))
-    delete session_path
-
-    get link
-    assert_response :not_found
-  end
-
   test "the last grown-up isn't offered a way to leave" do
     sign_in_as users(:carol)
 

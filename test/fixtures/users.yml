@@ -2,18 +2,22 @@ alice:
   name: Alice Oak
   email_address: alice@example.com
   password_digest: <%= password_digest %>
+  recovery_code_digest: <%= recovery_code_digest %>
 
 bob:
   name: Bob Oak
   email_address: bob@example.com
   password_digest: <%= password_digest %>
+  recovery_code_digest: <%= recovery_code_digest %>
 
 carol:
   name: Carol Elm
   email_address: carol@example.com
   password_digest: <%= password_digest %>
+  recovery_code_digest: <%= recovery_code_digest %>
 
 dan:
   name: Dan Ash
   email_address: dan@example.com
   password_digest: <%= password_digest %>
+  recovery_code_digest: <%= recovery_code_digest %>

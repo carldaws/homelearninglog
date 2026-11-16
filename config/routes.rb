@@ -1,14 +1,13 @@
 Rails.application.routes.draw do
   resource :session, only: %i[ new create destroy ]
   resource :registration, only: %i[ new create ]
-  resources :passwords, only: %i[ edit update ], param: :token
+  resource :password, only: %i[ new create ]
+  resource :recovery_code, only: :show
 
   resource :family, only: %i[ show new create edit update ] do
     scope module: :families do
       resources :children, only: %i[ new create edit update destroy ]
-      resources :memberships, only: :destroy do
-        resource :sign_in_link, only: :show, module: :memberships
-      end
+      resources :memberships, only: :destroy
       resource :invitation, only: :show
     end
   end

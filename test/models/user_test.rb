@@ -23,8 +23,8 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors.of_kind?(:password, :too_short)
   end
 
-  test "changing a password needs a password" do
-    assert_not users(:alice).valid?(:password_change)
+  test "resetting a password needs a password" do
+    assert_not users(:alice).valid?(:password_reset)
   end
 
   test "changing a password signs out everywhere" do
@@ -36,32 +36,40 @@ class UserTest < ActiveSupport::TestCase
     assert_empty user.sessions
   end
 
-  test "a sign-in link stops working once the password changes" do
-    user = users(:alice)
-    token = user.generate_token_for(:sign_in_link)
-
-    user.update!(password: "a brand new password")
-
-    assert_nil User.find_by_token_for(:sign_in_link, token)
-  end
-
-  test "a sign-in link stops working after three days" do
-    token = users(:alice).generate_token_for(:sign_in_link)
-
-    travel 3.days + 1.minute
-
-    assert_nil User.find_by_token_for(:sign_in_link, token)
-  end
-
   test "first names come from the full name" do
     assert_equal users(:alice).name.split.first, users(:alice).first_name
   end
 
-  test "a sign-in link stops working once someone leaves the family" do
-    token = users(:alice).generate_token_for(:sign_in_link)
+  test "a new account gets a recovery code" do
+    user = User.create!(name: users(:alice).name, email_address: "new@example.com", password: FixturePasswords::PASSWORD)
 
-    memberships(:bob_in_oaks).destroy!
+    assert_equal User::RECOVERY_CODE_LENGTH, user.recovery_code.length
+    assert_equal user, User.authenticate_by_recovery_code(email_address: user.email_address, recovery_code: user.recovery_code)
+  end
 
-    assert_nil User.find_by_token_for(:sign_in_link, token)
+  test "recovery codes can be typed in lower case, with spaces and dashes" do
+    typed = FixturePasswords::RECOVERY_CODE.downcase.scan(/.{4}/).join(" - ")
+
+    assert_equal users(:alice), User.authenticate_by_recovery_code(email_address: users(:alice).email_address, recovery_code: typed)
+  end
+
+  test "resetting a password replaces the recovery code" do
+    user = users(:alice)
+
+    user.password = "a brand new password"
+    assert user.save(context: :password_reset)
+
+    assert user.reload.authenticate_password("a brand new password")
+    assert_nil User.authenticate_by_recovery_code(email_address: user.email_address, recovery_code: FixturePasswords::RECOVERY_CODE)
+    assert_equal user, User.authenticate_by_recovery_code(email_address: user.email_address, recovery_code: user.recovery_code)
+  end
+
+  test "a failed reset keeps the recovery code" do
+    user = users(:alice)
+
+    user.password = "short"
+    assert_not user.save(context: :password_reset)
+
+    assert_equal user, User.authenticate_by_recovery_code(email_address: user.email_address, recovery_code: FixturePasswords::RECOVERY_CODE)
   end
 end

@@ -41,11 +41,8 @@
                   form: { class: "ml-auto", data: { turbo_confirm: t(".leave_confirm", family: Current.family.name) } } %>
           <% end %>
         <% else %>
-          <div class="ml-auto flex items-center gap-4">
-            <%= link_to t(".sign_in_link"), family_membership_sign_in_link_path(membership), class: "link link--muted" %>
-            <%= button_to t(".remove"), family_membership_path(membership), method: :delete, class: "link link--muted cursor-pointer",
-                  form: { data: { turbo_confirm: t(".remove_confirm", name: membership.user.name) } } %>
-          </div>
+          <%= button_to t(".remove"), family_membership_path(membership), method: :delete, class: "link link--muted cursor-pointer",
+                form: { class: "ml-auto", data: { turbo_confirm: t(".remove_confirm", name: membership.user.name) } } %>
         <% end %>
       </li>
     <% end %>

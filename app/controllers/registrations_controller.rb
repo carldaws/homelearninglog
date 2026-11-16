@@ -12,7 +12,7 @@ class RegistrationsController < ApplicationController
 
     if @user.save
       start_new_session_for @user
-      redirect_to after_authentication_url
+      redirect_to recovery_code_path, flash: { recovery_code: @user.recovery_code, continue_to: after_authentication_url }
     else
       render :new, status: :unprocessable_content
     end

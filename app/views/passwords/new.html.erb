@@ -6,13 +6,18 @@
 </header>
 
 <div class="card">
-  <%= form_with model: @user, url: password_path(params[:token]), method: :patch do |form| %>
-    <%= render "shared/errors", record: @user %>
-
+  <%= form_with url: password_path do |form| %>
     <div class="fields">
       <div class="field">
         <%= form.label :email_address, t(".email_address"), class: "label" %>
-        <%= form.email_field :email_address, readonly: true, autocomplete: "username", class: "input" %>
+        <%= form.email_field :email_address, value: params[:email_address], required: true, autocomplete: "username",
+              autofocus: params[:email_address].blank?, class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :recovery_code, t(".recovery_code"), class: "label" %>
+        <%= form.text_field :recovery_code, value: params[:recovery_code], required: true, autocomplete: "off",
+              autocapitalize: "characters", spellcheck: false, class: "input font-mono" %>
       </div>
 
       <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password", label: t(".password") %>

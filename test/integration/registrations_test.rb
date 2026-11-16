@@ -6,8 +6,19 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
       post registration_path, params: { user: { name: users(:alice).name, email_address: "new@example.com", password: FixturePasswords::PASSWORD } }
     end
 
-    assert_redirected_to entries_url
+    assert_redirected_to recovery_code_path
     assert_signed_in
+  end
+
+  test "a new account is shown its recovery code once, then carries on" do
+    post registration_path, params: { user: { name: users(:alice).name, email_address: "new@example.com", password: FixturePasswords::PASSWORD } }
+    follow_redirect!
+
+    assert_equal User::RECOVERY_CODE_LENGTH, css_select(".select-all").first.text.delete(" ").length
+    assert_select "a[href=?]", entries_url
+
+    get recovery_code_path
+    assert_redirected_to root_path
   end
 
   test "an account needs a name, an email address and a password" do

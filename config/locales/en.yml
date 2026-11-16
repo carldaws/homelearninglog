@@ -101,6 +101,7 @@ en:
       email_address: Email address
       password: Password
       submit: Sign in
+      forgotten_password: Forgotten password
     create:
       invalid: Wrong email address or password
       rate_limited: Too many attempts
@@ -116,13 +117,20 @@ en:
       rate_limited: Too many attempts
 
   passwords:
-    edit:
+    new:
       title: New password
       email_address: Email address
+      recovery_code: Recovery code
       password: New password
       submit: Save
-    expired:
-      title: Link expired
+    create:
+      invalid: Wrong email address or recovery code
+      rate_limited: Too many attempts
+
+  recovery_codes:
+    show:
+      title: Recovery code
+      continue: Continue
 
   families:
     new:
@@ -139,7 +147,6 @@ en:
       you: You
       leave: Leave
       leave_confirm: Leave %{family}?
-      sign_in_link: Sign-in link
       remove: Remove
       remove_confirm: Remove %{name}?
       invite: Invite a grown-up
@@ -159,10 +166,6 @@ en:
       edit:
         remove: Remove
         remove_confirm: Remove %{name}?
-    memberships:
-      sign_in_links:
-        show:
-          title: Sign-in link for %{name}
     invitations:
       show:
         title: Invite a grown-up

@@ -16,8 +16,9 @@ class JoinsTest < ActionDispatch::IntegrationTest
     get join_path(@token)
 
     post registration_path, params: { user: { name: users(:dan).name, email_address: "new@example.com", password: FixturePasswords::PASSWORD } }
+    follow_redirect!
 
-    assert_redirected_to join_url(@token)
+    assert_select "a[href=?]", join_url(@token)
   end
 
   test "joining from an invite" do

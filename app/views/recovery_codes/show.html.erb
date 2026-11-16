@@ -1,0 +1,11 @@
+<% content_for :title, t(".title") %>
+<% turbo_exempts_page_from_cache %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card grid gap-6">
+  <p class="text-center font-mono text-2xl tracking-wider select-all"><%= grouped_recovery_code(@recovery_code) %></p>
+  <%= link_to t(".continue"), flash[:continue_to].presence || root_path, class: "button button--wide" %>
+</div>

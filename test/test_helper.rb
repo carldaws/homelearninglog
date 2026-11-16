@@ -4,9 +4,14 @@ require "rails/test_help"
 
 module FixturePasswords
   PASSWORD = "correct horse battery"
+  RECOVERY_CODE = "ABCDEFGHJKMNPQRS"
 
   def password_digest
     BCrypt::Password.create(PASSWORD, cost: BCrypt::Engine::MIN_COST)
+  end
+
+  def recovery_code_digest
+    BCrypt::Password.create(RECOVERY_CODE, cost: BCrypt::Engine::MIN_COST)
   end
 end
 
