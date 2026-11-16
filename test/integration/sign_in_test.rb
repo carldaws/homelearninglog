@@ -78,6 +78,28 @@ class SignInTest < ActionDispatch::IntegrationTest
     assert_redirected_to child_path(children(:ivy))
   end
 
+  test "you go back to the child you last looked at" do
+    sign_in_as users(:alice)
+    get child_path(children(:sam))
+    delete session_path
+
+    sign_in_as users(:alice)
+    get root_path
+
+    assert_redirected_to child_path(children(:sam))
+  end
+
+  test "a child someone else last looked at on this browser isn't remembered for you" do
+    sign_in_as users(:carol)
+    get child_path(children(:wren))
+    delete session_path
+
+    sign_in_as users(:alice)
+    get root_path
+
+    assert_redirected_to child_path(children(:ivy))
+  end
+
   test "people looking after no children are asked to add one" do
     sign_in_as users(:dan)
 

@@ -1,5 +1,6 @@
 class ChildrenController < ApplicationController
   before_action :set_child, only: %i[ show edit update destroy ]
+  after_action :remember_child, only: :show
 
   def show
     @now = @child.now
@@ -42,6 +43,10 @@ class ChildrenController < ApplicationController
   private
     def set_child
       @child = Current.user.children.find(params[:id])
+    end
+
+    def remember_child
+      cookies.signed.permanent[:child_id] = { value: @child.id, httponly: true, same_site: :lax }
     end
 
     def child_params
