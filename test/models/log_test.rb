@@ -31,6 +31,8 @@ class LogTest < ActiveSupport::TestCase
   end
 
   test "time is added up for this week" do
-    assert_equal families(:oaks).entries.where(happened_on: Date.current.all_week).sum(:minutes), families(:oaks).log.minutes_this_week
+    families(:oaks).entries.create!(author: users(:alice), happened_on: Date.current.prev_week, minutes: 90, notes: entries(:moon).notes, children: [ children(:sam) ])
+
+    assert_equal entries(:painting).minutes, families(:oaks).log.minutes_this_week
   end
 end

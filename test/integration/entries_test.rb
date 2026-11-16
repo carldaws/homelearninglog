@@ -159,7 +159,10 @@ class EntriesTest < ActionDispatch::IntegrationTest
 
   test "Active Storage's public URLs are switched off" do
     entries(:painting).photos.attach(io: file_fixture("photo.jpg").open, filename: "photo.jpg")
+    blob = entries(:painting).photos.first.blob
 
-    assert_raises(NoMethodError) { Rails.application.routes.url_helpers.rails_blob_path(entries(:painting).photos.first, only_path: true) }
+    get "/rails/active_storage/blobs/redirect/#{blob.signed_id}/#{blob.filename}"
+
+    assert_response :not_found
   end
 end
