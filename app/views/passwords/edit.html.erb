@@ -1,5 +1,5 @@
 <% content_for :title, t(".title") %>
-<% content_for :head, tag.meta(name: "turbo-cache-control", content: "no-cache") %>
+<% turbo_exempts_page_from_cache %>
 
 <div class="narrow">
   <header class="page-header">
