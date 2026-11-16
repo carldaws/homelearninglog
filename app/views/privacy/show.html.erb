@@ -1,0 +1,23 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card grid gap-6">
+  <p><%= t(".intro") %></p>
+
+  <%= render "privacy/section", name: "kept" %>
+  <%= render "privacy/section", name: "seen" %>
+  <%= render "privacy/section", name: "done" %>
+  <%= render "privacy/section", name: "leaving" %>
+
+  <section aria-labelledby="check">
+    <h2 id="check" class="text-[1.5rem] leading-tight font-semibold"><%= t(".check.heading") %></h2>
+    <p class="mt-2">
+      <%= t(".check.body_html",
+            code: link_to(t(".check.code"), "https://github.com/carldaws/homelearninglog", class: "link"),
+            issue: link_to(t(".check.issue"), "https://github.com/carldaws/homelearninglog/issues", class: "link")) %>
+    </p>
+  </section>
+</div>

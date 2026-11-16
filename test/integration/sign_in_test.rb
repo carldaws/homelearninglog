@@ -123,4 +123,13 @@ class SignInTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to new_child_entry_url(children(:sam))
   end
+
+  test "the privacy page needs no sign-in and is linked from every page" do
+    get root_path
+    assert_select "footer a[href=?]", privacy_path
+
+    get privacy_path
+    assert_response :success
+    assert_select "h1", text: I18n.t("privacy.show.title")
+  end
 end

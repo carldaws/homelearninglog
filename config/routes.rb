@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   resources :feeds, only: :show, param: :token
 
   resource :manifest, only: :show
+  resource :privacy, only: :show, controller: :privacy
 
   root "home#show"
 

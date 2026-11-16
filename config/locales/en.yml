@@ -73,6 +73,7 @@ en:
     footer:
       credit_html: Free and %{open_source}, by %{author}.
       open_source: open source
+      privacy: Privacy
     child_switcher:
       add_child: Add a child
     tabs:
@@ -165,6 +166,28 @@ en:
     create:
       invalid: Wrong email address or recovery code
       rate_limited: Too many attempts
+
+  privacy:
+    show:
+      title: Privacy
+      intro: Home Learning Log is free and open source. It's here to help families keep a record of their children's home education, and nothing else.
+      kept:
+        heading: What's kept
+        body: What you put in, so the app can work. That's your name, email address and password (stored scrambled, so nobody can read it), and for each child their name, their log with its photos and comments, and their calendar. When you sign in, the device and internet address you used are noted, and the server keeps short-lived logs of requests. Encrypted backups are kept so nothing is lost if the server fails.
+      seen:
+        heading: Who sees it
+        body: Only the grown-ups you invite to a child see that child's log, photos, comments and calendar. An invite works once and stops working after a week. Your calendar link works for anyone you give it to, so keep it to yourself; you can make a new one at any time and the old one stops working. Photos are shown with their location and camera details removed, but the original file is kept as it was uploaded.
+      done:
+        heading: What's done with it
+        body: Nothing else. Nothing is charged for, there are no ads, nothing you put in is sold or shared, and nobody looks at what you write. Nothing about how you use it is tracked. Cookies are only used to keep you signed in, to protect forms and to remember which child you last looked at, and nothing is loaded from anyone else's servers. Visits pass through Cloudflare, which protects the site from attacks.
+      leaving:
+        heading: Leaving
+        body: You can delete your account from your Account page at any time. Children only you look after are deleted with everything recorded about them. What you wrote in other children's logs stays, without your name, as part of their record. Deleted things can stay in the backups for up to a year before they're cleared out.
+      check:
+        heading: Check for yourself
+        body_html: The %{code}, so anyone can see exactly what it does. If you have a question, %{issue}.
+        code: code is open source
+        issue: open an issue on GitHub
 
   accounts:
     show:
