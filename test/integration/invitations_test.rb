@@ -37,6 +37,18 @@ class InvitationsTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_content
   end
 
+  test "someone looking after no children can't invite anyone" do
+    sign_in_as users(:dan)
+
+    get new_invitation_path
+    assert_response :success
+
+    assert_no_difference -> { Invitation.count } do
+      post invitations_path, params: { invitation: { child_ids: [ "" ] } }
+    end
+    assert_response :unprocessable_content
+  end
+
   test "other people's invitations are out of reach" do
     invitation = users(:carol).invitations.create!(children: [ children(:wren) ])
     sign_in_as users(:alice)

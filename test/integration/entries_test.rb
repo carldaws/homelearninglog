@@ -58,6 +58,18 @@ class EntriesTest < ActionDispatch::IntegrationTest
     assert_equal [ changed, added ], entries(:painting).reload.ideas.map(&:description)
   end
 
+  test "an idea cleared in a form that didn't save stays cleared" do
+    sign_in_as users(:alice)
+
+    patch child_entry_path(children(:sam), entries(:painting)), params: { entry: { what_we_did: "",
+      ideas_attributes: { "0" => { id: ideas(:boat_in_the_bath).id, description: "" } } } }
+
+    assert_response :unprocessable_content
+    id_field = css_select("[data-ideas-target=list] input[type=hidden][value='#{ideas(:boat_in_the_bath).id}']").first
+    description_field = css_select("input[name='#{id_field["name"].sub("[id]", "[description]")}']").first
+    assert description_field["value"].blank?
+  end
+
   test "another entry's ideas can't be changed through this one" do
     sign_in_as users(:alice)
 

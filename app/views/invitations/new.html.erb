@@ -8,7 +8,9 @@
   <%= form_with model: @invitation do |form| %>
     <%= render "shared/errors", record: @invitation %>
 
-    <% if Current.user.children.many? %>
+    <% if Current.user.children.one? %>
+      <%= form.hidden_field :child_ids, multiple: true, value: Current.user.children.first.id %>
+    <% else %>
       <fieldset class="field">
         <legend class="label mb-2"><%= t(".children") %></legend>
         <div class="flex flex-wrap gap-x-6 gap-y-3">
@@ -17,8 +19,6 @@
           <% end %>
         </div>
       </fieldset>
-    <% else %>
-      <%= form.hidden_field :child_ids, multiple: true, value: Current.user.children.first.id %>
     <% end %>
 
     <div class="form-actions">

@@ -43,7 +43,7 @@
     <fieldset class="field" data-controller="ideas">
       <legend class="label mb-2"><%= t(".what_could_come_next") %></legend>
       <div class="grid gap-2" data-ideas-target="list">
-        <%= form.fields_for :ideas, entry.ideas.reject(&:marked_for_destruction?).including(Idea.new) do |idea_form| %>
+        <%= form.fields_for :ideas, [ *entry.ideas, Idea.new ] do |idea_form| %>
           <%= idea_form.text_field :description, autocomplete: "off", class: "input", aria: { label: t(".idea") } %>
         <% end %>
       </div>
