@@ -1,5 +1,5 @@
 <%# locals: (entry:) %>
-<article id="<%= dom_id(entry) %>" class="card card--ruled">
+<article id="<%= dom_id(entry) %>" class="card card--ruled" data-controller="reveal">
   <% if entry.followed_idea.present? %>
     <p class="mb-3 text-sm">
       <span class="caption"><%= t(".following_on_from") %></span>
@@ -50,21 +50,18 @@
     <% if entry.minutes.present? %>
       <span class="tag"><%= duration(entry.minutes) %></span>
     <% end %>
-    <%= link_to t(".edit"), edit_child_entry_path(entry.child, entry), class: "link link--muted ml-auto text-sm" %>
+    <button type="button" class="link link--muted ml-auto cursor-pointer text-sm" aria-expanded="false" aria-controls="<%= dom_id(entry, :new_comment) %>"
+            data-reveal-target="button" data-action="reveal#toggle"><%= t(".comment") %></button>
+    <%= link_to t(".edit"), edit_child_entry_path(entry.child, entry), class: "link link--muted text-sm" %>
   </footer>
 
-  <div class="mt-4 border-t border-line pt-4">
-    <% if entry.comments.any? %>
-      <ol class="mb-4 grid gap-4">
-        <%= render partial: "entries/comments/comment", collection: entry.comments %>
-      </ol>
-    <% end %>
+  <% if entry.comments.any? %>
+    <ol class="mt-4 grid gap-3 border-t border-line pt-4">
+      <%= render partial: "entries/comments/comment", collection: entry.comments %>
+    </ol>
+  <% end %>
 
-    <details>
-      <summary class="link link--muted cursor-pointer text-sm"><%= t(".comment") %></summary>
-      <div class="mt-3">
-        <%= render "entries/comments/form", entry:, comment: Comment.new %>
-      </div>
-    </details>
+  <div id="<%= dom_id(entry, :new_comment) %>" class="mt-4 border-t border-line pt-4" hidden data-reveal-target="content">
+    <%= render "entries/comments/form", entry:, comment: Comment.new %>
   </div>
 </article>
