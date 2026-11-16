@@ -1,6 +1,7 @@
 class EntriesController < ApplicationController
   include FamilyScoped
 
+  before_action :require_children, only: %i[ new create ]
   before_action :set_entry, only: %i[ edit update destroy ]
 
   def index
@@ -38,6 +39,10 @@ class EntriesController < ApplicationController
   end
 
   private
+    def require_children
+      redirect_to new_family_child_path if Current.family.children.none?
+    end
+
     def set_entry
       @entry = Current.family.entries.find(params[:id])
     end

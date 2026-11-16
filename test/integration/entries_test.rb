@@ -23,6 +23,16 @@ class EntriesTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", new_entry_path, count: 0
   end
 
+  test "a family without children is sent to add one before logging" do
+    sign_in_as users(:carol)
+    entries(:den).destroy!
+    children(:wren).destroy!
+
+    get new_entry_path
+
+    assert_redirected_to new_family_child_path
+  end
+
   test "adding to the log" do
     sign_in_as users(:bob)
 
