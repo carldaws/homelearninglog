@@ -176,7 +176,7 @@ en:
         body: What you put in, so the app can work. That's your name, email address and password (stored scrambled, so nobody can read it), and for each child their name, their log with its photos and comments, and their calendar. When you sign in, the device and internet address you used are noted, and the server keeps short-lived logs of requests. Encrypted backups are kept so nothing is lost if the server fails.
       seen:
         heading: Who sees it
-        body: Only the grown-ups you invite to a child see that child's log, photos, comments and calendar. An invite works once and stops working after a week. Your calendar link works for anyone you give it to, so keep it to yourself; you can make a new one at any time and the old one stops working. Photos are shown with their location and camera details removed, but the original file is kept as it was uploaded.
+        body: Only the grown-ups you invite to a child see that child's log, photos, comments and calendar. An invite works once and stops working after a week. Your calendar link works for anyone you give it to, so keep it to yourself; you can make a new one at any time and the old one stops working. Photos have their location and camera details removed as they're uploaded.
       done:
         heading: What's done with it
         body: Nothing else. Nothing is charged for, there are no ads, nothing you put in is sold or shared, and nobody looks at what you write. Nothing about how you use it is tracked. Cookies are only used to keep you signed in, to protect forms and to remember which child you last looked at, and nothing is loaded from anyone else's servers. Visits pass through Cloudflare, which protects the site from attacks.

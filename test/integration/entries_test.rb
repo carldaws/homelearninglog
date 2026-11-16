@@ -100,6 +100,26 @@ class EntriesTest < ActionDispatch::IntegrationTest
     assert_equal 2, children(:sam).entries.last.photos.count
   end
 
+  test "uploaded photos are kept without their location and camera details" do
+    sign_in_as users(:alice)
+
+    post child_entries_path(children(:sam)), params: { entry: { happened_on: Date.current, photos: [ fixture_file_upload("photo.jpg", "image/jpeg") ] } }
+
+    photo = children(:sam).entries.last.photos.first
+    assert_equal Mime[:jpeg], photo.content_type
+    assert_not Vips::Image.new_from_buffer(photo.download, "").get_fields.include?("exif-data")
+  end
+
+  test "something that isn't a photo still isn't taken" do
+    sign_in_as users(:alice)
+
+    assert_no_difference -> { Entry.count } do
+      post child_entries_path(children(:sam)), params: { entry: { happened_on: Date.current, photos: [ fixture_file_upload("notes.txt", "text/plain") ] } }
+    end
+
+    assert_response :unprocessable_content
+  end
+
   test "an empty entry isn't added" do
     sign_in_as users(:alice)
 

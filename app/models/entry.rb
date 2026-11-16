@@ -16,6 +16,8 @@ class Entry < ApplicationRecord
     attachable.variant :large, resize_to_limit: [ 2000, 2000 ], format: :webp, saver: { strip: true }
   end
 
+  include ScrubbedPhotos
+
   delegate :first_name, to: :author, prefix: true, allow_nil: true
 
   validates :author, presence: true, on: :create
