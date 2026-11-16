@@ -38,4 +38,33 @@ class AccountsTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_content
   end
+
+  test "changing your password needs your current one, and keeps you signed in here" do
+    new_password = "a brand new password"
+
+    patch account_password_path, params: { user: { current_password: "not my password", password: new_password } }
+    assert_response :unprocessable_content
+    assert_not users(:alice).reload.authenticate_password(new_password)
+
+    patch account_password_path, params: { user: { current_password: FixturePasswords::PASSWORD, password: new_password } }
+    assert_redirected_to account_path
+    assert users(:alice).reload.authenticate_password(new_password)
+    assert_signed_in
+  end
+
+  test "a new password can't be blank or short" do
+    patch account_password_path, params: { user: { current_password: FixturePasswords::PASSWORD, password: "" } }
+    assert_response :unprocessable_content
+
+    patch account_password_path, params: { user: { current_password: FixturePasswords::PASSWORD, password: "short" } }
+    assert_response :unprocessable_content
+  end
+
+  test "changing your password signs out your other devices" do
+    users(:alice).sessions.create!
+
+    patch account_password_path, params: { user: { current_password: FixturePasswords::PASSWORD, password: "a brand new password" } }
+
+    assert_equal 1, users(:alice).sessions.count
+  end
 end

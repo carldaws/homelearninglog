@@ -1,0 +1,22 @@
+<% content_for :title, t(".title") %>
+<% turbo_exempts_page_from_cache %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= form_with model: @user, url: account_password_path, method: :patch do |form| %>
+    <%= render "shared/errors", record: @user %>
+
+    <div class="fields">
+      <%= render "shared/password_field", form:, field: :current_password, autocomplete: "current-password", label: t(".current_password") %>
+      <%= render "shared/password_field", form:, field: :password, autocomplete: "new-password", label: t(".password") %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit t(".save"), class: "button button--wide" %>
+      <%= link_to t(".cancel"), account_path, class: "button button--secondary button--wide" %>
+    </div>
+  <% end %>
+</div>

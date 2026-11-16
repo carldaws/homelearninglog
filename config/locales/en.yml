@@ -172,6 +172,7 @@ en:
       edit: Edit
       name: Name
       email_address: Email
+      change_password: Change password
       sign_out: Sign out
     edit:
       title: Edit your details
@@ -180,6 +181,15 @@ en:
       current_password: Current password
       save: Save
       cancel: Cancel
+
+  account:
+    passwords:
+      edit:
+        title: Change password
+        current_password: Current password
+        password: New password
+        save: Save
+        cancel: Cancel
 
   recovery_codes:
     show:

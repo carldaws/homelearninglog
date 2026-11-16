@@ -7,9 +7,6 @@ module User::Recoverable
   included do
     has_secure_password :recovery_code, validations: false, reset_token: false
 
-    # has_secure_password ignores a blank password on update rather than rejecting it
-    validates :password, presence: true, on: :password_reset
-
     before_validation :replace_recovery_code, on: %i[ create password_reset ]
   end
 

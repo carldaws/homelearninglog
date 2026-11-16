@@ -15,7 +15,10 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
   validates :password, length: { minimum: 8 }, allow_nil: true
-  validate :current_password_is_right, on: :account_change, if: :will_save_change_to_email_address?
+  # has_secure_password ignores a blank password on update rather than rejecting it
+  validates :password, presence: true, on: %i[ password_reset password_change ]
+  validates :current_password, current_password: true, on: :account_change, if: :will_save_change_to_email_address?
+  validates :current_password, current_password: true, on: :password_change
 
   after_update :sign_out_everywhere, if: :saved_change_to_password_digest?
 
@@ -26,10 +29,6 @@ class User < ApplicationRecord
   end
 
   private
-    def current_password_is_right
-      errors.add(:current_password, :invalid) unless BCrypt::Password.new(password_digest_in_database).is_password?(current_password.to_s)
-    end
-
     def sign_out_everywhere
       sessions.destroy_all
     end

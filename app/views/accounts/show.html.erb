@@ -17,6 +17,7 @@
 </dl>
 
 <div class="flex flex-wrap gap-3">
+  <%= link_to t(".change_password"), edit_account_password_path, class: "button button--secondary" %>
   <%# A full page load clears Turbo's cached copies of signed-in pages %>
   <%= button_to t(".sign_out"), session_path, method: :delete, form: { data: { turbo: false } }, class: "button button--secondary" %>
 </div>
