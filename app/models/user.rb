@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_secure_password reset_token: false
 
   has_many :sessions, dependent: :destroy
+  has_one :membership, dependent: :destroy
+  has_one :family, through: :membership
 
   generates_token_for :sign_in_link, expires_in: 3.days do
     password_salt.last(10)
@@ -18,6 +20,13 @@ class User < ApplicationRecord
 
   def first_name
     name.split.first
+  end
+
+  def start_family(attributes)
+    Family.new(attributes).tap do |family|
+      family.memberships.build(user: self)
+      family.save
+    end
   end
 
   private

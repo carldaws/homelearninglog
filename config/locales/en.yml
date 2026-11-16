@@ -4,6 +4,10 @@ en:
 
   activerecord:
     attributes:
+      family:
+        name: Name
+      child:
+        name: Name
       user:
         name: Name
         email_address: Email address
@@ -14,9 +18,16 @@ en:
           attributes:
             email_address:
               taken: is already used by another account
+        membership:
+          attributes:
+            user:
+              already_in_a_family: is already in a family
+            base:
+              last_member: Someone has to stay in the family, so the last grown-up can't leave.
 
   layouts:
     account_menu:
+      family: Your family
       sign_out: Sign out
     signed_out_nav:
       sign_in: Sign in
@@ -26,6 +37,10 @@ en:
     password_field:
       show: Show
       hide: Hide
+    share_link:
+      share: Share link
+      copy: Copy link
+      copied: Copied
 
   home:
     show:
@@ -80,3 +95,97 @@ en:
       title: Link expired
       heading: This link has expired
       intro: Sign-in links work once and only for three days. Ask someone else in your family to make you a new one.
+
+  families:
+    new:
+      title: Start your family
+      heading: Start your family
+      intro: The log belongs to your family. You can invite the other grown-ups once it's set up.
+      name: Family name
+      name_hint: Something like "The Dawsons". Anyone you invite will see it.
+      submit: Start
+      invited: Been sent an invite? Open the link to join your family instead.
+    create:
+      started: Your family's ready. Who's being home educated?
+    show:
+      kicker: Your family
+      rename: Rename
+      children: Children
+      edit: Edit
+      edit_child: Edit %{name}
+      no_children: No children yet.
+      add_child: Add a child
+      grown_ups: Grown-ups
+      you: You
+      leave: Leave
+      leave_confirm: Leave %{family}? You'll stop seeing the log, and someone will need to invite you back.
+      sign_in_link: Sign-in link
+      remove: Remove
+      remove_confirm: Remove %{name} from the family? They'll stop seeing the log.
+      invite: Invite a grown-up
+    edit:
+      title: Rename your family
+      heading: Rename your family
+      name: Family name
+      submit: Save
+      cancel: Cancel
+    update:
+      renamed: Saved.
+    children:
+      form:
+        name: Name
+        name_hint: Whatever you call them day to day.
+        add: Add
+        save: Save
+        cancel: Cancel
+      new:
+        title: Add a child
+        heading: Add a child
+        intro: Add each child you're home educating. You can add more later.
+      edit:
+        title: "%{name}"
+        heading: "%{name}"
+        remove: Remove %{name}
+        remove_confirm: Remove %{name} from the family?
+      create:
+        added: Added %{name}.
+      update:
+        renamed: Saved %{name}.
+      destroy:
+        removed: Removed %{name}.
+    memberships:
+      destroy:
+        removed: "%{name} has left the family."
+      sign_in_links:
+        show:
+          title: Sign-in link
+          heading: A sign-in link for %{name}
+          intro: If %{name} has forgotten their password, send them this link. It lets them choose a new one and signs them in.
+          share_title: Your sign-in link
+          expiry: It works once, for three days. Anyone with the link can get into the account, so send it straight to them.
+    invitations:
+      show:
+        title: Invite a grown-up
+        heading: Invite a grown-up
+        intro: Send this link to another grown-up in %{family}. Once they join, they can see everything in the log and add to it.
+        share_title: Join %{family} on %{app}
+        expiry: The link works for seven days. Anyone with it can join, so only send it to people you trust.
+
+  joins:
+    rate_limited: Too many tries. Please wait a few minutes and try again.
+    show:
+      title: Join %{family}
+      invited: You've been invited to join
+      members: With %{names}
+      register: Create an account
+      sign_in: Sign in
+      already_member: You're already in this family.
+      open: Open the log
+      in_another_family: You're already in %{family}. For now, each person can only be in one family.
+      join: Join %{family}
+    create:
+      joined: Welcome to %{family}.
+    expired:
+      title: Invite expired
+      heading: This invite has expired
+      intro: Invite links work for seven days. Ask whoever sent it to make you a new one.

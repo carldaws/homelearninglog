@@ -1,0 +1,6 @@
+<%# locals: (url:, title:) %>
+<div class="flex flex-col gap-3 sm:flex-row" data-controller="share" data-share-url-value="<%= url %>"
+     data-share-title-value="<%= title %>" data-share-copied-value="<%= t(".copied") %>">
+  <button type="button" class="button button--wide" hidden data-share-target="shareButton" data-action="share#share"><%= t(".share") %></button>
+  <button type="button" class="button button--secondary button--wide" data-share-target="copyButton" data-action="share#copy"><%= t(".copy") %></button>
+</div>

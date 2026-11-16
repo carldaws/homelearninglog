@@ -1,0 +1,16 @@
+<% content_for :title, t(".title") %>
+<% content_for :head, tag.meta(name: "turbo-cache-control", content: "no-cache") %>
+
+<div class="narrow">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title"><%= t(".heading") %></h1>
+      <p class="mt-1 text-muted"><%= t(".intro", family: Current.family.name) %></p>
+    </div>
+  </header>
+
+  <div class="card">
+    <%= render "shared/share_link", url: @invitation_link, title: t(".share_title", family: Current.family.name, app: t("app.name")) %>
+    <p class="hint mt-5"><%= t(".expiry") %></p>
+  </div>
+</div>

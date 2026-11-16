@@ -12,3 +12,8 @@ carol:
   name: Carol Elm
   email_address: carol@example.com
   password_digest: <%= password_digest %>
+
+dan:
+  name: Dan Ash
+  email_address: dan@example.com
+  password_digest: <%= password_digest %>

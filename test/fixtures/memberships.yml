@@ -1,0 +1,11 @@
+alice_in_oaks:
+  family: oaks
+  user: alice
+
+bob_in_oaks:
+  family: oaks
+  user: bob
+
+carol_in_elms:
+  family: elms
+  user: carol

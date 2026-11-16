@@ -4,6 +4,10 @@
   </summary>
 
   <div class="menu">
+    <% if Current.family.present? %>
+      <%= link_to t(".family"), family_path, class: "menu-item" %>
+      <div class="menu-divider"></div>
+    <% end %>
     <%= button_to t(".sign_out"), session_path, method: :delete, form: { data: { turbo: false } }, class: "menu-item" %>
   </div>
 </details>
