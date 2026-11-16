@@ -13,14 +13,6 @@ export default class extends Controller {
     document.removeEventListener("keydown", this.closeOnEscape)
   }
 
-  toggled() {
-    if (this.element.open) {
-      document.querySelectorAll("details[data-controller~=menu][open]").forEach(menu => {
-        if (menu !== this.element) menu.open = false
-      })
-    }
-  }
-
   closeWhenOutside(event) {
     if (!this.element.contains(event.target)) this.element.open = false
   }
