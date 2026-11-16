@@ -8,6 +8,7 @@
       <%= link_to t(".family"), family_path, class: "menu-item" %>
       <div class="menu-divider"></div>
     <% end %>
+    <%# A full page load clears Turbo's cached copies of signed-in pages %>
     <%= button_to t(".sign_out"), session_path, method: :delete, form: { data: { turbo: false } }, class: "menu-item" %>
   </div>
 </details>

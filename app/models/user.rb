@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
+  # has_secure_password ignores a blank password on update rather than rejecting it
   validates :password, presence: true, on: :password_change
   validates :password, length: { minimum: 8 }, allow_nil: true
 

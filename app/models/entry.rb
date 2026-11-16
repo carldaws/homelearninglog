@@ -22,6 +22,10 @@ class Entry < ApplicationRecord
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
 
+  def saved_photos
+    photos.select(&:persisted?)
+  end
+
   private
     def children_are_in_the_family
       errors.add(:children, :outside_the_family) if children.any? { it.family_id != family_id }

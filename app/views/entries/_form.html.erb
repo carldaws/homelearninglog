@@ -5,9 +5,9 @@
   <div class="fields">
     <div class="field">
       <%= form.label :photos, t(".photos"), class: "label" %>
-      <% if entry.photos.any?(&:persisted?) %>
+      <% if entry.saved_photos.any? %>
         <div class="prints mb-2">
-          <% entry.photos.select(&:persisted?).each.with_index(1) do |photo, number| %>
+          <% entry.saved_photos.each.with_index(1) do |photo, number| %>
             <label class="print cursor-pointer">
               <%= image_tag entry_photo_path(entry, photo, size: :thumbnail), alt: t(".photo", number:), class: "h-24 w-auto" %>
               <span class="absolute right-2 bottom-2 flex items-center gap-1.5 rounded-[3px] bg-card/90 px-1.5 py-1">
