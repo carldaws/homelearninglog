@@ -165,4 +165,18 @@ class FamiliesTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  test "a removed grown-up's sign-in links stop working" do
+    sign_in_as users(:bob)
+    get family_membership_sign_in_link_path(memberships(:alice_in_oaks))
+    link = css_select("[data-share-url-value]").first["data-share-url-value"]
+    delete session_path
+
+    sign_in_as users(:alice)
+    delete family_membership_path(memberships(:bob_in_oaks))
+    delete session_path
+
+    get link
+    assert_response :not_found
+  end
 end

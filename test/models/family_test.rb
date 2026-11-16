@@ -44,4 +44,20 @@ class FamilyTest < ActiveSupport::TestCase
     travel 2.minutes
     assert_nil Family.find_by_token_for(:invitation, token)
   end
+
+  test "removing someone cancels the invitations they could have kept" do
+    token = families(:oaks).generate_token_for(:invitation)
+
+    memberships(:bob_in_oaks).destroy!
+
+    assert_nil Family.find_by_token_for(:invitation, token)
+  end
+
+  test "someone joining leaves the invitation working for others" do
+    token = families(:oaks).generate_token_for(:invitation)
+
+    families(:oaks).join(users(:dan))
+
+    assert_equal families(:oaks), Family.find_by_token_for(:invitation, token)
+  end
 end

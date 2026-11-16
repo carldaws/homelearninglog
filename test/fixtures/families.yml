@@ -1,5 +1,7 @@
 oaks:
   name: The Oaks
+  invitation_code: oaks-invitation-code
 
 elms:
   name: The Elms
+  invitation_code: elms-invitation-code

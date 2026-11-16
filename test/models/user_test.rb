@@ -56,4 +56,12 @@ class UserTest < ActiveSupport::TestCase
   test "first names come from the full name" do
     assert_equal users(:alice).name.split.first, users(:alice).first_name
   end
+
+  test "a sign-in link stops working once someone leaves the family" do
+    token = users(:alice).generate_token_for(:sign_in_link)
+
+    memberships(:bob_in_oaks).destroy!
+
+    assert_nil User.find_by_token_for(:sign_in_link, token)
+  end
 end

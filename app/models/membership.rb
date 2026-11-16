@@ -4,7 +4,8 @@ class Membership < ApplicationRecord
 
   validates :user, uniqueness: { message: :already_in_a_family }
 
-  before_destroy :keep_someone_in_the_family, unless: :destroyed_by_association
+  before_destroy :keep_someone_in_the_family
+  after_destroy -> { family.cancel_invitations }
 
   private
     def keep_someone_in_the_family

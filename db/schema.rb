@@ -72,6 +72,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_163538) do
 
   create_table "families", force: :cascade do |t|
     t.string "name", null: false
+    t.string "invitation_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

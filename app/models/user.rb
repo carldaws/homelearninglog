@@ -5,8 +5,10 @@ class User < ApplicationRecord
   has_one :membership, dependent: :destroy
   has_one :family, through: :membership
 
+  delegate :member_ids, to: :family, prefix: true, allow_nil: true
+
   generates_token_for :sign_in_link, expires_in: 3.days do
-    password_salt.last(10)
+    [ password_salt.last(10), family_member_ids ]
   end
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
