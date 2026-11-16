@@ -67,6 +67,15 @@ class EntriesTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_content
   end
 
+  test "an entry can't be changed to be about another family's child" do
+    sign_in_as users(:alice)
+
+    patch entry_path(entries(:painting)), params: { entry: { child_ids: [ children(:wren).id ] } }
+
+    assert_response :unprocessable_content
+    assert_equal [ children(:sam) ], entries(:painting).reload.children
+  end
+
   test "editing an entry" do
     sign_in_as users(:bob)
 

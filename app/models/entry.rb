@@ -15,17 +15,18 @@ class Entry < ApplicationRecord
 
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
   validates :children, presence: true
+  validate :children_are_in_the_family
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validate :has_notes_or_photos
   validate :photos_are_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
 
-  def child_ids=(ids)
-    super(family.children.where(id: ids).ids)
-  end
-
   private
+    def children_are_in_the_family
+      errors.add(:children, :outside_the_family) if children.any? { it.family_id != family_id }
+    end
+
     def has_notes_or_photos
       errors.add(:base, :empty) if notes.blank? && !photos.attached?
     end

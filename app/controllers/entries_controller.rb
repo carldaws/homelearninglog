@@ -12,9 +12,9 @@ class EntriesController < ApplicationController
   end
 
   def create
-    @entry = Current.family.entries.build(author: Current.user)
+    @entry = Current.family.entries.build(entry_params.merge(author: Current.user))
 
-    if @entry.update(entry_params)
+    if @entry.save
       redirect_to root_path, notice: t(".added")
     else
       render :new, status: :unprocessable_content

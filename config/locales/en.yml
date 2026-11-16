@@ -43,6 +43,8 @@ en:
               photo_too_big: "%{filename} is too big. Photos can be up to 25 MB."
             happened_on:
               less_than_or_equal_to: can't be in the future
+            children:
+              outside_the_family: have to be in your family
         membership:
           attributes:
             user:

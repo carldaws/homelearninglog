@@ -21,10 +21,11 @@ class EntryTest < ActiveSupport::TestCase
     assert @entry.errors.of_kind?(:children, :blank)
   end
 
-  test "children from other families are left out" do
+  test "an entry can only be about the family's own children" do
     @entry.assign_attributes(notes: entries(:painting).notes, child_ids: [ children(:ivy).id, children(:wren).id ])
 
-    assert_equal [ children(:ivy) ], @entry.children
+    assert_not @entry.valid?
+    assert @entry.errors.of_kind?(:children, :outside_the_family)
   end
 
   test "entries can't be in the future" do
