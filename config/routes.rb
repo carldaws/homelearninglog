@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resource :recovery_code, only: :show
 
   resources :children, only: %i[ show new create edit update destroy ] do
+    resource :log, only: :show
+
     resources :entries, only: %i[ new create edit update destroy ] do
       scope module: :entries do
         resources :photos, only: :show
@@ -36,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   direct :entry_in_log do |entry|
-    route_for :child, entry.child_id, through: entry.happened_on.iso8601, anchor: ActionView::RecordIdentifier.dom_id(entry)
+    route_for :child_log, entry.child_id, through: entry.happened_on.iso8601, anchor: ActionView::RecordIdentifier.dom_id(entry)
   end
 
   resources :invitations, only: %i[ new create show ]

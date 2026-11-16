@@ -27,6 +27,10 @@ class Child < ApplicationRecord
     Idea.set_aside.where(entry: entries).order(set_aside_at: :desc).includes(entry: :author)
   end
 
+  def now
+    Now.new(self)
+  end
+
   def log(through: nil)
     Log.new(self, through:)
   end

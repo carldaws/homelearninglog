@@ -4,7 +4,7 @@ class CommentsTest < ActionDispatch::IntegrationTest
   test "comments show under their entry" do
     sign_in_as users(:alice)
 
-    get child_path(children(:sam))
+    get child_log_path(children(:sam))
 
     assert_select "##{dom_id(entries(:painting))} ##{dom_id(comments(:leaks))}", text: /#{comments(:leaks).body}/
   end
@@ -45,7 +45,7 @@ class CommentsTest < ActionDispatch::IntegrationTest
   test "other grown-ups' comments can't be changed, and aren't offered for editing" do
     sign_in_as users(:alice)
 
-    get child_path(children(:sam))
+    get child_log_path(children(:sam))
     assert_select "a[href=?]", edit_child_entry_comment_path(children(:sam), entries(:painting), comments(:leaks)), count: 0
 
     patch child_entry_comment_path(children(:sam), entries(:painting), comments(:leaks)), params: { comment: { body: entries(:moon).what_we_did } }

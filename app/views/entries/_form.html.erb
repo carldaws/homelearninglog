@@ -70,6 +70,6 @@
 
   <div class="form-actions">
     <%= form.submit (entry.persisted? ? t(".save") : t(".add")), class: "button button--wide", data: { turbo_submits_with: t(".saving") } %>
-    <%= link_to t(".cancel"), entry.child, class: "button button--secondary button--wide" %>
+    <%= link_to t(".cancel"), (entry.persisted? ? child_log_path(entry.child) : entry.child), class: "button button--secondary button--wide" %>
   </div>
 <% end %>

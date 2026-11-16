@@ -2,7 +2,7 @@ class ChildrenController < ApplicationController
   before_action :set_child, only: %i[ show edit update destroy ]
 
   def show
-    @log = @child.log(through: params[:through])
+    @now = @child.now
   end
 
   def new

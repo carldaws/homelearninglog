@@ -8,18 +8,6 @@ class Log
     @through = (DateParam.cast(through) || Date.current).end_of_week
   end
 
-  def occurrences
-    @occurrences ||= latest? ? [ *unlogged_from_yesterday, *today ] : []
-  end
-
-  def suggestions
-    @suggestions ||= latest? ? child.suggestions.to_a : []
-  end
-
-  def set_aside_ideas
-    @set_aside_ideas ||= latest? ? child.set_aside_ideas.to_a : []
-  end
-
   def weeks
     @weeks ||= shown_week_starts.map { Week.new(starts_on: it, entries: entries_by_week.fetch(it, [])) }
   end
@@ -29,18 +17,6 @@ class Log
   end
 
   private
-    def latest?
-      through >= Date.current
-    end
-
-    def unlogged_from_yesterday
-      child.occurrences_on(Date.yesterday).select(&:due?)
-    end
-
-    def today
-      child.occurrences_on(Date.current).reject(&:cancelled?)
-    end
-
     def week_starts
       @week_starts ||= child.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).pluck(:happened_on)
         .map(&:beginning_of_week).uniq.first(WEEKS_PER_PAGE + 1)

@@ -11,7 +11,7 @@ class EntriesController < ApplicationController
     @entry = @child.entries.build(entry_params.merge(author: Current.user))
 
     if @entry.save
-      redirect_to @child
+      redirect_to entry_in_log_path(@entry)
     else
       render :new, status: :unprocessable_content
     end
@@ -22,7 +22,7 @@ class EntriesController < ApplicationController
 
   def update
     if @entry.update(entry_params)
-      redirect_to @child
+      redirect_to entry_in_log_path(@entry)
     else
       render :edit, status: :unprocessable_content
     end
@@ -30,7 +30,7 @@ class EntriesController < ApplicationController
 
   def destroy
     @entry.destroy!
-    redirect_to @child, status: :see_other
+    redirect_to child_log_path(@child), status: :see_other
   end
 
   private

@@ -66,34 +66,6 @@ class LogTest < ActiveSupport::TestCase
     assert_equal 90, week.minutes
   end
 
-  test "today's events are shown, and yesterday's until they're logged" do
-    today = @child.events.create!(title: events(:visit).title, starts_on: Date.current)
-    yesterday = @child.events.create!(title: events(:visit).title, starts_on: Date.yesterday)
-    logged = @child.events.create!(title: events(:visit).title, starts_on: Date.yesterday)
-    @child.entries.create!(author: users(:alice), event: logged, happened_on: Date.yesterday, what_we_did: entries(:den).what_we_did)
-
-    assert_equal [ yesterday, today ], @child.log.occurrences.map(&:event)
-  end
-
-  test "cancelled events and older ones aren't shown" do
-    cancelled = @child.events.create!(title: events(:visit).title, starts_on: Date.current, repeats: :weekly)
-    cancelled.occurrence_on(Date.current).cancel
-    @child.events.create!(title: events(:visit).title, starts_on: Date.current - 2)
-
-    assert_empty @child.log.occurrences
-  end
-
-  test "earlier pages don't show events or suggestions" do
-    @child.events.create!(title: events(:visit).title, starts_on: Date.current)
-    entry = log Date.current - 60
-    entry.ideas.create!(description: ideas(:forest_map).description)
-
-    page = @child.log(through: Date.current - 30)
-
-    assert_empty page.occurrences
-    assert_empty page.suggestions
-  end
-
   private
     def log(date, minutes: nil)
       @child.entries.create!(author: users(:alice), happened_on: date, minutes:, what_we_did: entries(:den).what_we_did)

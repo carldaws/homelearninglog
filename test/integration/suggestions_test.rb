@@ -25,9 +25,11 @@ class SuggestionsTest < ActionDispatch::IntegrationTest
 
     follow_up = children(:sam).entries.last
     assert_equal ideas(:boat_in_the_bath), follow_up.followed_idea
-    assert_select "##{dom_id(ideas(:boat_in_the_bath), :suggestion)}", count: 0
     assert_select "##{dom_id(ideas(:boat_in_the_bath))} a[href$=?]", "##{dom_id(follow_up)}"
     assert_select "##{dom_id(follow_up)} a[href$=?]", "##{dom_id(entries(:painting))}"
+
+    get child_path(children(:sam))
+    assert_select "##{dom_id(ideas(:boat_in_the_bath), :suggestion)}", count: 0
   end
 
   test "setting a suggestion aside keeps it, out of the way" do
@@ -56,12 +58,6 @@ class SuggestionsTest < ActionDispatch::IntegrationTest
     get child_path(children(:sam))
 
     assert_select "#set_aside_ideas a[href=?]", new_child_idea_entry_path(children(:sam), ideas(:boat_in_the_bath))
-  end
-
-  test "suggestions are only on the latest page of the log" do
-    get child_path(children(:sam), through: Date.current - 30)
-
-    assert_select "[id^=suggestion_idea_]", count: 0
   end
 
   test "other children's ideas are out of reach" do

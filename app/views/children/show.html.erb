@@ -14,30 +14,22 @@
   <% end %>
 </header>
 
-<% if @log.occurrences.any? %>
+<% if @now.occurrences.any? %>
   <section class="stack mb-10" aria-label="<%= t(".today") %>">
-    <%= render partial: "children/occurrence", collection: @log.occurrences %>
+    <%= render partial: "children/occurrence", collection: @now.occurrences %>
   </section>
 <% end %>
 
-<% if @log.suggestions.any? || @log.set_aside_ideas.any? %>
+<% if @now.suggestions.any? || @now.set_aside_ideas.any? %>
   <section class="day" aria-labelledby="suggestions">
     <div class="ruled">
       <h2 id="suggestions" class="ruled-title"><%= t(".suggestions") %></h2>
     </div>
     <div class="stack">
-      <%= render partial: "ideas/suggestion", collection: @log.suggestions, as: :idea %>
-      <% if @log.set_aside_ideas.any? %>
-        <%= render "ideas/set_aside", ideas: @log.set_aside_ideas %>
+      <%= render partial: "ideas/suggestion", collection: @now.suggestions, as: :idea %>
+      <% if @now.set_aside_ideas.any? %>
+        <%= render "ideas/set_aside", ideas: @now.set_aside_ideas %>
       <% end %>
     </div>
   </section>
-<% end %>
-
-<%= render partial: "entries/week", collection: @log.weeks %>
-
-<% if @log.earlier.present? %>
-  <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">
-    <%= link_to t(".earlier"), child_path(@child, through: @log.earlier.iso8601), class: "button button--secondary" %>
-  </nav>
 <% end %>

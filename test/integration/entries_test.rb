@@ -1,12 +1,23 @@
 require "test_helper"
 
 class EntriesTest < ActionDispatch::IntegrationTest
-  test "a child's log shows their entries" do
+  test "the Now page has suggestions and the button to add to the log, but not the log" do
     sign_in_as users(:alice)
 
     get child_path(children(:sam))
 
     assert_select "h1", text: children(:sam).name
+    assert_select "a[href=?]", new_child_entry_path(children(:sam))
+    assert_select "##{dom_id(ideas(:boat_in_the_bath), :suggestion)}"
+    assert_select "##{dom_id(entries(:painting))}", count: 0
+  end
+
+  test "a child's log shows their entries" do
+    sign_in_as users(:alice)
+
+    get child_log_path(children(:sam))
+
+    assert_select "h1", text: I18n.t("logs.show.title")
     assert_select "##{dom_id(entries(:painting))}"
     assert_select "##{dom_id(entries(:moon))}"
     assert_select "##{dom_id(entries(:den))}", count: 0
@@ -21,7 +32,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
       post child_entries_path(children(:ivy)), params: { entry: { what_we_did: entries(:moon).what_we_did, happened_on: Date.current, minutes: 30 } }
     end
 
-    assert_redirected_to child_path(children(:ivy))
+    assert_redirected_to entry_in_log_path(children(:ivy).entries.last)
     entry = children(:ivy).entries.last
     assert_equal users(:bob), entry.author
     assert_equal 30, entry.minutes
@@ -54,7 +65,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
       "1" => { id: ideas(:famous_paintings).id, description: "" },
       "2" => { description: added } } } }
 
-    assert_redirected_to child_path(children(:sam))
+    assert_redirected_to entry_in_log_path(entries(:painting))
     assert_equal [ changed, added ], entries(:painting).reload.ideas.map(&:description)
   end
 
@@ -85,7 +96,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     post child_entries_path(children(:sam)), params: { entry: { happened_on: Date.current,
       photos: [ fixture_file_upload("photo.jpg", "image/jpeg"), fixture_file_upload("photo.jpg", "image/jpeg") ] } }
 
-    assert_redirected_to child_path(children(:sam))
+    assert_redirected_to entry_in_log_path(children(:sam).entries.last)
     assert_equal 2, children(:sam).entries.last.photos.count
   end
 
@@ -104,7 +115,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
 
     patch child_entry_path(children(:sam), entries(:painting)), params: { entry: { what_we_did: entries(:moon).what_we_did, minutes: "" } }
 
-    assert_redirected_to child_path(children(:sam))
+    assert_redirected_to entry_in_log_path(entries(:painting))
     assert_equal entries(:moon).what_we_did, entries(:painting).reload.what_we_did
     assert_nil entries(:painting).minutes
   end
@@ -118,7 +129,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
 
     patch child_entry_path(children(:sam), entry), params: { entry: { photos: [ kept.signed_id, "" ] } }
 
-    assert_redirected_to child_path(children(:sam))
+    assert_redirected_to entry_in_log_path(entry)
     assert_equal [ kept.blob ], entry.reload.photos.map(&:blob)
   end
 
@@ -129,13 +140,16 @@ class EntriesTest < ActionDispatch::IntegrationTest
       delete child_entry_path(children(:sam), entries(:painting))
     end
 
-    assert_redirected_to child_path(children(:sam))
+    assert_redirected_to child_log_path(children(:sam))
   end
 
   test "other children's logs are out of reach" do
     sign_in_as users(:alice)
 
     get child_path(children(:wren))
+    assert_response :not_found
+
+    get child_log_path(children(:wren))
     assert_response :not_found
 
     post child_entries_path(children(:wren)), params: { entry: { what_we_did: entries(:den).what_we_did, happened_on: Date.current } }

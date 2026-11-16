@@ -70,6 +70,7 @@ en:
       sign_out: Sign out
     tabs:
       label: Sections
+      now: Now
       log: Log
       calendar: Calendar
       grown_ups: Grown-ups
@@ -134,8 +135,6 @@ en:
       add: Add to the log
       today: Today
       suggestions: Suggestions
-      pagination: Earlier weeks
-      earlier: Earlier
     occurrence:
       log: Log it
     form:
@@ -148,6 +147,12 @@ en:
     edit:
       remove: Remove
       remove_confirm: Remove %{name}?
+
+  logs:
+    show:
+      title: Log
+      pagination: Earlier weeks
+      earlier: Earlier
 
   accesses:
     index:
