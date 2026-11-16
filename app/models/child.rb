@@ -37,7 +37,7 @@ class Child < ApplicationRecord
   end
 
   def occurrences_between(dates)
-    events.between(dates).includes(:cancellations, :grown_up)
+    events.between(dates).includes(:cancellations, :grown_up, :entries)
       .flat_map { it.occurrences_between(dates) }
       .sort_by { [ it.date, it.all_day? ? 0 : 1, it.start_time.to_i ] }
   end

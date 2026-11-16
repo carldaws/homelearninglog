@@ -21,6 +21,13 @@ class EventTest < ActiveSupport::TestCase
     assert dates.all? { (it - events(:swimming).starts_on).to_i.modulo(14).zero? }
   end
 
+  test "only events that could happen in the dates are looked at" do
+    dates = Date.new(2026, 11, 22)..Date.new(2026, 11, 28)
+
+    assert_equal [ events(:art_class), events(:swimming) ].sort, Event.between(dates).sort
+    assert_includes Event.between(Date.new(2026, 11, 21)..Date.new(2026, 11, 21)), events(:visit)
+  end
+
   test "one-off events happen once" do
     assert_equal [ Date.new(2026, 11, 21) ], events(:visit).occurrences_between(Date.new(2026, 11, 1)..Date.new(2026, 11, 30)).map(&:date)
     assert_empty events(:visit).occurrences_between(Date.new(2026, 12, 1)..Date.new(2026, 12, 31))
@@ -108,8 +115,7 @@ class EventTest < ActiveSupport::TestCase
     assert occurrence.due?
     assert_not events(:art_class).occurrence_on(Date.new(2026, 11, 23)).due?
 
-    children(:sam).entries.create!(occurrence.draft_entry.attributes.slice("happened_on", "minutes", "event_id")
-      .merge(author: users(:bob), what_we_did: entries(:painting).what_we_did))
-    assert_not occurrence.due?
+    occurrence.draft_entry.update!(author: users(:bob))
+    assert_not events(:art_class).reload.occurrence_on(Date.new(2026, 11, 16)).due?
   end
 end

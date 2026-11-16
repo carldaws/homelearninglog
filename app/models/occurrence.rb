@@ -33,7 +33,7 @@ class Occurrence
   end
 
   def logged?
-    event.entries.exists?(happened_on: date)
+    event.entries.any? { it.happened_on == date }
   end
 
   def repeats?
