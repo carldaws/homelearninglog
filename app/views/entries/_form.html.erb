@@ -1,5 +1,5 @@
 <%# locals: (entry:) %>
-<%= form_with model: entry do |form| %>
+<%= form_with model: [ entry.child, entry ] do |form| %>
   <%= render "shared/errors", record: entry %>
   <%= form.hidden_field :event_id if entry.event.present? %>
 
@@ -10,7 +10,7 @@
         <div class="prints mb-2">
           <% entry.saved_photos.each.with_index(1) do |photo, number| %>
             <label class="print cursor-pointer">
-              <%= image_tag entry_photo_path(entry, photo, size: :thumbnail), alt: t(".photo", number:), class: "h-24 w-auto" %>
+              <%= image_tag child_entry_photo_path(entry.child, entry, photo, size: :thumbnail), alt: t(".photo", number:), class: "h-24 w-auto" %>
               <span class="absolute right-2 bottom-2 flex items-center gap-1.5 rounded-[3px] bg-card/90 px-1.5 py-1">
                 <%= check_box_tag "entry[photos][]", photo.signed_id, true, id: dom_id(photo), class: "checkbox" %>
                 <span class="caption text-ink"><%= t(".keep") %></span>
@@ -27,19 +27,6 @@
       <%= form.textarea :notes, rows: 4, class: "input" %>
     </div>
 
-    <% if Current.family.children.many? %>
-      <fieldset class="field">
-        <legend class="label mb-2"><%= t(".children") %></legend>
-        <div class="flex flex-wrap gap-x-6 gap-y-3">
-          <%= form.collection_check_boxes :child_ids, Current.family.children.alphabetically, :id, :name do |option| %>
-            <%= option.label(class: "choice") { option.check_box(class: "checkbox") + option.text } %>
-          <% end %>
-        </div>
-      </fieldset>
-    <% else %>
-      <%= form.hidden_field :child_ids, multiple: true, value: Current.family.children.first.id %>
-    <% end %>
-
     <div class="grid gap-6 sm:grid-cols-2">
       <div class="field">
         <%= form.label :happened_on, t(".happened_on"), class: "label" %>
@@ -55,6 +42,6 @@
 
   <div class="form-actions">
     <%= form.submit (entry.persisted? ? t(".save") : t(".add")), class: "button button--wide", data: { turbo_submits_with: t(".saving") } %>
-    <%= link_to t(".cancel"), entries_path, class: "button button--secondary button--wide" %>
+    <%= link_to t(".cancel"), entry.child, class: "button button--secondary button--wide" %>
   </div>
 <% end %>

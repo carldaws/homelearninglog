@@ -9,6 +9,6 @@
 </div>
 
 <% if @child.removable? %>
-  <%= button_to t(".remove"), family_child_path(@child), method: :delete, class: "button button--danger button--wide mt-6",
+  <%= button_to t(".remove"), child_path(@child), method: :delete, class: "button button--danger button--wide mt-6",
         form: { data: { turbo_confirm: t(".remove_confirm", name: @child.name_in_database) } } %>
 <% end %>

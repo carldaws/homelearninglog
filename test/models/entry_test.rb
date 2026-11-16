@@ -3,7 +3,7 @@ require "vips"
 
 class EntryTest < ActiveSupport::TestCase
   setup do
-    @entry = families(:oaks).entries.build(author: users(:alice), happened_on: Date.current, children: [ children(:sam) ])
+    @entry = children(:sam).entries.build(author: users(:alice), happened_on: Date.current)
   end
 
   test "an entry needs notes or a photo" do
@@ -14,25 +14,11 @@ class EntryTest < ActiveSupport::TestCase
     assert @entry.valid?
   end
 
-  test "an entry is about at least one child" do
-    @entry.assign_attributes(notes: entries(:painting).notes, child_ids: [])
-
-    assert_not @entry.valid?
-    assert @entry.errors.of_kind?(:children, :blank)
-  end
-
-  test "an entry can only be about the family's own children" do
-    @entry.assign_attributes(notes: entries(:painting).notes, child_ids: [ children(:ivy).id, children(:wren).id ])
-
-    assert_not @entry.valid?
-    assert @entry.errors.of_kind?(:children, :outside_the_family)
-  end
-
-  test "an entry's event has to be the family's own" do
+  test "an entry's event has to be the child's own" do
     @entry.assign_attributes(notes: entries(:painting).notes, event: events(:swimming))
 
     assert_not @entry.valid?
-    assert @entry.errors.of_kind?(:event, :outside_the_family)
+    assert @entry.errors.of_kind?(:event, :invalid)
   end
 
   test "entries can't be in the future" do

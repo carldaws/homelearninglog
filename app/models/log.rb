@@ -1,10 +1,10 @@
 class Log
   DAYS_PER_PAGE = 10
 
-  attr_reader :family, :through
+  attr_reader :child, :through
 
-  def initialize(family, through: nil)
-    @family = family
+  def initialize(child, through: nil)
+    @child = child
     @through = DateParam.cast(through) || Date.current
   end
 
@@ -17,11 +17,11 @@ class Log
   end
 
   def earlier
-    entry_dates.last.yesterday if entry_dates.any? && family.entries.where(happened_on: ...entry_dates.last).exists?
+    entry_dates.last.yesterday if entry_dates.any? && child.entries.where(happened_on: ...entry_dates.last).exists?
   end
 
   def minutes_this_week
-    family.entries.where(happened_on: Date.current.all_week).sum(:minutes)
+    child.entries.where(happened_on: Date.current.all_week).sum(:minutes)
   end
 
   private
@@ -30,7 +30,7 @@ class Log
     end
 
     def recently_due
-      family.occurrences_between(Date.yesterday..Date.current).select(&:due?)
+      child.occurrences_between(Date.yesterday..Date.current).select(&:due?)
     end
 
     def dates
@@ -38,10 +38,10 @@ class Log
     end
 
     def entry_dates
-      @entry_dates ||= family.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).limit(DAYS_PER_PAGE).pluck(:happened_on)
+      @entry_dates ||= child.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).limit(DAYS_PER_PAGE).pluck(:happened_on)
     end
 
     def entries
-      @entries ||= family.entries.where(happened_on: entry_dates).latest_first.preloaded.group_by(&:happened_on)
+      @entries ||= child.entries.where(happened_on: entry_dates).latest_first.preloaded.group_by(&:happened_on)
     end
 end

@@ -4,22 +4,22 @@ class CalendarFeed
   MAXIMUM_LINE_OCTETS = 75
   FOLD_INDENT = " "
 
-  attr_reader :family
+  attr_reader :child
 
-  def initialize(family)
-    @family = family
+  def initialize(child)
+    @child = child
   end
 
   def to_ics
     lines = [ "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//#{escape(I18n.t("app.name"))}//EN", "CALSCALE:GREGORIAN",
-      "X-WR-CALNAME:#{escape(family.name)}", *occurrences.flat_map { event_lines(it) }, "END:VCALENDAR" ]
+      "X-WR-CALNAME:#{escape(child.name)}", *occurrences.flat_map { event_lines(it) }, "END:VCALENDAR" ]
 
     lines.map { fold(it) }.join("\r\n") + "\r\n"
   end
 
   private
     def occurrences
-      family.occurrences_between((Date.current - WEEKS_BEHIND.weeks)..(Date.current + WEEKS_AHEAD.weeks)).reject(&:cancelled?)
+      child.occurrences_between((Date.current - WEEKS_BEHIND.weeks)..(Date.current + WEEKS_AHEAD.weeks)).reject(&:cancelled?)
     end
 
     def event_lines(occurrence)
@@ -38,7 +38,7 @@ class CalendarFeed
 
     def description(occurrence)
       grown_up = occurrence.grown_up.name if occurrence.grown_up.present?
-      [ occurrence.children.map(&:name).sort.to_sentence, grown_up, occurrence.event.notes ].compact_blank.join("\n")
+      [ grown_up, occurrence.event.notes ].compact_blank.join("\n")
     end
 
     def utc(time)

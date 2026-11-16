@@ -1,0 +1,24 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+  <%= link_to t(".invite"), new_invitation_path(child_id: @child.id), class: "button sm:ml-auto" %>
+</header>
+
+<ul class="card card--flush list">
+  <% @child.accesses.alphabetically.each do |access| %>
+    <li class="row flex-wrap">
+      <span class="row-title"><%= access.user.name %></span>
+      <% if access.user == Current.user %>
+        <span class="caption"><%= t(".you") %></span>
+        <% if @child.accesses.many? %>
+          <%= button_to t(".leave"), child_access_path(@child, access), method: :delete, class: "link link--muted cursor-pointer",
+                form: { class: "ml-auto", data: { turbo_confirm: t(".leave_confirm") } } %>
+        <% end %>
+      <% else %>
+        <%= button_to t(".remove"), child_access_path(@child, access), method: :delete, class: "link link--muted cursor-pointer",
+              form: { class: "ml-auto", data: { turbo_confirm: t(".remove_confirm", name: access.user.name) } } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

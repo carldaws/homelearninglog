@@ -11,14 +11,14 @@ class SignInTest < ActionDispatch::IntegrationTest
   test "signing in" do
     sign_in_as users(:alice)
 
-    assert_redirected_to entries_url
+    assert_redirected_to root_url
     assert_signed_in
   end
 
   test "signing in however the email address is typed" do
     post session_path, params: { email_address: " #{users(:alice).email_address.upcase} ", password: FixturePasswords::PASSWORD }
 
-    assert_redirected_to entries_url
+    assert_redirected_to root_url
   end
 
   test "a wrong password doesn't sign you in" do
@@ -67,22 +67,30 @@ class SignInTest < ActionDispatch::IntegrationTest
 
     get new_session_path
 
-    assert_redirected_to entries_path
+    assert_redirected_to root_path
   end
 
-  test "signed-in people go straight to the log" do
+  test "signed-in people go straight to their first child's log" do
     sign_in_as users(:alice)
 
     get root_path
 
-    assert_redirected_to entries_path
+    assert_redirected_to child_path(children(:ivy))
+  end
+
+  test "people looking after no children are asked to add one" do
+    sign_in_as users(:dan)
+
+    get root_path
+
+    assert_redirected_to new_child_path
   end
 
   test "signing in returns you to where you were going" do
-    get new_entry_path
+    get new_child_entry_path(children(:sam))
 
     sign_in_as users(:alice)
 
-    assert_redirected_to new_entry_url
+    assert_redirected_to new_child_entry_url(children(:sam))
   end
 end

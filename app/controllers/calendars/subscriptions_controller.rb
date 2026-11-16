@@ -1,5 +1,5 @@
 class Calendars::SubscriptionsController < ApplicationController
-  include FamilyScoped
+  include ChildScoped
 
   before_action :no_store
 
@@ -7,7 +7,7 @@ class Calendars::SubscriptionsController < ApplicationController
   end
 
   def update
-    Current.family.regenerate_calendar_token
-    redirect_to calendar_subscription_path, status: :see_other
+    @child.regenerate_calendar_token
+    redirect_to child_calendar_subscription_path(@child), status: :see_other
   end
 end

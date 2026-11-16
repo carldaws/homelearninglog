@@ -1,7 +1,7 @@
 class CalendarsController < ApplicationController
-  include FamilyScoped
+  include ChildScoped
 
   def show
-    @week = Current.family.week(containing: params[:week])
+    @week = @child.week(containing: params[:week])
   end
 end

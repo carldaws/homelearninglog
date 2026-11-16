@@ -1,8 +1,8 @@
 class CreateChildren < ActiveRecord::Migration[8.1]
   def change
     create_table :children do |t|
-      t.references :family, null: false, foreign_key: true
       t.string :name, null: false
+      t.string :calendar_token, null: false, index: { unique: true }
 
       t.timestamps
     end

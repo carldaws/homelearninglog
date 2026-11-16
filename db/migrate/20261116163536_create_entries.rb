@@ -1,7 +1,7 @@
 class CreateEntries < ActiveRecord::Migration[8.1]
   def change
     create_table :entries do |t|
-      t.references :family, null: false, foreign_key: true, index: false
+      t.references :child, null: false, foreign_key: true, index: false
       t.references :author, null: false, foreign_key: { to_table: :users }
       t.date :happened_on, null: false
       t.text :notes
@@ -10,6 +10,6 @@ class CreateEntries < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :entries, %i[ family_id happened_on ]
+    add_index :entries, %i[ child_id happened_on ]
   end
 end

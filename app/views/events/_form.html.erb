@@ -1,5 +1,5 @@
 <%# locals: (event:) %>
-<%= form_with model: event, url: (event.persisted? ? event_path(event, week: params[:week]) : events_path), class: "group" do |form| %>
+<%= form_with model: [ event.child, event ], url: (event.persisted? ? child_event_path(event.child, event, week: params[:week]) : child_events_path(event.child)), class: "group" do |form| %>
   <%= render "shared/errors", record: event %>
 
   <div class="fields">
@@ -37,22 +37,9 @@
       </div>
     </div>
 
-    <% if Current.family.children.many? %>
-      <fieldset class="field">
-        <legend class="label mb-2"><%= t(".children") %></legend>
-        <div class="flex flex-wrap gap-x-6 gap-y-3">
-          <%= form.collection_check_boxes :child_ids, Current.family.children.alphabetically, :id, :name do |option| %>
-            <%= option.label(class: "choice") { option.check_box(class: "checkbox") + option.text } %>
-          <% end %>
-        </div>
-      </fieldset>
-    <% else %>
-      <%= form.hidden_field :child_ids, multiple: true, value: Current.family.children.first.id %>
-    <% end %>
-
     <div class="field">
       <%= form.label :grown_up_id, t(".grown_up"), class: "label" %>
-      <%= form.collection_select :grown_up_id, Current.family.members.alphabetically, :id, :name, { include_blank: true }, class: "input select" %>
+      <%= form.collection_select :grown_up_id, event.child.grown_ups.alphabetically, :id, :name, { include_blank: true }, class: "input select" %>
     </div>
 
     <div class="field">
@@ -63,6 +50,6 @@
 
   <div class="form-actions">
     <%= form.submit (event.persisted? ? t(".save") : t(".add")), class: "button button--wide" %>
-    <%= link_to t(".cancel"), calendar_path(week: params[:week].presence || event.starts_on_in_database || event.starts_on), class: "button button--secondary button--wide" %>
+    <%= link_to t(".cancel"), child_calendar_path(event.child, week: params[:week].presence || event.starts_on_in_database || event.starts_on), class: "button button--secondary button--wide" %>
   </div>
 <% end %>

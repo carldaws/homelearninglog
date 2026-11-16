@@ -1,17 +1,17 @@
 class Event < ApplicationRecord
-  belongs_to :family
+  belongs_to :child
   belongs_to :grown_up, class_name: "User", optional: true
-  has_and_belongs_to_many :children
   has_many :cancellations, dependent: :delete_all
   has_many :entries, dependent: :nullify
 
   enum :repeats, { never: 0, weekly: 1, fortnightly: 2 }, default: :never, suffix: true, validate: true
 
-  validates :title, :starts_on, :children, presence: true
-  validates :children, :grown_up, same_family: true
+  validates :title, :starts_on, presence: true
   validates :start_time, presence: true, if: :end_time
   validates :end_time, comparison: { greater_than: :start_time }, if: -> { start_time.present? && end_time.present? }
   validates :repeats_until, comparison: { greater_than_or_equal_to: :starts_on }, allow_nil: true, if: :starts_on
+
+  validate :grown_up_looks_after_the_child, if: :grown_up
 
   before_validation -> { self.repeats_until = nil }, if: :never_repeats?
 
@@ -45,6 +45,10 @@ class Event < ApplicationRecord
     def first_repeat_from(date)
       repeats_since_start = ([ date, starts_on ].max - starts_on).to_i.ceildiv(days_between_repeats)
       starts_on + repeats_since_start * days_between_repeats
+    end
+
+    def grown_up_looks_after_the_child
+      errors.add(:grown_up, :invalid) if child.grown_ups.exclude?(grown_up)
     end
 
     def days_between_repeats

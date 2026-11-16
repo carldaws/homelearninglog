@@ -15,7 +15,7 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     assert_equal User::RECOVERY_CODE_LENGTH, css_select(".select-all").first.text.delete(" ").length
-    assert_select "a[href=?]", entries_url
+    assert_select "a[href=?]", root_url
 
     get recovery_code_path
     assert_redirected_to root_path

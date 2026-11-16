@@ -1,0 +1,13 @@
+<% content_for :title, t(".title") %>
+<% turbo_exempts_page_from_cache %>
+
+<header class="page-header">
+  <div>
+    <p class="caption"><%= @invitation.children.alphabetically.map(&:name).to_sentence %></p>
+    <h1 class="page-title mt-1"><%= t(".title") %></h1>
+  </div>
+</header>
+
+<div class="card">
+  <%= render "shared/share_link", url: join_url(@invitation.token), title: t("app.name") %>
+</div>

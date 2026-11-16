@@ -1,8 +1,8 @@
 class Week
-  attr_reader :family, :starts_on
+  attr_reader :child, :starts_on
 
-  def initialize(family, containing: nil)
-    @family = family
+  def initialize(child, containing: nil)
+    @child = child
     @starts_on = (DateParam.cast(containing) || Date.current).beginning_of_week
   end
 
@@ -29,6 +29,6 @@ class Week
 
   private
     def occurrences
-      @occurrences ||= family.occurrences_between(dates)
+      @occurrences ||= child.occurrences_between(dates)
     end
 end

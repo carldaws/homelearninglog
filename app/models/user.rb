@@ -4,10 +4,9 @@ class User < ApplicationRecord
   has_secure_password reset_token: false
 
   has_many :sessions, dependent: :destroy
-  has_one :membership, dependent: :destroy
-  has_one :family, through: :membership
-
-  delegate :id, to: :family, prefix: true, allow_nil: true
+  has_many :accesses, dependent: :destroy
+  has_many :children, through: :accesses
+  has_many :invitations, foreign_key: :inviter_id, inverse_of: :inviter, dependent: :destroy
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
 
@@ -21,13 +20,6 @@ class User < ApplicationRecord
 
   def first_name
     name.split.first
-  end
-
-  def start_family(attributes)
-    Family.new(attributes).tap do |family|
-      family.memberships.build(user: self)
-      family.save
-    end
   end
 
   private

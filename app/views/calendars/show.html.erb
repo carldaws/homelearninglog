@@ -5,16 +5,16 @@
     <p class="caption"><%= l(@week.dates.first, format: :short) %> – <%= l(@week.dates.last, format: :short) %></p>
     <h1 class="page-title mt-1"><%= t(".title") %></h1>
   </div>
-  <%= link_to t(".add"), new_event_path(date: (@week.starts_on unless @week.current?)), class: "button" %>
+  <%= link_to t(".add"), new_child_event_path(@child, date: (@week.starts_on unless @week.current?)), class: "button" %>
 </header>
 
 <nav class="mb-8 flex flex-wrap gap-2" aria-label="<%= t(".weeks") %>">
-  <%= link_to t(".previous"), calendar_path(week: @week.previous), class: "button button--secondary button--small" %>
+  <%= link_to t(".previous"), child_calendar_path(@child, week: @week.previous), class: "button button--secondary button--small" %>
   <% unless @week.current? %>
-    <%= link_to t(".this_week"), calendar_path, class: "button button--secondary button--small" %>
+    <%= link_to t(".this_week"), child_calendar_path(@child), class: "button button--secondary button--small" %>
   <% end %>
-  <%= link_to t(".next"), calendar_path(week: @week.following), class: "button button--secondary button--small" %>
-  <%= link_to t(".subscribe"), calendar_subscription_path, class: "button button--secondary button--small sm:ml-auto" %>
+  <%= link_to t(".next"), child_calendar_path(@child, week: @week.following), class: "button button--secondary button--small" %>
+  <%= link_to t(".subscribe"), child_calendar_subscription_path(@child), class: "button button--secondary button--small sm:ml-auto" %>
 </nav>
 
 <% @week.days.each do |date, occurrences| %>

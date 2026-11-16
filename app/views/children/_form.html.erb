@@ -1,5 +1,5 @@
 <%# locals: (child:) %>
-<%= form_with model: child, url: (child.persisted? ? family_child_path(child) : family_children_path) do |form| %>
+<%= form_with model: child do |form| %>
   <%= render "shared/errors", record: child %>
 
   <div class="field">
@@ -9,6 +9,8 @@
 
   <div class="form-actions">
     <%= form.submit (child.persisted? ? t(".save") : t(".add")), class: "button button--wide" %>
-    <%= link_to t(".cancel"), family_path, class: "button button--secondary button--wide" %>
+    <% if child.persisted? %>
+      <%= link_to t(".cancel"), child, class: "button button--secondary button--wide" %>
+    <% end %>
   </div>
 <% end %>

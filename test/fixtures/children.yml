@@ -1,11 +1,11 @@
 sam:
-  family: oaks
   name: Sam
+  calendar_token: sam-calendar-token
 
 ivy:
-  family: oaks
   name: Ivy
+  calendar_token: ivy-calendar-token
 
 wren:
-  family: elms
   name: Wren
+  calendar_token: wren-calendar-token

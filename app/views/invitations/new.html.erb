@@ -1,0 +1,28 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= form_with model: @invitation do |form| %>
+    <%= render "shared/errors", record: @invitation %>
+
+    <% if Current.user.children.many? %>
+      <fieldset class="field">
+        <legend class="label mb-2"><%= t(".children") %></legend>
+        <div class="flex flex-wrap gap-x-6 gap-y-3">
+          <%= form.collection_check_boxes :child_ids, Current.user.children.alphabetically, :id, :name do |option| %>
+            <%= option.label(class: "choice") { option.check_box(class: "checkbox") + option.text } %>
+          <% end %>
+        </div>
+      </fieldset>
+    <% else %>
+      <%= form.hidden_field :child_ids, multiple: true, value: Current.user.children.first.id %>
+    <% end %>
+
+    <div class="form-actions">
+      <%= form.submit t(".submit"), class: "button button--wide" %>
+    </div>
+  <% end %>
+</div>

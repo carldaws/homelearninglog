@@ -60,7 +60,7 @@ class PasswordsTest < ActionDispatch::IntegrationTest
 
     get new_password_path
 
-    assert_redirected_to entries_path
+    assert_redirected_to root_path
   end
 
   private

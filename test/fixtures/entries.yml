@@ -1,21 +1,18 @@
 painting:
-  family: oaks
+  child: sam
   author: alice
   happened_on: <%= Date.current %>
   notes: Painted the view from the back window.
   minutes: 60
-  children: sam
 
 moon:
-  family: oaks
+  child: sam
   author: bob
   happened_on: <%= Date.yesterday %>
   notes: Asked why the Moon was out in the daytime.
-  children: sam, ivy
 
 den:
-  family: elms
+  child: wren
   author: carol
   happened_on: <%= Date.current %>
   notes: Built a den at forest school.
-  children: wren

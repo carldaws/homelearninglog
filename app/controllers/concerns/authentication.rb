@@ -35,11 +35,11 @@ module Authentication
     end
 
     def redirect_when_signed_in
-      redirect_to entries_path if authenticated?
+      redirect_to root_path if authenticated?
     end
 
     def after_authentication_url
-      session.delete(:return_to_after_authenticating) || entries_url
+      session.delete(:return_to_after_authenticating) || root_url
     end
 
     def start_new_session_for(user)

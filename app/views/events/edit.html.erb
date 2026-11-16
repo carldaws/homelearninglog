@@ -8,5 +8,5 @@
   <%= render "events/form", event: @event %>
 </div>
 
-<%= button_to t(".delete"), event_path(@event, week: params[:week]), method: :delete, class: "button button--danger button--wide mt-6",
+<%= button_to t(".delete"), child_event_path(@event.child, @event, week: params[:week]), method: :delete, class: "button button--danger button--wide mt-6",
       form: { data: { turbo_confirm: t(".delete_confirm", title: @event.title_in_database) } } %>

@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_172833) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_172325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "accesses", force: :cascade do |t|
+    t.bigint "child_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_id", "user_id"], name: "index_accesses_on_child_id_and_user_id", unique: true
+    t.index ["user_id"], name: "index_accesses_on_user_id"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -51,29 +60,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172833) do
   end
 
   create_table "children", force: :cascade do |t|
-    t.bigint "family_id", null: false
     t.string "name", null: false
+    t.string "calendar_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["family_id"], name: "index_children_on_family_id"
+    t.index ["calendar_token"], name: "index_children_on_calendar_token", unique: true
   end
 
-  create_table "children_entries", id: false, force: :cascade do |t|
+  create_table "children_invitations", id: false, force: :cascade do |t|
     t.bigint "child_id", null: false
-    t.bigint "entry_id", null: false
-    t.index ["child_id"], name: "index_children_entries_on_child_id"
-    t.index ["entry_id", "child_id"], name: "index_children_entries_on_entry_id_and_child_id", unique: true
-  end
-
-  create_table "children_events", id: false, force: :cascade do |t|
-    t.bigint "child_id", null: false
-    t.bigint "event_id", null: false
-    t.index ["child_id"], name: "index_children_events_on_child_id"
-    t.index ["event_id", "child_id"], name: "index_children_events_on_event_id_and_child_id", unique: true
+    t.bigint "invitation_id", null: false
+    t.index ["child_id"], name: "index_children_invitations_on_child_id"
+    t.index ["invitation_id", "child_id"], name: "index_children_invitations_on_invitation_id_and_child_id", unique: true
   end
 
   create_table "entries", force: :cascade do |t|
-    t.bigint "family_id", null: false
+    t.bigint "child_id", null: false
     t.bigint "author_id", null: false
     t.date "happened_on", null: false
     t.text "notes"
@@ -82,12 +84,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172833) do
     t.datetime "updated_at", null: false
     t.bigint "event_id"
     t.index ["author_id"], name: "index_entries_on_author_id"
+    t.index ["child_id", "happened_on"], name: "index_entries_on_child_id_and_happened_on"
     t.index ["event_id"], name: "index_entries_on_event_id"
-    t.index ["family_id", "happened_on"], name: "index_entries_on_family_id_and_happened_on"
   end
 
   create_table "events", force: :cascade do |t|
-    t.bigint "family_id", null: false
+    t.bigint "child_id", null: false
     t.bigint "grown_up_id"
     t.string "title", null: false
     t.date "starts_on", null: false
@@ -98,26 +100,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172833) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["family_id"], name: "index_events_on_family_id"
+    t.index ["child_id"], name: "index_events_on_child_id"
     t.index ["grown_up_id"], name: "index_events_on_grown_up_id"
   end
 
-  create_table "families", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "invitation_code", null: false
+  create_table "invitations", force: :cascade do |t|
+    t.bigint "inviter_id", null: false
+    t.string "token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "calendar_token", null: false
-    t.index ["calendar_token"], name: "index_families_on_calendar_token", unique: true
-  end
-
-  create_table "memberships", force: :cascade do |t|
-    t.bigint "family_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["family_id"], name: "index_memberships_on_family_id"
-    t.index ["user_id"], name: "index_memberships_on_user_id", unique: true
+    t.index ["inviter_id"], name: "index_invitations_on_inviter_id"
+    t.index ["token"], name: "index_invitations_on_token", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -139,20 +132,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_172833) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "accesses", "children"
+  add_foreign_key "accesses", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cancellations", "events"
-  add_foreign_key "children", "families"
-  add_foreign_key "children_entries", "children"
-  add_foreign_key "children_entries", "entries"
-  add_foreign_key "children_events", "children"
-  add_foreign_key "children_events", "events"
+  add_foreign_key "children_invitations", "children"
+  add_foreign_key "children_invitations", "invitations"
+  add_foreign_key "entries", "children"
   add_foreign_key "entries", "events"
-  add_foreign_key "entries", "families"
   add_foreign_key "entries", "users", column: "author_id"
-  add_foreign_key "events", "families"
+  add_foreign_key "events", "children"
   add_foreign_key "events", "users", column: "grown_up_id"
-  add_foreign_key "memberships", "families"
-  add_foreign_key "memberships", "users"
+  add_foreign_key "invitations", "users", column: "inviter_id"
   add_foreign_key "sessions", "users"
 end

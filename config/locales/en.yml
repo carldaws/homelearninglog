@@ -24,17 +24,13 @@ en:
         end_time: Ends
         repeats: Repeats
         repeats_until: Until
-        children: Children
         notes: Notes
       entry:
         event: Event
         happened_on: Date
         notes: Notes
         photos: Photos
-        children: Children
         minutes: Time spent
-      family:
-        name: Name
       child:
         name: Name
       user:
@@ -43,7 +39,6 @@ en:
         password: Password
     errors:
       messages:
-        outside_the_family: must belong to this family
         not_a_photo: "%{filename} isn't a photo"
         photo_too_big: "%{filename} is over %{size}"
       models:
@@ -64,19 +59,20 @@ en:
               greater_than: has to be after the start
             repeats_until:
               greater_than_or_equal_to: can't be before the date
-        membership:
+        access:
           attributes:
             base:
-              last_member: The last grown-up can't leave
+              last_grown_up: "%{name} needs a grown-up"
 
   layouts:
     account_menu:
-      family: Family
+      add_child: Add a child
       sign_out: Sign out
     tabs:
       label: Sections
       log: Log
       calendar: Calendar
+      grown_ups: Grown-ups
     signed_out_nav:
       sign_in: Sign in
       register: Create an account
@@ -132,50 +128,48 @@ en:
       title: Recovery code
       continue: Continue
 
-  families:
-    new:
-      title: Start a family
-      name: Family name
-      submit: Start
+  children:
     show:
-      rename: Rename
-      children: Children
+      this_week: "%{time} this week"
       edit: Edit
-      edit_child: Edit %{name}
-      add_child: Add a child
-      grown_ups: Grown-ups
-      you: You
-      leave: Leave
-      leave_confirm: Leave %{family}?
+      add: Add to the log
+      pagination: Earlier days
+      earlier: Earlier
+    form:
+      name: Name
+      add: Add
+      save: Save
+      cancel: Cancel
+    new:
+      title: Add a child
+    edit:
       remove: Remove
       remove_confirm: Remove %{name}?
+
+  accesses:
+    index:
+      title: Grown-ups
       invite: Invite a grown-up
-    edit:
-      title: Rename family
-      name: Family name
-      submit: Save
-      cancel: Cancel
-    children:
-      form:
-        name: Name
-        add: Add
-        save: Save
-        cancel: Cancel
-      new:
-        title: Add a child
-      edit:
-        remove: Remove
-        remove_confirm: Remove %{name}?
-    invitations:
-      show:
-        title: Invite a grown-up
+      you: You
+      leave: Leave
+      leave_confirm: Leave?
+      remove: Remove
+      remove_confirm: Remove %{name}?
+
+  invitations:
+    new:
+      title: Invite a grown-up
+      children: Children
+      submit: Make a link
+    show:
+      title: Invite a grown-up
 
   joins:
     show:
       register: Create an account
       sign_in: Sign in
-      open: Open the log
-      join: Join %{family}
+      open: Open
+      join: Join
     expired:
       title: Link expired
 
@@ -189,13 +183,6 @@ en:
         one: "%{count} hr"
         other: "%{count} hrs"
       minutes: "%{count} min"
-    index:
-      title: Log
-      this_week: "%{time} this week"
-      add: Add to the log
-      add_child: Add a child
-      pagination: Earlier days
-      earlier: Earlier
     unlogged:
       log: Log it
     entry:
@@ -206,7 +193,6 @@ en:
       photo: Photo %{number}
       keep: Keep
       notes: Notes
-      children: Children
       happened_on: Date
       minutes: Time spent
       add: Add to the log
@@ -252,7 +238,6 @@ en:
         weekly: Weekly
         fortnightly: Fortnightly
       repeats_until: Until
-      children: Children
       grown_up: Grown-up
       notes: Notes
       add: Add

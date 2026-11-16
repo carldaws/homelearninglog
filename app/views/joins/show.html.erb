@@ -1,17 +1,18 @@
-<% content_for :title, @family.name %>
+<% children = @invitation.offered_children.alphabetically %>
+<% content_for :title, children.map(&:name).to_sentence %>
 
 <div class="card mt-6 text-center sm:mt-10">
-  <h1 class="page-title"><%= @family.name %></h1>
-  <p class="caption mt-3"><%= @family.members.alphabetically.map(&:first_name).to_sentence %></p>
+  <h1 class="page-title"><%= children.map(&:name).to_sentence %></h1>
+  <p class="caption mt-3"><%= @invitation.inviter.first_name %></p>
 
   <div class="mt-8 grid gap-3">
     <% if !authenticated? %>
       <%= link_to t(".register"), new_registration_path, class: "button" %>
       <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
-    <% elsif Current.family == @family %>
-      <%= link_to t(".open"), entries_path, class: "button" %>
-    <% elsif Current.family.nil? %>
-      <%= button_to t(".join", family: @family.name), joins_path, params: { token: params[:token] }, class: "button w-full" %>
+    <% elsif @invitation.joined_by?(Current.user) %>
+      <%= link_to t(".open"), root_path, class: "button" %>
+    <% else %>
+      <%= button_to t(".join"), joins_path, params: { token: params[:token] }, class: "button w-full" %>
     <% end %>
   </div>
 </div>

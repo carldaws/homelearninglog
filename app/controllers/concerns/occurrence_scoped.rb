@@ -1,6 +1,6 @@
 module OccurrenceScoped
   extend ActiveSupport::Concern
-  include FamilyScoped
+  include ChildScoped
 
   included do
     before_action :set_occurrence
@@ -8,7 +8,7 @@ module OccurrenceScoped
 
   private
     def set_occurrence
-      @occurrence = Current.family.events.find(params[:event_id]).occurrence_on(occurrence_date)
+      @occurrence = @child.events.find(params[:event_id]).occurrence_on(occurrence_date)
     end
 
     def occurrence_date

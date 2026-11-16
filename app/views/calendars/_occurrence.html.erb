@@ -3,19 +3,19 @@
   <div class="min-w-0 flex-1">
     <%= render "calendars/occurrence_details", occurrence: %>
     <h3 class="mt-1 text-[1.35rem] leading-tight font-semibold <%= "line-through" if occurrence.cancelled? %>">
-      <%= link_to occurrence.title, edit_event_path(occurrence.event, week: occurrence.date), class: "text-ink no-underline hover:underline" %>
+      <%= link_to occurrence.title, edit_child_event_path(occurrence.child, occurrence.event, week: occurrence.date), class: "text-ink no-underline hover:underline" %>
     </h3>
   </div>
 
   <div class="flex items-center gap-2">
     <% if occurrence.due? %>
-      <%= link_to t(".log"), new_event_occurrence_entry_path(occurrence.event, occurrence.date), class: "button button--small" %>
+      <%= link_to t(".log"), new_child_event_occurrence_entry_path(occurrence.child, occurrence.event, occurrence.date), class: "button button--small" %>
     <% end %>
     <% if occurrence.repeats? && occurrence.cancelled? %>
-      <%= button_to t(".restore"), event_occurrence_cancellation_path(occurrence.event, occurrence.date), method: :delete,
+      <%= button_to t(".restore"), child_event_occurrence_cancellation_path(occurrence.child, occurrence.event, occurrence.date), method: :delete,
             class: "button button--secondary button--small" %>
     <% elsif occurrence.repeats? %>
-      <%= button_to t(".cancel"), event_occurrence_cancellation_path(occurrence.event, occurrence.date),
+      <%= button_to t(".cancel"), child_event_occurrence_cancellation_path(occurrence.child, occurrence.event, occurrence.date),
             class: "button button--secondary button--small" %>
     <% end %>
   </div>

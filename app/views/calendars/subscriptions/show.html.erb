@@ -6,9 +6,9 @@
 </header>
 
 <div class="card grid gap-3">
-  <%= link_to t(".subscribe"), feed_url(Current.family.calendar_token, format: :ics, protocol: "webcal"), class: "button button--wide" %>
-  <%= render "shared/share_link", url: feed_url(Current.family.calendar_token, format: :ics), title: Current.family.name %>
+  <%= link_to t(".subscribe"), feed_url(@child.calendar_token, format: :ics, protocol: "webcal"), class: "button button--wide" %>
+  <%= render "shared/share_link", url: feed_url(@child.calendar_token, format: :ics), title: @child.name %>
 </div>
 
-<%= button_to t(".replace"), calendar_subscription_path, method: :patch, class: "button button--secondary button--wide mt-6",
+<%= button_to t(".replace"), child_calendar_subscription_path(@child), method: :patch, class: "button button--secondary button--wide mt-6",
       form: { data: { turbo_confirm: t(".replace_confirm") } } %>

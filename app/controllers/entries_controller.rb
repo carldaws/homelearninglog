@@ -1,22 +1,17 @@
 class EntriesController < ApplicationController
-  include FamilyScoped
+  include ChildScoped
 
-  before_action :require_children, only: %i[ new create ]
   before_action :set_entry, only: %i[ edit update destroy ]
 
-  def index
-    @log = Current.family.log(through: params[:through])
-  end
-
   def new
-    @entry = Current.family.draft_entry
+    @entry = @child.draft_entry
   end
 
   def create
-    @entry = Current.family.entries.build(entry_params.merge(author: Current.user))
+    @entry = @child.entries.build(entry_params.merge(author: Current.user))
 
     if @entry.save
-      redirect_to entries_path
+      redirect_to @child
     else
       render :new, status: :unprocessable_content
     end
@@ -27,7 +22,7 @@ class EntriesController < ApplicationController
 
   def update
     if @entry.update(entry_params)
-      redirect_to entries_path
+      redirect_to @child
     else
       render :edit, status: :unprocessable_content
     end
@@ -35,15 +30,15 @@ class EntriesController < ApplicationController
 
   def destroy
     @entry.destroy!
-    redirect_to entries_path, status: :see_other
+    redirect_to @child, status: :see_other
   end
 
   private
     def set_entry
-      @entry = Current.family.entries.find(params[:id])
+      @entry = @child.entries.find(params[:id])
     end
 
     def entry_params
-      params.expect(entry: [ :notes, :happened_on, :minutes, :event_id, child_ids: [], photos: [] ])
+      params.expect(entry: [ :notes, :happened_on, :minutes, :event_id, photos: [] ])
     end
 end

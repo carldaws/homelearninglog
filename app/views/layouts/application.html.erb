@@ -40,8 +40,8 @@
       <% end %>
     </header>
 
-    <% if authenticated? && Current.family.present? %>
-      <%= render "layouts/tabs" %>
+    <% if @child.present? && @child.persisted? %>
+      <%= render "layouts/tabs", child: @child %>
     <% end %>
 
     <main class="page flex-1 pb-28 sm:pb-16">

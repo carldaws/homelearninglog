@@ -34,16 +34,14 @@ class CalendarFeedTest < ActiveSupport::TestCase
     assert uids.any? { it.start_with?(following) }
   end
 
-  test "only the family's own events are in its feed" do
+  test "only the child's own events are in their feed" do
     assert_not_includes vevents.map { it["SUMMARY"] }, events(:swimming).title
   end
 
-  test "the description says who's going" do
+  test "the description says which grown-up is going" do
     art_class = vevents.find { it["SUMMARY"] == events(:art_class).title }
-    description = art_class.fetch("DESCRIPTION")
 
-    assert_includes description, children(:sam).name
-    assert_includes description, users(:bob).name
+    assert_includes art_class.fetch("DESCRIPTION"), users(:bob).name
   end
 
   test "an event with no end time has no end" do
@@ -59,7 +57,7 @@ class CalendarFeedTest < ActiveSupport::TestCase
     title = "Gran; Grandad, and a very long line of text that goes on and on well past the limit"
     events(:visit).update!(title:)
 
-    lines = CalendarFeed.new(families(:oaks)).to_ics.split("\r\n")
+    lines = CalendarFeed.new(children(:sam)).to_ics.split("\r\n")
     summary = vevents.map { it["SUMMARY"] }.find { it.start_with?(title.first(4)) }
     unescaped = summary.gsub(/\\([\\;,])/, '\1')
 
@@ -70,7 +68,7 @@ class CalendarFeedTest < ActiveSupport::TestCase
 
   private
     def vevents
-      ics = CalendarFeed.new(families(:oaks)).to_ics.gsub("\r\n ", "")
+      ics = CalendarFeed.new(children(:sam)).to_ics.gsub("\r\n ", "")
 
       ics.split("\r\n").slice_before("BEGIN:VEVENT").drop(1).map do |lines|
         lines.drop(1).take_while { it != "END:VEVENT" }.to_h { it.split(":", 2) }

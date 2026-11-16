@@ -1,5 +1,5 @@
 class Entries::PhotosController < ApplicationController
-  include FamilyScoped, PhotoStreaming
+  include ChildScoped, PhotoStreaming
 
   before_action :set_photo
 
@@ -9,6 +9,6 @@ class Entries::PhotosController < ApplicationController
 
   private
     def set_photo
-      @photo = Current.family.entries.find(params[:entry_id]).photos.find(params[:id])
+      @photo = @child.entries.find(params[:entry_id]).photos.find(params[:id])
     end
 end

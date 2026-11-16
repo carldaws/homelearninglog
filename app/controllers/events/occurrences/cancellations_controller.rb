@@ -3,11 +3,11 @@ class Events::Occurrences::CancellationsController < ApplicationController
 
   def create
     @occurrence.cancel
-    redirect_to calendar_path(week: @occurrence.date)
+    redirect_to child_calendar_path(@child, week: @occurrence.date)
   end
 
   def destroy
     @occurrence.restore
-    redirect_to calendar_path(week: @occurrence.date), status: :see_other
+    redirect_to child_calendar_path(@child, week: @occurrence.date), status: :see_other
   end
 end

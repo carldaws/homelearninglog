@@ -1,25 +1,20 @@
 class JoinsController < ApplicationController
   allow_unauthenticated_access only: :show
-  before_action :set_family
+  before_action :set_invitation
   before_action :remember_invitation, only: :show, unless: :authenticated?
 
   def show
   end
 
   def create
-    membership = @family.join(Current.user)
-
-    if membership.persisted?
-      redirect_to entries_path
-    else
-      redirect_to join_path(params[:token]), alert: membership.errors.full_messages.to_sentence
-    end
+    @invitation.accept(Current.user)
+    redirect_to root_path
   end
 
   private
-    def set_family
-      @family = Family.find_by_token_for(:invitation, params[:token])
-      render :expired, status: :not_found if @family.nil?
+    def set_invitation
+      @invitation = Invitation.unexpired.find_by(token: params[:token])
+      render :expired, status: :not_found if @invitation.nil? || @invitation.offered_children.none?
     end
 
     def remember_invitation

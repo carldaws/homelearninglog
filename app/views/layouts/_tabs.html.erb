@@ -1,6 +1,8 @@
+<%# locals: (child:) %>
 <nav class="page" aria-label="<%= t(".label") %>">
   <div class="tabs">
-    <%= tab_to t(".log"), entries_path, controllers: %w[ entries events/occurrences/entries ] %>
-    <%= tab_to t(".calendar"), calendar_path, controllers: %w[ calendars calendars/subscriptions events ] %>
+    <%= tab_to t(".log"), child_path(child), controllers: %w[ children entries events/occurrences/entries ] %>
+    <%= tab_to t(".calendar"), child_calendar_path(child), controllers: %w[ calendars calendars/subscriptions events ] %>
+    <%= tab_to t(".grown_ups"), child_accesses_path(child), controllers: %w[ accesses ] %>
   </div>
 </nav>

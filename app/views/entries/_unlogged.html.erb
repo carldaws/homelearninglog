@@ -4,5 +4,5 @@
     <%= render "calendars/occurrence_details", occurrence: %>
     <h3 class="mt-1 text-[1.35rem] leading-tight font-semibold"><%= occurrence.title %></h3>
   </div>
-  <%= link_to t(".log"), new_event_occurrence_entry_path(occurrence.event, occurrence.date), class: "button button--small" %>
+  <%= link_to t(".log"), new_child_event_occurrence_entry_path(occurrence.child, occurrence.event, occurrence.date), class: "button button--small" %>
 </article>

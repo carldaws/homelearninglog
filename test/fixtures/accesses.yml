@@ -1,0 +1,19 @@
+alice_for_sam:
+  child: sam
+  user: alice
+
+bob_for_sam:
+  child: sam
+  user: bob
+
+alice_for_ivy:
+  child: ivy
+  user: alice
+
+bob_for_ivy:
+  child: ivy
+  user: bob
+
+carol_for_wren:
+  child: wren
+  user: carol

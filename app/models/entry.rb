@@ -2,10 +2,9 @@ class Entry < ApplicationRecord
   MAXIMUM_PHOTOS = 12
   SUGGESTED_MINUTES = [ 15, 30, 45, 60, 90, 120, 150, 180, 240, 300, 360 ].freeze
 
-  belongs_to :family
+  belongs_to :child
   belongs_to :author, class_name: "User"
   belongs_to :event, optional: true
-  has_and_belongs_to_many :children
 
   has_many_attached :photos do |attachable|
     attachable.variant :thumbnail, resize_to_limit: [ 600, 600 ], format: :webp, saver: { strip: true }
@@ -13,19 +12,14 @@ class Entry < ApplicationRecord
   end
 
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
-  validates :children, presence: true
-  validates :children, :event, same_family: true
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validates :photos, photo: true
   validate :has_notes_or_photos
+  validate :event_belongs_to_the_child
   validate :not_too_many_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
-  scope :preloaded, -> { includes(:author, :children, :event).with_attached_photos }
-
-  def self.recent_days(limit: 20)
-    latest_first.limit(limit).preloaded.group_by(&:happened_on)
-  end
+  scope :preloaded, -> { includes(:author, :event).with_attached_photos }
 
   def heading
     event.title if event.present?
@@ -38,6 +32,10 @@ class Entry < ApplicationRecord
   private
     def has_notes_or_photos
       errors.add(:base, :empty) if notes.blank? && !photos.attached?
+    end
+
+    def event_belongs_to_the_child
+      errors.add(:event, :invalid) if event.present? && event.child_id != child_id
     end
 
     def not_too_many_photos
