@@ -66,14 +66,15 @@ en:
 
   layouts:
     account_menu:
-      add_child: Add a child
       sign_out: Sign out
+    child_switcher:
+      add_child: Add a child
     tabs:
       label: Sections
       now: Now
       log: Log
       calendar: Calendar
-      grown_ups: Grown-ups
+      manage: Manage
     signed_out_nav:
       sign_in: Sign in
       register: Create an account
@@ -131,7 +132,6 @@ en:
 
   children:
     show:
-      edit: Edit
       add: Add to the log
       today: Today
       suggestions: Suggestions
@@ -141,11 +141,18 @@ en:
       name: Name
       add: Add
       save: Save
-      cancel: Cancel
     new:
       title: Add a child
     edit:
-      remove: Remove
+      title: Manage
+      grown_ups: Grown-ups
+      you: You
+      leave: Leave
+      leave_confirm: Leave?
+      remove_grown_up: Remove
+      remove_grown_up_confirm: Remove %{name}?
+      invite: Invite a grown-up
+      remove: Remove %{name}
       remove_confirm: Remove %{name}?
 
   logs:
@@ -153,16 +160,6 @@ en:
       title: Log
       pagination: Earlier weeks
       earlier: Earlier
-
-  accesses:
-    index:
-      title: Grown-ups
-      invite: Invite a grown-up
-      you: You
-      leave: Leave
-      leave_confirm: Leave?
-      remove: Remove
-      remove_confirm: Remove %{name}?
 
   invitations:
     new:

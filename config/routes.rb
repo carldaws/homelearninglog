@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :accesses, path: "grown-ups", only: %i[ index destroy ]
+    resources :accesses, path: "grown-ups", only: :destroy
   end
 
   direct :entry_in_log do |entry|

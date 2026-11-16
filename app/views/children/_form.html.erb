@@ -4,13 +4,10 @@
 
   <div class="field">
     <%= form.label :name, t(".name"), class: "label" %>
-    <%= form.text_field :name, required: true, autofocus: true, autocomplete: "off", class: "input" %>
+    <%= form.text_field :name, required: true, autofocus: child.new_record?, autocomplete: "off", class: "input" %>
   </div>
 
   <div class="form-actions">
     <%= form.submit (child.persisted? ? t(".save") : t(".add")), class: "button button--wide" %>
-    <% if child.persisted? %>
-      <%= link_to t(".cancel"), child, class: "button button--secondary button--wide" %>
-    <% end %>
   </div>
 <% end %>

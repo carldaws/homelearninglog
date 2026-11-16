@@ -26,7 +26,7 @@ class ChildrenTest < ActionDispatch::IntegrationTest
 
     patch child_path(children(:sam)), params: { child: { name: children(:wren).name } }
 
-    assert_redirected_to child_path(children(:sam))
+    assert_redirected_to edit_child_path(children(:sam))
     assert_equal children(:wren).name, children(:sam).reload.name
   end
 
@@ -66,14 +66,25 @@ class ChildrenTest < ActionDispatch::IntegrationTest
     assert Child.exists?(children(:wren).id)
   end
 
-  test "the menu switches between children when there's more than one" do
+  test "the switcher beside the tabs lists your children and adds another" do
     sign_in_as users(:alice)
-    get child_path(children(:sam))
-    assert_select ".menu a[href=?]", child_path(children(:ivy))
 
-    delete session_path
-    sign_in_as users(:carol)
-    get child_path(children(:wren))
-    assert_select ".menu a[href=?]", child_path(children(:wren)), count: 0
+    get child_log_path(children(:sam))
+
+    assert_select "#child_switcher summary", text: children(:sam).name
+    assert_select "#child_switcher a[href=?][aria-current=page]", child_path(children(:sam))
+    assert_select "#child_switcher a[href=?]", child_path(children(:ivy))
+    assert_select "#child_switcher a[href=?]", new_child_path
+  end
+
+  test "the Manage page renames the child, lists their grown-ups and can remove them" do
+    sign_in_as users(:alice)
+
+    get edit_child_path(children(:ivy))
+
+    assert_select "nav .tab[aria-current=page][href=?]", edit_child_path(children(:ivy))
+    assert_select "#child_name[value=?]", children(:ivy).name
+    assert_select "a[href=?]", new_invitation_path(child_id: children(:ivy).id)
+    assert_select "form[action=?]:has(input[name=_method][value=delete])", child_path(children(:ivy))
   end
 end

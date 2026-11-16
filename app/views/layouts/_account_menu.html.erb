@@ -4,13 +4,6 @@
   </summary>
 
   <div class="menu">
-    <% if Current.user.children.many? %>
-      <% Current.user.children.alphabetically.each do |child| %>
-        <%= link_to child.name, child, class: "menu-item" %>
-      <% end %>
-    <% end %>
-    <%= link_to t(".add_child"), new_child_path, class: "menu-item" %>
-    <div class="menu-divider"></div>
     <%# A full page load clears Turbo's cached copies of signed-in pages %>
     <%= button_to t(".sign_out"), session_path, method: :delete, form: { data: { turbo: false } }, class: "menu-item" %>
   </div>

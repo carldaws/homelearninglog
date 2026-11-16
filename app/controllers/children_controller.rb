@@ -24,7 +24,7 @@ class ChildrenController < ApplicationController
 
   def update
     if @child.update(child_params)
-      redirect_to @child
+      redirect_to edit_child_path(@child)
     else
       render :edit, status: :unprocessable_content
     end
