@@ -67,7 +67,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_163538) do
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_entries_on_author_id"
     t.index ["family_id", "happened_on"], name: "index_entries_on_family_id_and_happened_on"
-    t.index ["family_id"], name: "index_entries_on_family_id"
   end
 
   create_table "families", force: :cascade do |t|
