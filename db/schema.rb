@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_175605) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_180736) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -191,6 +191,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_175605) do
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "choosing_child_id"
+    t.index ["choosing_child_id"], name: "index_sessions_on_choosing_child_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -231,5 +233,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_175605) do
   add_foreign_key "memberships", "users"
   add_foreign_key "pursuits", "families"
   add_foreign_key "reflections", "families"
+  add_foreign_key "sessions", "children", column: "choosing_child_id", on_delete: :nullify
   add_foreign_key "sessions", "users"
 end

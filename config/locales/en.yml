@@ -64,7 +64,7 @@ en:
         child:
           attributes:
             base:
-              in_use: "%{name} is in the log, the calendar or a pursuit"
+              in_use: "%{name} has things recorded against them"
         entry:
           attributes:
             base:

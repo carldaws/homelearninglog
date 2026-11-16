@@ -16,7 +16,7 @@ class Child < ApplicationRecord
   end
 
   def removable?
-    entries.none? && events.none? && pursuits.none?
+    entries.none? && events.none? && pursuits.none? && choices.none?
   end
 
   private

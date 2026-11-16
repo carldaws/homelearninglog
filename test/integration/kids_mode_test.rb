@@ -109,4 +109,68 @@ class KidsModeTest < ActionDispatch::IntegrationTest
 
     assert_select ".tag", text: I18n.t("activities.show.chosen", count: 1)
   end
+
+  test "kids' mode lasts as long as the sign-in, not the browser session" do
+    post kids_mode_path, params: { child_id: children(:sam).id }
+
+    cookies.delete("_learninglog_session")
+
+    get entries_path
+    assert_redirected_to kids_menu_path
+  end
+
+  test "changing the password elsewhere signs the device out instead of trapping it" do
+    post kids_mode_path, params: { child_id: children(:sam).id }
+
+    users(:alice).update!(password: "a brand new password")
+
+    get kids_menu_path
+    assert_redirected_to new_session_path
+    get new_session_path
+    assert_response :success
+  end
+
+  test "removing the child ends kids' mode" do
+    child = families(:oaks).children.create!(name: children(:wren).name)
+    post kids_mode_path, params: { child_id: child.id }
+
+    child.destroy!
+
+    get entries_path
+    assert_response :success
+  end
+
+  test "being removed from the family ends kids' mode" do
+    post kids_mode_path, params: { child_id: children(:sam).id }
+
+    memberships(:alice_in_oaks).destroy!
+
+    get entries_path
+    assert_redirected_to new_family_path
+    get new_family_path
+    assert_response :success
+  end
+
+  test "every other page and action leads back to the kids' menu" do
+    post kids_mode_path, params: { child_id: children(:sam).id }
+
+    each_route_outside_kids_mode do |verb, path|
+      request = "#{verb.upcase} #{path}"
+      process verb, path
+      assert_redirected_to kids_menu_path, request
+    end
+  end
+
+  private
+    KIDS_MODE_CONTROLLERS = %w[ kids_menus kids_modes choices surprises activities/pictures rails/health ].freeze
+
+    def each_route_outside_kids_mode
+      Rails.application.routes.routes.each do |route|
+        controller = route.defaults[:controller]
+        next if controller.nil? || controller.start_with?("turbo/") || KIDS_MODE_CONTROLLERS.include?(controller)
+
+        path = route.path.spec.to_s.delete_suffix("(.:format)").gsub(/:(\w+)/) { $1.end_with?("date") ? "2026-11-16" : "1" }
+        route.verb.split("|").each { |verb| yield verb.downcase.to_sym, path }
+      end
+    end
 end

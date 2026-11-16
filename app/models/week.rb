@@ -54,7 +54,7 @@ class Week
   end
 
   def choices
-    @choices ||= Choice.where(child: family.children, created_at: dates.first.beginning_of_day..dates.last.end_of_day)
+    @choices ||= family.choices.where(created_at: dates.first.beginning_of_day..dates.last.end_of_day)
       .includes(:child, :activity).latest_first.to_a
   end
 

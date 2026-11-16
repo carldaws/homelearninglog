@@ -14,26 +14,22 @@ module KidsMode
 
   private
     def kids_mode?
-      session[:choosing_child_id].present?
+      authenticated? && Current.session.kids_mode?
     end
 
     def choosing_child
-      @choosing_child ||= Current.family.children.find(session[:choosing_child_id])
+      Current.session.choosing_child
     end
 
     def keep_to_kids_menu
       redirect_to kids_menu_path
     end
 
-    def require_kids_mode
-      redirect_to new_kids_mode_path unless kids_mode?
-    end
-
     def start_kids_mode(child)
-      session[:choosing_child_id] = child.id
+      Current.session.update!(choosing_child: child)
     end
 
     def stop_kids_mode
-      session.delete(:choosing_child_id)
+      Current.session.update!(choosing_child: nil)
     end
 end

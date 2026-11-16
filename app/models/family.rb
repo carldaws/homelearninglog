@@ -2,6 +2,7 @@ class Family < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :members, through: :memberships, source: :user
   has_many :children, dependent: :destroy
+  has_many :choices, through: :children
   has_many :entries, dependent: :destroy
   has_many :activities, dependent: :destroy
   has_many :events, dependent: :destroy
