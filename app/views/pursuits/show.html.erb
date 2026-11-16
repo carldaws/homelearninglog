@@ -1,0 +1,42 @@
+<% content_for :title, @pursuit.name %>
+
+<header class="page-header">
+  <div>
+    <%= render "pursuits/details", pursuit: @pursuit %>
+    <h1 class="page-title mt-1"><%= @pursuit.name %></h1>
+  </div>
+  <%= link_to t(".edit"), edit_pursuit_path(@pursuit), class: "button button--secondary button--small" %>
+</header>
+
+<% if @pursuit.notes.present? %>
+  <div class="card grid gap-3"><%= notes_with_links(@pursuit.notes) %></div>
+<% end %>
+
+<div class="form-actions mt-6">
+  <% if @pursuit.current? %>
+    <%= button_to t(".finish"), pursuit_finish_path(@pursuit), class: "button button--secondary button--wide" %>
+  <% else %>
+    <%= button_to t(".pick_up"), pursuit_finish_path(@pursuit), method: :delete, class: "button button--secondary button--wide" %>
+  <% end %>
+</div>
+
+<% if @pursuit.activities.any? %>
+  <section class="mt-10" aria-labelledby="activities-heading">
+    <div class="ruled">
+      <h2 id="activities-heading" class="ruled-title"><%= t(".activities") %></h2>
+    </div>
+    <ul class="card card--flush list">
+      <% @pursuit.activities.alphabetically.each do |activity| %>
+        <li>
+          <%= link_to activity, class: "row row--link" do %>
+            <span class="row-title"><%= activity.name %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>
+
+<div class="mt-10">
+  <%= render "entries/days", days: @pursuit.recent_days %>
+</div>

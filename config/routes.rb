@@ -33,6 +33,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pursuits do
+    resource :finish, only: %i[ create destroy ], module: :pursuits
+  end
+
   resources :activities do
     scope module: :activities do
       resources :entries, only: :new

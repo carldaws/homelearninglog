@@ -9,6 +9,7 @@ class Entry < ApplicationRecord
   belongs_to :activity, optional: true
   belongs_to :event, optional: true
   has_and_belongs_to_many :children
+  has_and_belongs_to_many :pursuits
 
   has_many_attached :photos do |attachable|
     attachable.variant :thumbnail, resize_to_limit: [ 600, 600 ], format: :webp, saver: { strip: true }
@@ -17,7 +18,7 @@ class Entry < ApplicationRecord
 
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
   validates :children, presence: true
-  validates :children, :activity, :event, same_family: true
+  validates :children, :activity, :event, :pursuits, same_family: true
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validate :has_notes_or_photos
   validate :photos_are_photos

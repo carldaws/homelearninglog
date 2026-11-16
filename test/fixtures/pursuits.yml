@@ -1,0 +1,20 @@
+reading:
+  family: oaks
+  name: Learning to read
+  started_on: 2026-10-01
+  children: sam
+  entries: moon
+  activities: painting
+
+dinosaurs:
+  family: oaks
+  name: Dinosaurs
+  started_on: 2026-06-01
+  finished_on: 2026-09-30
+  children: sam, ivy
+
+knots:
+  family: elms
+  name: Knots
+  started_on: 2026-10-01
+  children: wren

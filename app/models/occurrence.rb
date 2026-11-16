@@ -41,7 +41,7 @@ class Occurrence
   end
 
   def draft_entry
-    family.draft_entry(event:, activity:, happened_on: date, minutes:, children:)
+    family.draft_entry(event:, activity:, happened_on: date, minutes:, children:, pursuits: activity.present? ? activity.pursuits : [])
   end
 
   def starts_at

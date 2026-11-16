@@ -1,0 +1,7 @@
+<%# locals: (pursuit:) %>
+<p class="caption flex flex-wrap gap-x-3">
+  <span><%= l(pursuit.started_on, format: :short_with_year) %><% unless pursuit.current? %> – <%= l(pursuit.finished_on, format: :short_with_year) %><% end %></span>
+  <% if pursuit.children.any? %>
+    <span><%= pursuit.children.map(&:name).sort.to_sentence %></span>
+  <% end %>
+</p>

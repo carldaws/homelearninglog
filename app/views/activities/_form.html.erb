@@ -17,6 +17,8 @@
       <%= form.label :notes, t(".notes"), class: "label" %>
       <%= form.textarea :notes, rows: 5, class: "input" %>
     </div>
+
+    <%= render "shared/pursuit_choices", form:, record: activity %>
   </div>
 
   <div class="form-actions">

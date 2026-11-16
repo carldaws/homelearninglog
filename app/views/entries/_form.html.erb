@@ -40,6 +40,8 @@
       <%= form.hidden_field :child_ids, multiple: true, value: Current.family.children.first.id %>
     <% end %>
 
+    <%= render "shared/pursuit_choices", form:, record: entry %>
+
     <% if Current.family.activities.any? %>
       <div class="field">
         <%= form.label :activity_id, t(".activity"), class: "label" %>

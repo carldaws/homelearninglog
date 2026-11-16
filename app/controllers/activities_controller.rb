@@ -46,6 +46,6 @@ class ActivitiesController < ApplicationController
     end
 
     def activity_params
-      params.expect(activity: [ :name, :minutes, :notes ])
+      params.expect(activity: [ :name, :minutes, :notes, pursuit_ids: [] ])
     end
 end

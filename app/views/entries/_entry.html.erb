@@ -24,6 +24,14 @@
     <div class="grid gap-3"><%= notes_with_links(entry.notes) %></div>
   <% end %>
 
+  <% if entry.pursuits.any? %>
+    <p class="mt-3 flex flex-wrap gap-x-3 gap-y-1">
+      <% entry.pursuits.sort_by(&:name).each do |pursuit| %>
+        <%= link_to pursuit.name, pursuit, class: "link text-sm" %>
+      <% end %>
+    </p>
+  <% end %>
+
   <footer class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
     <span class="caption"><%= entry.author.first_name %></span>
     <% if Current.family.children.many? %>

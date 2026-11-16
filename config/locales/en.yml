@@ -5,6 +5,7 @@ en:
   date:
     formats:
       short: "%-d %b"
+      short_with_year: "%-d %b %Y"
       short_day: "%a %-d %b"
       day: "%A %-d %B"
       day_with_year: "%A %-d %B %Y"
@@ -15,6 +16,12 @@ en:
 
   activerecord:
     attributes:
+      pursuit:
+        name: Name
+        notes: Notes
+        started_on: Started
+        finished_on: Finished
+        children: Children
       event:
         title: Title
         activity: Activity
@@ -63,6 +70,10 @@ en:
               photo_too_big: "%{filename} is over %{size}"
             happened_on:
               less_than_or_equal_to: can't be in the future
+        pursuit:
+          attributes:
+            finished_on:
+              greater_than_or_equal_to: can't be before it started
         event:
           attributes:
             end_time:
@@ -83,6 +94,7 @@ en:
       log: Log
       calendar: Calendar
       activities: Activities
+      pursuits: Pursuits
     signed_out_nav:
       sign_in: Sign in
       register: Create an account
@@ -91,6 +103,8 @@ en:
     password_field:
       show: Show
       hide: Hide
+    pursuit_choices:
+      pursuits: Pursuits
     share_link:
       share: Share link
       copy: Copy link
@@ -289,3 +303,27 @@ en:
     edit:
       delete: Delete
       delete_confirm: Delete %{title}?
+
+  pursuits:
+    index:
+      title: Pursuits
+      add: Add a pursuit
+      finished: Finished
+    show:
+      edit: Edit
+      finish: Finish
+      pick_up: Pick up again
+      activities: Activities
+    form:
+      name: Name
+      children: Children
+      started_on: Started
+      notes: Notes
+      add: Add
+      save: Save
+      cancel: Cancel
+    new:
+      title: Add a pursuit
+    edit:
+      delete: Delete
+      delete_confirm: Delete %{name}?
