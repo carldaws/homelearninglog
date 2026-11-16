@@ -96,12 +96,44 @@ class KidsModeTest < ActionDispatch::IntegrationTest
   test "an activity's picture is shown to the family" do
     activities(:painting).picture.attach(io: file_fixture("photo.jpg").open, filename: "photo.jpg")
 
-    get activity_picture_path(activities(:painting))
+    get activity_picture_path(activities(:painting), activities(:painting).picture_attachment)
+
     assert_response :success
     assert_equal Mime[:webp], response.media_type
+  end
 
-    get activity_picture_path(activities(:forest_school))
+  test "a new picture has a new address" do
+    activities(:painting).picture.attach(io: file_fixture("photo.jpg").open, filename: "photo.jpg")
+    old_attachment = activities(:painting).picture_attachment
+
+    patch activity_path(activities(:painting)), params: { activity: { picture: fixture_file_upload("photo.jpg", "image/jpeg") } }
+
+    assert_not_equal old_attachment, activities(:painting).reload.picture_attachment
+    get activity_picture_path(activities(:painting), old_attachment)
     assert_response :not_found
+  end
+
+  test "another family's pictures are out of reach" do
+    activities(:dens).picture.attach(io: file_fixture("photo.jpg").open, filename: "photo.jpg")
+
+    get activity_picture_path(activities(:dens), activities(:dens).picture_attachment)
+    assert_response :not_found
+
+    get activity_picture_path(activities(:painting), activities(:dens).picture_attachment)
+    assert_response :not_found
+  end
+
+  test "an activity can be put on the kids' menu with a picture" do
+    patch activity_path(activities(:forest_school)), params: { activity: { for_children: "1", picture: fixture_file_upload("photo.jpg", "image/jpeg") } }
+
+    assert activities(:forest_school).reload.for_children?
+    assert activities(:forest_school).picture.attached?
+  end
+
+  test "an activity's picture has to be a photo" do
+    patch activity_path(activities(:forest_school)), params: { activity: { picture: fixture_file_upload("notes.txt", "text/plain") } }
+
+    assert_response :unprocessable_content
   end
 
   test "an activity says how often it's been chosen" do

@@ -27,8 +27,8 @@
 
     <div class="field">
       <%= form.label :picture, t(".picture"), class: "label" %>
-      <% if activity.picture.attached? && activity.picture.blob.persisted? %>
-        <%= image_tag activity_picture_path(activity), alt: "", class: "size-24 rounded-full object-cover" %>
+      <% if activity.picture_attachment.present? && activity.picture_attachment.persisted? %>
+        <%= image_tag activity_picture_path(activity, activity.picture_attachment), alt: "", class: "size-24 rounded-full object-cover" %>
       <% end %>
       <%= form.file_field :picture, accept: "image/*", class: "input" %>
     </div>

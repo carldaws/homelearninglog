@@ -9,6 +9,6 @@ class Activities::PicturesController < ApplicationController
 
   private
     def picture
-      Current.family.activities.find(params[:activity_id]).picture.presence || raise(ActiveRecord::RecordNotFound)
+      ActiveStorage::Attachment.find_by!(id: params[:id], name: "picture", record: Current.family.activities.find(params[:activity_id]))
     end
 end

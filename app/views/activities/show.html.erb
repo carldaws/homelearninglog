@@ -2,7 +2,7 @@
 
 <% if @activity.picture.attached? %>
   <div class="prints mb-2">
-    <span class="print"><%= image_tag activity_picture_path(@activity), alt: "", class: "size-32 object-cover" %></span>
+    <span class="print"><%= image_tag activity_picture_path(@activity, @activity.picture_attachment), alt: "", class: "size-32 object-cover" %></span>
   </div>
 <% end %>
 

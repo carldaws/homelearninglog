@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     scope module: :activities do
       resources :entries, only: :new
       resources :events, only: :new
-      resource :picture, only: :show
+      resources :pictures, only: :show
     end
   end
 
