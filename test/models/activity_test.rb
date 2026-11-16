@@ -17,9 +17,10 @@ class ActivityTest < ActiveSupport::TestCase
     assert_equal families(:oaks).children.to_a.sort, entry.children.to_a.sort
   end
 
-  test "deleting an activity keeps its entries" do
+  test "deleting an activity keeps its entries and events" do
     activities(:painting).destroy!
 
     assert_nil entries(:painting).reload.activity
+    assert_nil events(:art_class).reload.activity
   end
 end

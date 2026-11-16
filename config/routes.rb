@@ -19,8 +19,22 @@ Rails.application.routes.draw do
     resources :photos, only: :show, module: :entries
   end
 
+  resource :calendar, only: :show
+
+  resources :events, only: %i[ new create edit update destroy ] do
+    resources :occurrences, only: [], param: :date, constraints: { occurrence_date: /\d{4}-\d{2}-\d{2}/ } do
+      scope module: "events/occurrences" do
+        resource :cancellation, only: %i[ create destroy ]
+        resources :entries, only: :new
+      end
+    end
+  end
+
   resources :activities do
-    resources :entries, only: :new, module: :activities
+    scope module: :activities do
+      resources :entries, only: :new
+      resources :events, only: :new
+    end
   end
 
   root "home#show"

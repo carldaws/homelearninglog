@@ -1,8 +1,12 @@
 <%# locals: (entry:, show_activity: true) %>
 <article id="<%= dom_id(entry) %>" class="card">
-  <% if show_activity && entry.activity.present? %>
+  <% if show_activity && entry.heading.present? %>
     <h3 class="mb-3 text-[1.4rem] leading-tight font-semibold">
-      <%= link_to entry.activity.name, entry.activity, class: "text-ink no-underline hover:underline" %>
+      <% if entry.activity.present? %>
+        <%= link_to entry.heading, entry.activity, class: "text-ink no-underline hover:underline" %>
+      <% else %>
+        <%= entry.heading %>
+      <% end %>
     </h3>
   <% end %>
 

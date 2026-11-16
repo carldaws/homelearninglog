@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def tab_to(name, path, section:)
-    link_to name, path, class: "tab", aria: { current: ("page" if controller_path.start_with?(section)) }
+  def tab_to(name, path, sections:)
+    link_to name, path, class: "tab", aria: { current: ("page" if sections.any? { controller_path.start_with?(it) }) }
   end
 end

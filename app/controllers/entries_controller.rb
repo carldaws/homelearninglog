@@ -44,6 +44,6 @@ class EntriesController < ApplicationController
     end
 
     def entry_params
-      params.expect(entry: [ :notes, :happened_on, :minutes, :activity_id, child_ids: [], photos: [] ])
+      params.expect(entry: [ :notes, :happened_on, :minutes, :activity_id, :event_id, child_ids: [], photos: [] ])
     end
 end

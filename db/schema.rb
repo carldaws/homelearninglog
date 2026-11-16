@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_171951) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_172325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_171951) do
     t.index ["family_id"], name: "index_activities_on_family_id"
   end
 
+  create_table "cancellations", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.date "cancelled_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id", "cancelled_on"], name: "index_cancellations_on_event_id_and_cancelled_on", unique: true
+  end
+
   create_table "children", force: :cascade do |t|
     t.bigint "family_id", null: false
     t.string "name", null: false
@@ -67,6 +75,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_171951) do
     t.index ["entry_id", "child_id"], name: "index_children_entries_on_entry_id_and_child_id", unique: true
   end
 
+  create_table "children_events", id: false, force: :cascade do |t|
+    t.bigint "child_id", null: false
+    t.bigint "event_id", null: false
+    t.index ["child_id"], name: "index_children_events_on_child_id"
+    t.index ["event_id", "child_id"], name: "index_children_events_on_event_id_and_child_id", unique: true
+  end
+
   create_table "entries", force: :cascade do |t|
     t.bigint "family_id", null: false
     t.bigint "author_id", null: false
@@ -76,9 +91,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_171951) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "activity_id"
+    t.bigint "event_id"
     t.index ["activity_id"], name: "index_entries_on_activity_id"
     t.index ["author_id"], name: "index_entries_on_author_id"
+    t.index ["event_id"], name: "index_entries_on_event_id"
     t.index ["family_id", "happened_on"], name: "index_entries_on_family_id_and_happened_on"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.bigint "activity_id"
+    t.bigint "grown_up_id"
+    t.string "title", null: false
+    t.date "starts_on", null: false
+    t.time "start_time"
+    t.time "end_time"
+    t.integer "repeats", default: 0, null: false
+    t.date "repeats_until"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_events_on_activity_id"
+    t.index ["family_id"], name: "index_events_on_family_id"
+    t.index ["grown_up_id"], name: "index_events_on_grown_up_id"
   end
 
   create_table "families", force: :cascade do |t|
@@ -118,12 +153,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_171951) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "families"
+  add_foreign_key "cancellations", "events"
   add_foreign_key "children", "families"
   add_foreign_key "children_entries", "children"
   add_foreign_key "children_entries", "entries"
+  add_foreign_key "children_events", "children"
+  add_foreign_key "children_events", "events"
   add_foreign_key "entries", "activities"
+  add_foreign_key "entries", "events"
   add_foreign_key "entries", "families"
   add_foreign_key "entries", "users", column: "author_id"
+  add_foreign_key "events", "activities"
+  add_foreign_key "events", "families"
+  add_foreign_key "events", "users", column: "grown_up_id"
   add_foreign_key "memberships", "families"
   add_foreign_key "memberships", "users"
   add_foreign_key "sessions", "users"

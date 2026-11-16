@@ -7,6 +7,8 @@ module EntriesHelper
       t("entries.days.today")
     elsif date == Date.yesterday
       t("entries.days.yesterday")
+    elsif date == Date.tomorrow
+      t("entries.days.tomorrow")
     else
       l(date, format: date.year == Date.current.year ? :day : :day_with_year)
     end

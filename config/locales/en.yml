@@ -4,18 +4,35 @@ en:
 
   date:
     formats:
+      short: "%-d %b"
       short_day: "%a %-d %b"
       day: "%A %-d %B"
       day_with_year: "%A %-d %B %Y"
 
+  time:
+    formats:
+      clock: "%H:%M"
+
   activerecord:
     attributes:
+      event:
+        title: Title
+        activity: Activity
+        grown_up: Grown-up
+        starts_on: Date
+        start_time: Starts
+        end_time: Ends
+        repeats: Repeats
+        repeats_until: Until
+        children: Children
+        notes: Notes
       activity:
         name: Name
         minutes: Usual length
         notes: Notes
       entry:
         activity: Activity
+        event: Event
         happened_on: Date
         notes: Notes
         photos: Photos
@@ -30,6 +47,8 @@ en:
         email_address: Email address
         password: Password
     errors:
+      messages:
+        outside_the_family: must belong to this family
       models:
         child:
           attributes:
@@ -44,10 +63,12 @@ en:
               photo_too_big: "%{filename} is over %{size}"
             happened_on:
               less_than_or_equal_to: can't be in the future
-            children:
-              outside_the_family: aren't in this family
-            activity:
-              outside_the_family: isn't in this family
+        event:
+          attributes:
+            end_time:
+              greater_than: has to be after the start
+            repeats_until:
+              greater_than_or_equal_to: can't be before the date
         membership:
           attributes:
             base:
@@ -60,6 +81,7 @@ en:
     tabs:
       label: Sections
       log: Log
+      calendar: Calendar
       activities: Activities
     signed_out_nav:
       sign_in: Sign in
@@ -164,6 +186,7 @@ en:
     days:
       today: Today
       yesterday: Yesterday
+      tomorrow: Tomorrow
     duration:
       hours:
         one: "%{count} hr"
@@ -176,6 +199,8 @@ en:
       add_child: Add a child
       pagination: Earlier days
       earlier: Earlier
+    unlogged:
+      log: Log it
     entry:
       open_photo: Open photo %{number}
       edit: Edit
@@ -206,6 +231,7 @@ en:
     show:
       edit: Edit
       log: We did this
+      schedule: Add to calendar
     form:
       name: Name
       minutes: Usual length
@@ -218,3 +244,41 @@ en:
     edit:
       delete: Delete
       delete_confirm: Delete %{name}?
+
+  calendars:
+    show:
+      title: Calendar
+      add: Add an event
+      weeks: Weeks
+      previous: Previous
+      this_week: This week
+      next: Next
+    occurrence:
+      log: Log it
+      cancel: Cancel
+      restore: Restore
+
+  events:
+    form:
+      title: Title
+      activity: Activity
+      starts_on: Date
+      start_time: Starts
+      end_time: Ends
+      repeats: Repeats
+      repeat_options:
+        never: "No"
+        weekly: Weekly
+        fortnightly: Fortnightly
+      repeats_until: Until
+      children: Children
+      grown_up: Grown-up
+      notes: Notes
+      add: Add
+      save: Save
+      cancel: Cancel
+    new:
+      title: Add an event
+    edit:
+      delete: Delete
+      delete_confirm: Delete %{title}?

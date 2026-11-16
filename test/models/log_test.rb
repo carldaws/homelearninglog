@@ -35,4 +35,28 @@ class LogTest < ActiveSupport::TestCase
 
     assert_equal entries(:painting).minutes, families(:oaks).log.minutes_this_week
   end
+
+  test "today's and yesterday's events wait to be logged" do
+    travel_to Date.new(2027, 3, 3)
+    event = families(:oaks).events.create!(title: events(:visit).title, starts_on: Date.yesterday, repeats: :weekly, children: [ children(:sam) ])
+
+    assert_equal [ event ], families(:oaks).log.unlogged.fetch(Date.yesterday).map(&:event)
+  end
+
+  test "logged and cancelled events stop waiting" do
+    travel_to Date.new(2027, 3, 3)
+    logged = families(:oaks).events.create!(title: events(:visit).title, starts_on: Date.current, children: [ children(:sam) ])
+    cancelled = families(:oaks).events.create!(title: events(:visit).title, starts_on: Date.current, repeats: :weekly, children: [ children(:sam) ])
+    families(:oaks).entries.create!(author: users(:alice), event: logged, happened_on: Date.current, notes: entries(:painting).notes, children: [ children(:sam) ])
+    cancelled.occurrence_on(Date.current).cancel
+
+    assert_empty families(:oaks).log.unlogged
+  end
+
+  test "earlier pages don't ask for anything to be logged" do
+    travel_to Date.new(2027, 3, 3)
+    families(:oaks).events.create!(title: events(:visit).title, starts_on: Date.current, children: [ children(:sam) ])
+
+    assert_empty families(:oaks).log(through: Date.current - 30).unlogged
+  end
 end

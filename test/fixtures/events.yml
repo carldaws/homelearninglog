@@ -1,0 +1,25 @@
+art_class:
+  family: oaks
+  activity: painting
+  grown_up: bob
+  title: Art class
+  starts_on: 2026-11-02
+  start_time: "10:00"
+  end_time: "11:30"
+  repeats: weekly
+  repeats_until: 2026-12-14
+  children: sam
+
+visit:
+  family: oaks
+  title: Grandparents visiting
+  starts_on: 2026-11-21
+  children: sam, ivy
+
+swimming:
+  family: elms
+  title: Swimming
+  starts_on: 2026-11-04
+  start_time: "14:00"
+  repeats: fortnightly
+  children: wren

@@ -4,6 +4,7 @@ class Family < ApplicationRecord
   has_many :children, dependent: :destroy
   has_many :entries, dependent: :destroy
   has_many :activities, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   has_secure_token :invitation_code
 
@@ -21,11 +22,25 @@ class Family < ApplicationRecord
     regenerate_invitation_code
   end
 
+  def draft_event(on: nil)
+    events.build(starts_on: ActiveModel::Type::Date.new.cast(on) || Date.current, children:)
+  end
+
   def draft_entry
     entries.build(happened_on: Date.current, children:)
   end
 
   def log(through: nil)
     Log.new(self, through:)
+  end
+
+  def week(containing: nil)
+    Week.new(self, containing:)
+  end
+
+  def occurrences_between(dates)
+    events.between(dates).includes(:cancellations, :children, :grown_up)
+      .flat_map { it.occurrences_between(dates) }
+      .sort_by { [ it.date, it.start_time.to_i ] }
   end
 end

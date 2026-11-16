@@ -1,0 +1,12 @@
+<% content_for :title, @event.title_in_database %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= @event.title_in_database %></h1>
+</header>
+
+<div class="card">
+  <%= render "events/form", event: @event %>
+</div>
+
+<%= button_to t(".delete"), @event, method: :delete, class: "button button--danger button--wide mt-6",
+      form: { data: { turbo_confirm: t(".delete_confirm", title: @event.title_in_database) } } %>

@@ -1,0 +1,12 @@
+<%# locals: (occurrence:) %>
+<p class="caption flex flex-wrap gap-x-3">
+  <% if occurrence.start_time.present? %>
+    <span><%= times(occurrence) %></span>
+  <% end %>
+  <% if occurrence.grown_up.present? %>
+    <span><%= occurrence.grown_up.first_name %></span>
+  <% end %>
+  <% if occurrence.family.children.many? %>
+    <span><%= occurrence.children.map(&:name).sort.to_sentence %></span>
+  <% end %>
+</p>

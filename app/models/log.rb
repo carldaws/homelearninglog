@@ -9,7 +9,11 @@ class Log
   end
 
   def days
-    entries.group_by(&:happened_on)
+    dates.index_with { |date| entries.fetch(date, []) }
+  end
+
+  def unlogged
+    @unlogged ||= latest? ? recently_due.group_by(&:date) : {}
   end
 
   def empty?
@@ -17,7 +21,7 @@ class Log
   end
 
   def earlier
-    dates.last.yesterday if dates.any? && family.entries.where(happened_on: ...dates.last).exists?
+    entry_dates.last.yesterday if entry_dates.any? && family.entries.where(happened_on: ...entry_dates.last).exists?
   end
 
   def minutes_this_week
@@ -25,11 +29,24 @@ class Log
   end
 
   private
+    def latest?
+      through >= Date.current
+    end
+
+    def recently_due
+      family.occurrences_between(Date.yesterday..Date.current).select(&:due?)
+    end
+
     def dates
-      @dates ||= family.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).limit(DAYS_PER_PAGE).pluck(:happened_on)
+      (entry_dates + unlogged.keys).uniq.sort.reverse
+    end
+
+    def entry_dates
+      @entry_dates ||= family.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).limit(DAYS_PER_PAGE).pluck(:happened_on)
     end
 
     def entries
-      family.entries.where(happened_on: dates).latest_first.includes(:author, :children, :activity).with_attached_photos
+      @entries ||= family.entries.where(happened_on: entry_dates).latest_first
+        .includes(:author, :children, :activity, :event).with_attached_photos.group_by(&:happened_on)
     end
 end

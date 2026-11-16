@@ -1,6 +1,7 @@
 <%# locals: (entry:) %>
 <%= form_with model: entry do |form| %>
   <%= render "shared/errors", record: entry %>
+  <%= form.hidden_field :event_id if entry.event.present? %>
 
   <div class="fields">
     <div class="field">

@@ -18,7 +18,7 @@
   <% end %>
 </header>
 
-<%= render "entries/days", days: @log.days %>
+<%= render "entries/days", days: @log.days, unlogged: @log.unlogged %>
 
 <% if @log.earlier.present? %>
   <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">
