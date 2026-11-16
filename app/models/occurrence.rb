@@ -1,7 +1,7 @@
 class Occurrence
   attr_reader :event, :date
 
-  delegate :family, :title, :start_time, :end_time, :minutes, :children, :grown_up, :activity, to: :event
+  delegate :family, :title, :start_time, :end_time, :minutes, :children, :grown_up, :activity, :pursuits, to: :event
 
   def initialize(event, date)
     @event = event
@@ -41,7 +41,7 @@ class Occurrence
   end
 
   def draft_entry
-    family.draft_entry(event:, activity:, happened_on: date, minutes:, children:, pursuits: activity.present? ? activity.pursuits : [])
+    family.draft_entry(event:, activity:, happened_on: date, minutes:, children:, pursuits: pursuits.current)
   end
 
   def starts_at

@@ -11,7 +11,7 @@ class Child < ApplicationRecord
   before_destroy :keep_children_in_use
 
   def removable?
-    entries.none? && events.none?
+    entries.none? && events.none? && pursuits.none?
   end
 
   private

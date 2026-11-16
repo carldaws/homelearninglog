@@ -30,6 +30,31 @@ class PursuitsTest < ActionDispatch::IntegrationTest
     assert_select "##{dom_id(entries(:moon))}"
   end
 
+  test "editing a pursuit" do
+    patch pursuit_path(pursuits(:reading)), params: { pursuit: { notes: pursuits(:dinosaurs).name } }
+    assert_redirected_to pursuit_path(pursuits(:reading))
+    assert_equal pursuits(:dinosaurs).name, pursuits(:reading).reload.notes
+
+    patch pursuit_path(pursuits(:reading)), params: { pursuit: { name: "" } }
+    assert_response :unprocessable_content
+  end
+
+  test "an entry shows its pursuits in the log" do
+    get entries_path
+
+    assert_select "##{dom_id(entries(:moon))} a[href=?]", pursuit_path(pursuits(:reading))
+  end
+
+  test "another family's pursuit can't be attached, and nothing is written trying" do
+    patch entry_path(entries(:painting)), params: { entry: { pursuit_ids: [ pursuits(:knots).id ] } }
+    assert_response :unprocessable_content
+    assert_empty entries(:painting).reload.pursuits
+
+    patch activity_path(activities(:forest_school)), params: { activity: { pursuit_ids: [ pursuits(:knots).id ] } }
+    assert_response :unprocessable_content
+    assert_empty activities(:forest_school).reload.pursuits
+  end
+
   test "finishing and picking up a pursuit" do
     post pursuit_finish_path(pursuits(:reading))
     assert_not pursuits(:reading).reload.current?
@@ -58,7 +83,16 @@ class PursuitsTest < ActionDispatch::IntegrationTest
     get pursuit_path(pursuits(:knots))
     assert_response :not_found
 
+    get edit_pursuit_path(pursuits(:knots))
+    assert_response :not_found
+
+    patch pursuit_path(pursuits(:knots)), params: { pursuit: { name: pursuits(:reading).name } }
+    assert_response :not_found
+
     post pursuit_finish_path(pursuits(:knots))
+    assert_response :not_found
+
+    delete pursuit_finish_path(pursuits(:knots))
     assert_response :not_found
 
     delete pursuit_path(pursuits(:knots))

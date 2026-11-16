@@ -28,10 +28,6 @@ class Family < ApplicationRecord
     pursuits.build(started_on: Date.current, children:)
   end
 
-  def pursuits_for(record)
-    pursuits.current.or(pursuits.where(id: record.pursuit_ids)).alphabetically
-  end
-
   def draft_event(on: nil, **attributes)
     events.build(starts_on: ActiveModel::Type::Date.new.cast(on) || Date.current, children:, **attributes)
   end

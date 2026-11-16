@@ -1,9 +1,10 @@
 <%# locals: (form:, record:) %>
-<% if Current.family.pursuits_for(record).any? %>
+<% choices = record.pursuit_choices %>
+<% if choices.any? %>
   <fieldset class="field">
     <legend class="label mb-2"><%= t(".pursuits") %></legend>
     <div class="flex flex-wrap gap-x-6 gap-y-3">
-      <%= form.collection_check_boxes :pursuit_ids, Current.family.pursuits_for(record), :id, :name do |option| %>
+      <%= form.collection_check_boxes :pursuit_ids, choices, :id, :name do |option| %>
         <%= option.label(class: "choice") { option.check_box(class: "checkbox") + option.text } %>
       <% end %>
     </div>

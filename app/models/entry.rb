@@ -1,4 +1,6 @@
 class Entry < ApplicationRecord
+  include Pursuable
+
   PHOTO_CONTENT_TYPES = %w[ image/jpeg image/png image/webp image/gif image/heic image/heif ].freeze
   MAXIMUM_PHOTO_SIZE = 25.megabytes
   MAXIMUM_PHOTOS = 12
@@ -9,7 +11,6 @@ class Entry < ApplicationRecord
   belongs_to :activity, optional: true
   belongs_to :event, optional: true
   has_and_belongs_to_many :children
-  has_and_belongs_to_many :pursuits
 
   has_many_attached :photos do |attachable|
     attachable.variant :thumbnail, resize_to_limit: [ 600, 600 ], format: :webp, saver: { strip: true }
@@ -18,12 +19,17 @@ class Entry < ApplicationRecord
 
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
   validates :children, presence: true
-  validates :children, :activity, :event, :pursuits, same_family: true
+  validates :children, :activity, :event, same_family: true
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validate :has_notes_or_photos
   validate :photos_are_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
+  scope :preloaded, -> { includes(:author, :children, :activity, :event, :pursuits).with_attached_photos }
+
+  def self.recent_days(limit: 20)
+    latest_first.limit(limit).preloaded.group_by(&:happened_on)
+  end
 
   def heading
     if activity.present?

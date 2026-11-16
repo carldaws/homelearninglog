@@ -23,7 +23,7 @@
 
     <div class="field">
       <%= form.label :started_on, t(".started_on"), class: "label" %>
-      <%= form.date_field :started_on, required: true, class: "input" %>
+      <%= form.date_field :started_on, max: Date.current, required: true, class: "input" %>
     </div>
 
     <div class="field">

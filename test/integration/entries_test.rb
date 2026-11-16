@@ -16,6 +16,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     sign_in_as users(:carol)
     entries(:den).destroy!
     events(:swimming).destroy!
+    pursuits(:knots).destroy!
     children(:wren).destroy!
 
     get entries_path
@@ -28,6 +29,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     sign_in_as users(:carol)
     entries(:den).destroy!
     events(:swimming).destroy!
+    pursuits(:knots).destroy!
     children(:wren).destroy!
 
     get new_entry_path

@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   belongs_to :family
   belongs_to :activity, optional: true
+  has_many :pursuits, through: :activity
   belongs_to :grown_up, class_name: "User", optional: true
   has_and_belongs_to_many :children
   has_many :cancellations, dependent: :delete_all

@@ -60,7 +60,7 @@ en:
         child:
           attributes:
             base:
-              in_use: "%{name} is in the log or on the calendar"
+              in_use: "%{name} is in the log, the calendar or a pursuit"
         entry:
           attributes:
             base:
@@ -72,6 +72,8 @@ en:
               less_than_or_equal_to: can't be in the future
         pursuit:
           attributes:
+            started_on:
+              less_than_or_equal_to: can't be in the future
             finished_on:
               greater_than_or_equal_to: can't be before it started
         event:

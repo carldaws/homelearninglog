@@ -42,7 +42,6 @@ class Log
     end
 
     def entries
-      @entries ||= family.entries.where(happened_on: entry_dates).latest_first
-        .includes(:author, :children, :activity, :event, :pursuits).with_attached_photos.group_by(&:happened_on)
+      @entries ||= family.entries.where(happened_on: entry_dates).latest_first.preloaded.group_by(&:happened_on)
     end
 end
