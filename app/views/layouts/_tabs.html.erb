@@ -1,7 +1,7 @@
 <nav class="page" aria-label="<%= t(".label") %>">
   <div class="tabs">
-    <%= tab_to t(".log"), entries_path, sections: %w[ entries ] %>
-    <%= tab_to t(".calendar"), calendar_path, sections: %w[ calendars events ] %>
-    <%= tab_to t(".activities"), activities_path, sections: %w[ activities ] %>
+    <%= tab_to t(".log"), entries_path, controllers: %w[ entries activities/entries events/occurrences/entries ] %>
+    <%= tab_to t(".calendar"), calendar_path, controllers: %w[ calendars calendars/subscriptions events activities/events ] %>
+    <%= tab_to t(".activities"), activities_path, controllers: %w[ activities ] %>
   </div>
 </nav>

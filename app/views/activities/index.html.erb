@@ -5,9 +5,9 @@
   <%= link_to t(".add"), new_activity_path, class: "button" %>
 </header>
 
-<% if Current.family.activities.any? %>
+<% if @activities.any? %>
   <ul class="card card--flush list">
-    <% Current.family.activities.alphabetically.each do |activity| %>
+    <% @activities.each do |activity| %>
       <li>
         <%= link_to activity, class: "row row--link" do %>
           <span class="row-title"><%= activity.name %></span>

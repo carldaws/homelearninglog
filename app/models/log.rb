@@ -16,10 +16,6 @@ class Log
     @unlogged ||= latest? ? recently_due.group_by(&:date) : {}
   end
 
-  def empty?
-    dates.none?
-  end
-
   def earlier
     entry_dates.last.yesterday if entry_dates.any? && family.entries.where(happened_on: ...entry_dates.last).exists?
   end

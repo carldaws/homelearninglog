@@ -1,7 +1,8 @@
 class CalendarFeed
   WEEKS_BEHIND = 8
   WEEKS_AHEAD = 26
-  LINE_LENGTH = 75
+  MAXIMUM_LINE_OCTETS = 75
+  FOLD_INDENT = " "
 
   attr_reader :family
 
@@ -49,10 +50,10 @@ class CalendarFeed
     end
 
     def fold(line)
-      line.each_char.each_with_object([ +"" ]) do |char, chunks|
-        limit = chunks.one? ? LINE_LENGTH : LINE_LENGTH - 1
-        chunks << +"" if (chunks.last + char).bytesize > limit
-        chunks.last << char
-      end.join("\r\n ")
+      line.each_char.each_with_object([ +"" ]) do |char, parts|
+        room = parts.one? ? MAXIMUM_LINE_OCTETS : MAXIMUM_LINE_OCTETS - FOLD_INDENT.bytesize
+        parts << +"" if (parts.last + char).bytesize > room
+        parts.last << char
+      end.join("\r\n#{FOLD_INDENT}")
     end
 end

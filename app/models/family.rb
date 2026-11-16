@@ -23,12 +23,12 @@ class Family < ApplicationRecord
     regenerate_invitation_code
   end
 
-  def draft_event(on: nil)
-    events.build(starts_on: ActiveModel::Type::Date.new.cast(on) || Date.current, children:)
+  def draft_event(on: nil, **attributes)
+    events.build(starts_on: ActiveModel::Type::Date.new.cast(on) || Date.current, children:, **attributes)
   end
 
-  def draft_entry
-    entries.build(happened_on: Date.current, children:)
+  def draft_entry(**attributes)
+    entries.build(happened_on: Date.current, children:, **attributes)
   end
 
   def log(through: nil)
@@ -42,6 +42,6 @@ class Family < ApplicationRecord
   def occurrences_between(dates)
     events.between(dates).includes(:cancellations, :children, :grown_up)
       .flat_map { it.occurrences_between(dates) }
-      .sort_by { [ it.date, it.start_time.to_i ] }
+      .sort_by { [ it.date, it.all_day? ? 0 : 1, it.start_time.to_i ] }
   end
 end

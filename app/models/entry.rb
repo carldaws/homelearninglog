@@ -25,10 +25,10 @@ class Entry < ApplicationRecord
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
 
   def heading
-    if event.present?
-      event.title
-    elsif activity.present?
+    if activity.present?
       activity.name
+    elsif event.present?
+      event.title
     end
   end
 

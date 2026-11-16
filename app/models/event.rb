@@ -16,7 +16,7 @@ class Event < ApplicationRecord
 
   before_validation -> { self.repeats_until = nil }, if: :never_repeats?
 
-  scope :between, ->(dates) { where(starts_on: ..dates.end).merge(where(repeats_until: nil).or(where(repeats_until: dates.begin..))) }
+  scope :between, ->(dates) { where(starts_on: ..dates.end, repeats_until: [ nil, dates.begin.. ]) }
 
   def occurrences_between(dates)
     dates_between(dates).map { Occurrence.new(self, it) }

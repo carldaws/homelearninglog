@@ -8,20 +8,17 @@ class Activity < ApplicationRecord
 
   scope :alphabetically, -> { order(:name) }
 
-  def days
-    entries.latest_first.includes(:author, :children).with_attached_photos.group_by(&:happened_on)
+  RECENT_ENTRIES = 20
+
+  def recent_days
+    entries.latest_first.limit(RECENT_ENTRIES).includes(:author, :children).with_attached_photos.group_by(&:happened_on)
   end
 
   def draft_event
-    family.draft_event.tap do |event|
-      event.assign_attributes(activity: self, title: name)
-    end
+    family.draft_event(activity: self, title: name)
   end
 
   def draft_entry
-    family.draft_entry.tap do |entry|
-      entry.activity = self
-      entry.minutes = minutes
-    end
+    family.draft_entry(activity: self, minutes:)
   end
 end

@@ -46,7 +46,7 @@ class CalendarFeedTest < ActiveSupport::TestCase
     summary = vevents.map { it["SUMMARY"] }.find { it.start_with?(title.first(4)) }
     unescaped = summary.gsub(/\\([\\;,])/, '\1')
 
-    assert lines.all? { it.bytesize <= CalendarFeed::LINE_LENGTH }
+    assert lines.all? { it.bytesize <= CalendarFeed::MAXIMUM_LINE_OCTETS }
     assert_not_equal title, summary
     assert_equal title, unescaped
   end

@@ -11,7 +11,8 @@ class Week
   end
 
   def days
-    dates.index_with { |date| occurrences.select { it.date == date } }
+    by_date = occurrences.group_by(&:date)
+    dates.index_with { by_date.fetch(it, []) }
   end
 
   def previous

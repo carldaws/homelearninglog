@@ -36,17 +36,24 @@ class Occurrence
     !event.never_repeats?
   end
 
+  def all_day?
+    start_time.nil?
+  end
+
   def draft_entry
-    family.draft_entry.tap do |entry|
-      entry.assign_attributes(event:, activity:, happened_on: date, minutes:, children:)
-    end
+    family.draft_entry(event:, activity:, happened_on: date, minutes:, children:)
   end
 
   def starts_at
-    date.in_time_zone.change(hour: start_time.hour, min: start_time.min) if start_time.present?
+    on_the_day(start_time) if start_time.present?
   end
 
   def ends_at
-    date.in_time_zone.change(hour: end_time.hour, min: end_time.min) if end_time.present?
+    on_the_day(end_time) if end_time.present?
   end
+
+  private
+    def on_the_day(time)
+      date.in_time_zone.change(hour: time.hour, min: time.min)
+    end
 end
