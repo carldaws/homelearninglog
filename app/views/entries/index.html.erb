@@ -18,16 +18,7 @@
   <% end %>
 </header>
 
-<% @log.days.each do |date, entries| %>
-  <section aria-labelledby="<%= date.iso8601 %>">
-    <div class="ruled">
-      <h2 id="<%= date.iso8601 %>" class="ruled-title"><%= day_heading(date) %></h2>
-    </div>
-    <div class="stack">
-      <%= render entries %>
-    </div>
-  </section>
-<% end %>
+<%= render "entries/days", days: @log.days %>
 
 <% if @log.earlier.present? %>
   <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">

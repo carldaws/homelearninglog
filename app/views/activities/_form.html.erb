@@ -1,0 +1,26 @@
+<%# locals: (activity:) %>
+<%= form_with model: activity do |form| %>
+  <%= render "shared/errors", record: activity %>
+
+  <div class="fields">
+    <div class="field">
+      <%= form.label :name, t(".name"), class: "label" %>
+      <%= form.text_field :name, required: true, autofocus: true, class: "input" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :minutes, t(".minutes"), class: "label" %>
+      <%= form.select :minutes, duration_options(activity.minutes), { include_blank: true }, class: "input select" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, t(".notes"), class: "label" %>
+      <%= form.textarea :notes, rows: 5, class: "input" %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit (activity.persisted? ? t(".save") : t(".add")), class: "button button--wide" %>
+    <%= link_to t(".cancel"), (activity.persisted? ? activity : activities_path), class: "button button--secondary button--wide" %>
+  </div>
+<% end %>

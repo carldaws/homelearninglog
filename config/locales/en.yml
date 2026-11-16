@@ -10,7 +10,12 @@ en:
 
   activerecord:
     attributes:
+      activity:
+        name: Name
+        minutes: Usual length
+        notes: Notes
       entry:
+        activity: Activity
         happened_on: Date
         notes: Notes
         photos: Photos
@@ -41,6 +46,8 @@ en:
               less_than_or_equal_to: can't be in the future
             children:
               outside_the_family: aren't in this family
+            activity:
+              outside_the_family: isn't in this family
         membership:
           attributes:
             base:
@@ -50,6 +57,10 @@ en:
     account_menu:
       family: Family
       sign_out: Sign out
+    tabs:
+      label: Sections
+      log: Log
+      activities: Activities
     signed_out_nav:
       sign_in: Sign in
       register: Create an account
@@ -174,6 +185,7 @@ en:
       keep: Keep
       notes: Notes
       children: Children
+      activity: Activity
       happened_on: Date
       minutes: Time spent
       add: Add to the log
@@ -186,3 +198,23 @@ en:
       title: Edit entry
       delete: Delete entry
       delete_confirm: Delete this entry?
+
+  activities:
+    index:
+      title: Activities
+      add: Add an activity
+    show:
+      edit: Edit
+      log: We did this
+    form:
+      name: Name
+      minutes: Usual length
+      notes: Notes
+      add: Add
+      save: Save
+      cancel: Cancel
+    new:
+      title: Add an activity
+    edit:
+      delete: Delete
+      delete_confirm: Delete %{name}?

@@ -242,6 +242,10 @@
     @apply flex items-center gap-3 px-4 py-3.5 sm:px-5;
   }
 
+  .row--link {
+    @apply text-ink no-underline transition-colors hover:bg-hover;
+  }
+
   .row-title {
     @apply font-semibold break-words;
   }
@@ -400,6 +404,18 @@
 
   .form-actions {
     @apply mt-8 flex flex-col gap-3 sm:flex-row sm:items-center;
+  }
+
+  .tabs {
+    @apply mt-4 flex gap-1 border-b border-line-strong;
+  }
+
+  .tab {
+    @apply -mb-px rounded-t-[4px] border border-transparent px-3 py-2 font-mono text-xs font-medium tracking-[0.08em] text-muted uppercase no-underline hover:text-ink;
+  }
+
+  .tab[aria-current="page"] {
+    @apply border-line-strong border-b-paper bg-paper text-ink;
   }
 
   .menu {

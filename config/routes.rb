@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     resources :photos, only: :show, module: :entries
   end
 
+  resources :activities do
+    resources :entries, only: :new, module: :activities
+  end
+
   root "home#show"
 
   resource :up, only: :show, controller: "rails/health"

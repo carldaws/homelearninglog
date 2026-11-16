@@ -1,0 +1,21 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+  <%= link_to t(".add"), new_activity_path, class: "button" %>
+</header>
+
+<% if Current.family.activities.any? %>
+  <ul class="card card--flush list">
+    <% Current.family.activities.alphabetically.each do |activity| %>
+      <li>
+        <%= link_to activity, class: "row row--link" do %>
+          <span class="row-title"><%= activity.name %></span>
+          <% if activity.minutes.present? %>
+            <span class="tag ml-auto"><%= duration(activity.minutes) %></span>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

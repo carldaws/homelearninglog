@@ -6,6 +6,7 @@ class Entry < ApplicationRecord
 
   belongs_to :family
   belongs_to :author, class_name: "User"
+  belongs_to :activity, optional: true
   has_and_belongs_to_many :children
 
   has_many_attached :photos do |attachable|
@@ -16,6 +17,7 @@ class Entry < ApplicationRecord
   validates :happened_on, presence: true, comparison: { less_than_or_equal_to: -> { Date.current } }
   validates :children, presence: true
   validate :children_are_in_the_family
+  validate :activity_is_in_the_family, if: :activity
   validates :minutes, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 24.hours.in_minutes }, allow_nil: true
   validate :has_notes_or_photos
   validate :photos_are_photos
@@ -29,6 +31,10 @@ class Entry < ApplicationRecord
   private
     def children_are_in_the_family
       errors.add(:children, :outside_the_family) if children.any? { it.family_id != family_id }
+    end
+
+    def activity_is_in_the_family
+      errors.add(:activity, :outside_the_family) if activity.family_id != family_id
     end
 
     def has_notes_or_photos

@@ -1,0 +1,11 @@
+<%# locals: (days:, show_activity: true) %>
+<% days.each do |date, entries| %>
+  <section aria-labelledby="<%= date.iso8601 %>">
+    <div class="ruled">
+      <h2 id="<%= date.iso8601 %>" class="ruled-title"><%= day_heading(date) %></h2>
+    </div>
+    <div class="stack">
+      <%= render partial: "entries/entry", collection: entries, locals: { show_activity: } %>
+    </div>
+  </section>
+<% end %>

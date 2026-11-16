@@ -1,0 +1,14 @@
+painting:
+  family: oaks
+  name: Painting
+  minutes: 60
+  notes: Watercolours are in the blue box.
+
+forest_school:
+  family: oaks
+  name: Forest school
+  minutes: 120
+
+dens:
+  family: elms
+  name: Den building

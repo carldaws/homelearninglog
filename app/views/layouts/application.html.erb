@@ -40,6 +40,10 @@
       <% end %>
     </header>
 
+    <% if authenticated? && Current.family.present? %>
+      <%= render "layouts/tabs" %>
+    <% end %>
+
     <main class="page flex-1 pb-28 sm:pb-16">
       <%= render "layouts/flash" %>
       <%= yield %>

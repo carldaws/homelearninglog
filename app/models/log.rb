@@ -30,6 +30,6 @@ class Log
     end
 
     def entries
-      family.entries.where(happened_on: dates).latest_first.includes(:author, :children).with_attached_photos
+      family.entries.where(happened_on: dates).latest_first.includes(:author, :children, :activity).with_attached_photos
     end
 end

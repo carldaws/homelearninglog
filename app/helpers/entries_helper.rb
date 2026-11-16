@@ -27,7 +27,7 @@ module EntriesHelper
 
   def notes_with_links(notes)
     parts = notes.split(/(#{LINK})/).map do |part|
-      part.match?(LINK) ? link_to(part, part, class: "link break-all", rel: "noopener", target: "_blank") : part
+      part.match?(LINK) ? link_to(part, part, class: "link break-words", rel: "noopener", target: "_blank") : part
     end
 
     simple_format safe_join(parts), {}, sanitize_options: { attributes: %w[ href class rel target ] }

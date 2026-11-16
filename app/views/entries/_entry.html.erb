@@ -1,4 +1,11 @@
+<%# locals: (entry:, show_activity: true) %>
 <article id="<%= dom_id(entry) %>" class="card">
+  <% if show_activity && entry.activity.present? %>
+    <h3 class="mb-3 text-[1.4rem] leading-tight font-semibold">
+      <%= link_to entry.activity.name, entry.activity, class: "text-ink no-underline hover:underline" %>
+    </h3>
+  <% end %>
+
   <% if entry.photos.attached? %>
     <div class="prints mb-4">
       <% entry.photos.each.with_index(1) do |photo, number| %>

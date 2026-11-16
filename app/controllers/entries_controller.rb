@@ -9,7 +9,7 @@ class EntriesController < ApplicationController
   end
 
   def new
-    @entry = Current.family.entries.build(happened_on: Date.current, children: Current.family.children)
+    @entry = Current.family.draft_entry
   end
 
   def create
@@ -39,15 +39,11 @@ class EntriesController < ApplicationController
   end
 
   private
-    def require_children
-      redirect_to new_family_child_path if Current.family.children.none?
-    end
-
     def set_entry
       @entry = Current.family.entries.find(params[:id])
     end
 
     def entry_params
-      params.expect(entry: [ :notes, :happened_on, :minutes, child_ids: [], photos: [] ])
+      params.expect(entry: [ :notes, :happened_on, :minutes, :activity_id, child_ids: [], photos: [] ])
     end
 end

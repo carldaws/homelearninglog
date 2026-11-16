@@ -1,0 +1,12 @@
+<% content_for :title, @activity.name_in_database %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= @activity.name_in_database %></h1>
+</header>
+
+<div class="card">
+  <%= render "form", activity: @activity %>
+</div>
+
+<%= button_to t(".delete"), @activity, method: :delete, class: "button button--danger button--wide mt-6",
+      form: { data: { turbo_confirm: t(".delete_confirm", name: @activity.name_in_database) } } %>
