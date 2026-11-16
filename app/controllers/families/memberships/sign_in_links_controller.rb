@@ -2,7 +2,6 @@ class Families::Memberships::SignInLinksController < ApplicationController
   include FamilyScoped
 
   before_action :set_membership
-  before_action :ensure_someone_else
   before_action :no_store
 
   def show
@@ -12,9 +11,5 @@ class Families::Memberships::SignInLinksController < ApplicationController
   private
     def set_membership
       @membership = Current.family.memberships.find(params[:membership_id])
-    end
-
-    def ensure_someone_else
-      head :forbidden if @membership.user == Current.user
     end
 end

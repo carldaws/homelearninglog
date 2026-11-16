@@ -150,14 +150,6 @@ class FamiliesTest < ActionDispatch::IntegrationTest
     assert_equal users(:bob), User.find_by_token_for(:sign_in_link, token)
   end
 
-  test "you can't make a sign-in link for yourself" do
-    sign_in_as users(:alice)
-
-    get family_membership_sign_in_link_path(memberships(:alice_in_oaks))
-
-    assert_response :forbidden
-  end
-
   test "you can't make a sign-in link for someone in another family" do
     sign_in_as users(:alice)
 

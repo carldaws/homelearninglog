@@ -1,6 +1,5 @@
 class PasswordsController < ApplicationController
   allow_unauthenticated_access
-  rate_limit to: 10, within: 15.minutes, only: :update, with: -> { redirect_to new_session_path, alert: t(".rate_limited") }
   before_action :set_user
   before_action :no_store
 

@@ -116,8 +116,6 @@ en:
       password: New password
       password_hint: At least 8 characters. Your phone or browser can remember it for you.
       submit: Save and sign in
-    update:
-      rate_limited: Too many tries. Please wait a few minutes and try again.
     expired:
       title: Link expired
       heading: This link has expired
@@ -182,7 +180,8 @@ en:
         removed: Removed %{name}.
     memberships:
       destroy:
-        removed: "%{name} has left the family."
+        removed: "%{name} is no longer in the family."
+        left: You've left %{family}.
       sign_in_links:
         show:
           title: Sign-in link
@@ -199,7 +198,6 @@ en:
         expiry: The link works for seven days. Anyone with it can join, so only send it to people you trust.
 
   joins:
-    rate_limited: Too many tries. Please wait a few minutes and try again.
     show:
       title: Join %{family}
       invited: You've been invited to join

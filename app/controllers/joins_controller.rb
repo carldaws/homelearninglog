@@ -1,6 +1,5 @@
 class JoinsController < ApplicationController
   allow_unauthenticated_access only: :show
-  rate_limit to: 30, within: 10.minutes, with: -> { redirect_to root_path, alert: t("joins.rate_limited") }
   before_action :set_family
   before_action :remember_invitation, only: :show, unless: :authenticated?
 
