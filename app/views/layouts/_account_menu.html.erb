@@ -6,6 +6,7 @@
   <div class="menu">
     <% if Current.family.present? %>
       <%= link_to t(".family"), family_path, class: "menu-item" %>
+      <%= link_to t(".kids_mode"), new_kids_mode_path, class: "menu-item" %>
       <div class="menu-divider"></div>
     <% end %>
     <%# A full page load clears Turbo's cached copies of signed-in pages %>

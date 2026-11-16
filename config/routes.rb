@@ -33,6 +33,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :kids_mode, only: %i[ new create destroy ]
+  resource :kids_menu, path: "kids", only: :show
+  resources :choices, only: %i[ create show ]
+  resource :surprise, only: :create
+
   resources :pursuits do
     resource :finish, only: %i[ create destroy ], module: :pursuits
   end
@@ -41,6 +46,7 @@ Rails.application.routes.draw do
     scope module: :activities do
       resources :entries, only: :new
       resources :events, only: :new
+      resource :picture, only: :show
     end
   end
 

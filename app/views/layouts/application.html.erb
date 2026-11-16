@@ -33,14 +33,14 @@
         <%= t("app.name") %>
       <% end %>
 
-      <% if authenticated? %>
-        <%= render "layouts/account_menu" %>
-      <% else %>
+      <% if !authenticated? %>
         <%= render "layouts/signed_out_nav" %>
+      <% elsif !kids_mode? %>
+        <%= render "layouts/account_menu" %>
       <% end %>
     </header>
 
-    <% if authenticated? && Current.family.present? %>
+    <% if authenticated? && Current.family.present? && !kids_mode? %>
       <%= render "layouts/tabs" %>
     <% end %>
 

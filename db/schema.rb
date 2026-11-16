@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_174406) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_175308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_174406) do
     t.integer "minutes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "for_children", default: false, null: false
     t.index ["family_id"], name: "index_activities_on_family_id"
   end
 
@@ -94,6 +95,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_174406) do
     t.bigint "pursuit_id", null: false
     t.index ["child_id"], name: "index_children_pursuits_on_child_id"
     t.index ["pursuit_id", "child_id"], name: "index_children_pursuits_on_pursuit_id_and_child_id", unique: true
+  end
+
+  create_table "choices", force: :cascade do |t|
+    t.bigint "child_id", null: false
+    t.bigint "activity_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_choices_on_activity_id"
+    t.index ["child_id"], name: "index_choices_on_child_id"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -197,6 +207,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_174406) do
   add_foreign_key "children_events", "events"
   add_foreign_key "children_pursuits", "children"
   add_foreign_key "children_pursuits", "pursuits"
+  add_foreign_key "choices", "activities"
+  add_foreign_key "choices", "children"
   add_foreign_key "entries", "activities"
   add_foreign_key "entries", "events"
   add_foreign_key "entries", "families"

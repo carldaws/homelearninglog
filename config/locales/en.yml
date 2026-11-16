@@ -37,6 +37,8 @@ en:
         name: Name
         minutes: Usual length
         notes: Notes
+        picture: Picture
+        for_children: Kids' menu
       entry:
         activity: Activity
         event: Event
@@ -56,6 +58,8 @@ en:
     errors:
       messages:
         outside_the_family: must belong to this family
+        not_a_photo: "%{filename} isn't a photo"
+        photo_too_big: "%{filename} is over %{size}"
       models:
         child:
           attributes:
@@ -66,8 +70,6 @@ en:
             base:
               empty: Add a photo or notes
               too_many_photos: Up to %{count} photos
-              not_a_photo: "%{filename} isn't a photo"
-              photo_too_big: "%{filename} is over %{size}"
             happened_on:
               less_than_or_equal_to: can't be in the future
         pursuit:
@@ -90,6 +92,7 @@ en:
   layouts:
     account_menu:
       family: Family
+      kids_mode: Kids' mode
       sign_out: Sign out
     tabs:
       label: Sections
@@ -248,10 +251,16 @@ en:
       edit: Edit
       log: We did this
       schedule: Add to calendar
+      for_children: Kids' menu
+      chosen:
+        one: Chosen once
+        other: Chosen %{count} times
     form:
       name: Name
       minutes: Usual length
       notes: Notes
+      for_children: Kids' menu
+      picture: Picture
       add: Add
       save: Save
       cancel: Cancel
@@ -329,3 +338,18 @@ en:
     edit:
       delete: Delete
       delete_confirm: Delete %{name}?
+
+  kids_modes:
+    new:
+      title: Kids' mode
+
+  kids_menus:
+    show:
+      surprise: Surprise me
+      grown_ups: Grown-ups
+      password: Password
+      leave: Leave kids' mode
+
+  choices:
+    show:
+      back: Back

@@ -1,0 +1,9 @@
+<%# locals: (activity:) %>
+<span class="flex size-24 items-center justify-center overflow-hidden rounded-full bg-accent-tint sm:size-28">
+  <% if activity.picture.attached? %>
+    <%= image_tag activity_picture_path(activity), alt: "", class: "size-full object-cover" %>
+  <% else %>
+    <span class="font-display text-5xl font-semibold text-accent-ink" aria-hidden="true"><%= activity.name.first %></span>
+  <% end %>
+</span>
+<span class="font-display text-[1.4rem] leading-tight font-semibold"><%= activity.name %></span>

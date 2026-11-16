@@ -1,0 +1,31 @@
+<% content_for :title, choosing_child.name %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= choosing_child.name %></h1>
+</header>
+
+<ul class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
+  <% @activities.each do |activity| %>
+    <li class="print rounded-[4px]">
+      <%= button_to choices_path, params: { activity_id: activity.id }, form: { class: "h-full" },
+            class: "flex h-48 w-full cursor-pointer flex-col items-center justify-center gap-3 p-3 text-center text-ink" do %>
+        <%= render "kids_menus/tile", activity: %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<% if @activities.any? %>
+  <%= button_to t(".surprise"), surprise_path, class: "button mt-8 h-14 w-full font-display text-xl" %>
+<% end %>
+
+<details class="mt-12">
+  <summary class="button button--secondary button--small list-none [&::-webkit-details-marker]:hidden"><%= t(".grown_ups") %></summary>
+  <%= form_with url: kids_mode_path, method: :delete, class: "card mt-4 flex flex-col gap-3 sm:flex-row sm:items-end" do |form| %>
+    <div class="field flex-1">
+      <%= form.label :password, t(".password"), class: "label" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", class: "input" %>
+    </div>
+    <%= form.submit t(".leave"), class: "button" %>
+  <% end %>
+</details>

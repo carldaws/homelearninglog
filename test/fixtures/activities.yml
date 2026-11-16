@@ -1,6 +1,7 @@
 painting:
   family: oaks
   name: Painting
+  for_children: true
   minutes: 60
   notes: Watercolours are in the blue box.
 
@@ -12,3 +13,4 @@ forest_school:
 dens:
   family: elms
   name: Den building
+  for_children: true
