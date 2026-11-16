@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     resources :photos, only: :show, module: :entries
   end
 
+  resource :week, only: :show do
+    resource :reflection, only: :update, module: :weeks
+  end
+
   resource :calendar, only: :show do
     resource :subscription, only: %i[ show update ], module: :calendars
   end

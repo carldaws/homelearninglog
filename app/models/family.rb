@@ -6,6 +6,7 @@ class Family < ApplicationRecord
   has_many :activities, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :pursuits, dependent: :destroy
+  has_many :reflections, dependent: :destroy
 
   has_secure_token :invitation_code
   has_secure_token :calendar_token

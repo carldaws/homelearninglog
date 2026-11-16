@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_175308) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_175605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -176,6 +176,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_175308) do
     t.index ["family_id"], name: "index_pursuits_on_family_id"
   end
 
+  create_table "reflections", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.date "week_of", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id", "week_of"], name: "index_reflections_on_family_id_and_week_of", unique: true
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
@@ -221,5 +230,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_175308) do
   add_foreign_key "memberships", "families"
   add_foreign_key "memberships", "users"
   add_foreign_key "pursuits", "families"
+  add_foreign_key "reflections", "families"
   add_foreign_key "sessions", "users"
 end

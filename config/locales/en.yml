@@ -213,6 +213,7 @@ en:
       minutes: "%{count} min"
     index:
       title: Log
+      week: This week
       this_week: "%{time} this week"
       add: Add to the log
       add_child: Add a child
@@ -353,3 +354,22 @@ en:
   choices:
     show:
       back: Back
+
+  weeks:
+    show:
+      title: Week
+      days_logged:
+        one: 1 day
+        other: "%{count} days"
+      weeks: Weeks
+      previous: Previous
+      this_week: This week
+      next: Next
+      grown_ups: Grown-ups
+      pursuits: Pursuits
+      entries:
+        one: 1 entry
+        other: "%{count} entries"
+      choices: Chosen
+      notes: Notes
+      save: Save
