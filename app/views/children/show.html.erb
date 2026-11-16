@@ -19,8 +19,13 @@
 </header>
 
 <% if @now.occurrences.any? %>
-  <section class="stack mb-10" aria-label="<%= t(".today") %>">
-    <%= render partial: "children/occurrence", collection: @now.occurrences %>
+  <section class="day" aria-labelledby="today">
+    <div class="ruled">
+      <h2 id="today" class="ruled-title"><%= t(".today") %></h2>
+    </div>
+    <div class="stack">
+      <%= render partial: "children/occurrence", collection: @now.occurrences %>
+    </div>
   </section>
 <% end %>
 

@@ -301,10 +301,6 @@
     @apply font-mono text-xs font-medium tracking-[0.08em] text-label uppercase;
   }
 
-  .card--dashed {
-    @apply border-dashed border-line-strong shadow-none;
-  }
-
   .card--flush {
     @apply p-0 sm:p-0;
   }
