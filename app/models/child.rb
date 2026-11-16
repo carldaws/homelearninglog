@@ -7,12 +7,16 @@ class Child < ApplicationRecord
 
   scope :alphabetically, -> { order(:name) }
 
-  before_destroy :keep_children_with_entries
+  before_destroy :keep_children_in_use
+
+  def removable?
+    entries.none? && events.none?
+  end
 
   private
-    def keep_children_with_entries
-      if entries.exists?
-        errors.add(:base, :has_entries, name:)
+    def keep_children_in_use
+      unless removable?
+        errors.add(:base, :in_use, name:)
         throw :abort
       end
     end

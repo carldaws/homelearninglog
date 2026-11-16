@@ -6,6 +6,13 @@ class MembershipTest < ActiveSupport::TestCase
     assert_equal [ users(:alice) ], families(:oaks).members.reload
   end
 
+  test "a grown-up who leaves is taken off the family's events" do
+    memberships(:bob_in_oaks).destroy!
+
+    assert_nil events(:art_class).reload.grown_up
+    assert events(:art_class).valid?
+  end
+
   test "the last grown-up can't leave" do
     membership = memberships(:carol_in_elms)
 

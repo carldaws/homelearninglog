@@ -53,7 +53,7 @@ en:
         child:
           attributes:
             base:
-              has_entries: "%{name} is in the log"
+              in_use: "%{name} is in the log or on the calendar"
         entry:
           attributes:
             base:

@@ -15,6 +15,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
   test "a family without children is asked to add them first" do
     sign_in_as users(:carol)
     entries(:den).destroy!
+    events(:swimming).destroy!
     children(:wren).destroy!
 
     get entries_path
@@ -26,6 +27,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
   test "a family without children is sent to add one before logging" do
     sign_in_as users(:carol)
     entries(:den).destroy!
+    events(:swimming).destroy!
     children(:wren).destroy!
 
     get new_entry_path

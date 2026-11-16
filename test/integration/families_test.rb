@@ -181,6 +181,18 @@ class FamiliesTest < ActionDispatch::IntegrationTest
     assert_select "form[action=?]", family_membership_path(memberships(:carol_in_elms)), count: 0
   end
 
+  test "children on the calendar can't be removed" do
+    sign_in_as users(:alice)
+    entries(:moon).destroy!
+
+    get edit_family_child_path(children(:ivy))
+    assert_select "form[action=?]:has(input[name=_method][value=delete])", family_child_path(children(:ivy)), count: 0
+
+    assert_no_difference -> { families(:oaks).children.count } do
+      delete family_child_path(children(:ivy))
+    end
+  end
+
   test "children in the log aren't offered for removal" do
     sign_in_as users(:alice)
 
