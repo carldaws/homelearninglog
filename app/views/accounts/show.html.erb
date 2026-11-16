@@ -1,0 +1,22 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+  <%= link_to t(".edit"), edit_account_path, class: "button button--secondary button--small sm:ml-auto" %>
+</header>
+
+<dl class="card card--flush list section">
+  <div class="row">
+    <dt class="caption w-16 shrink-0"><%= t(".name") %></dt>
+    <dd class="min-w-0 break-words"><%= @user.name %></dd>
+  </div>
+  <div class="row">
+    <dt class="caption w-16 shrink-0"><%= t(".email_address") %></dt>
+    <dd class="min-w-0 break-words"><%= @user.email_address %></dd>
+  </div>
+</dl>
+
+<div class="flex flex-wrap gap-3">
+  <%# A full page load clears Turbo's cached copies of signed-in pages %>
+  <%= button_to t(".sign_out"), session_path, method: :delete, form: { data: { turbo: false } }, class: "button button--secondary" %>
+</div>

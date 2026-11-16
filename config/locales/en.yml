@@ -43,6 +43,7 @@ en:
         name: Name
         email_address: Email address
         password: Password
+        current_password: Current password
     errors:
       messages:
         not_a_photo: "%{filename} isn't a photo"
@@ -67,8 +68,8 @@ en:
               last_grown_up: "%{name} needs a grown-up"
 
   layouts:
-    sign_out:
-      sign_out: Sign out
+    account_link:
+      account: Account
     footer:
       credit_html: Free and %{open_source}, by %{author}.
       open_source: open source
@@ -164,6 +165,21 @@ en:
     create:
       invalid: Wrong email address or recovery code
       rate_limited: Too many attempts
+
+  accounts:
+    show:
+      title: Account
+      edit: Edit
+      name: Name
+      email_address: Email
+      sign_out: Sign out
+    edit:
+      title: Edit your details
+      name: Name
+      email_address: Email address
+      current_password: Current password
+      save: Save
+      cancel: Cancel
 
   recovery_codes:
     show:

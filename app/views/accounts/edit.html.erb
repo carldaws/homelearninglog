@@ -1,0 +1,33 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= form_with model: @user, url: account_path, method: :patch do |form| %>
+    <%= render "shared/errors", record: @user %>
+
+    <div class="fields">
+      <div class="field">
+        <%= form.label :name, t(".name"), class: "label" %>
+        <%= form.text_field :name, required: true, autocomplete: "name", class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :email_address, t(".email_address"), class: "label" %>
+        <%= form.email_field :email_address, required: true, autocomplete: "username", class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :current_password, t(".current_password"), class: "label" %>
+        <%= form.password_field :current_password, autocomplete: "current-password", class: "input" %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit t(".save"), class: "button button--wide" %>
+      <%= link_to t(".cancel"), account_path, class: "button button--secondary button--wide" %>
+    </div>
+  <% end %>
+</div>
