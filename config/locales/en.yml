@@ -272,7 +272,7 @@ en:
       subscribe: Subscribe
     occurrence:
       log: Log it
-      cancel: Cancel
+      cancel: Skip
       restore: Restore
 
   events:
