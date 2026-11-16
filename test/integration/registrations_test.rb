@@ -6,7 +6,7 @@ class RegistrationsTest < ActionDispatch::IntegrationTest
       post registration_path, params: { user: { name: users(:alice).name, email_address: "new@example.com", password: FixturePasswords::PASSWORD } }
     end
 
-    assert_redirected_to root_url
+    assert_redirected_to entries_url
     assert_signed_in
   end
 

@@ -15,13 +15,10 @@ Rails.application.routes.draw do
 
   resources :joins, path: "join", only: %i[ show create ], param: :token
 
-  resources :entries, only: %i[ new create edit update destroy ] do
+  resources :entries, path: "log", only: %i[ index new create edit update destroy ] do
     resources :photos, only: :show, module: :entries
   end
 
-  constraints(->(request) { Session.exists?(id: request.cookie_jar.signed[:session_id]) }) do
-    root "entries#index", as: :signed_in_root
-  end
   root "home#show"
 
   resource :up, only: :show, controller: "rails/health"

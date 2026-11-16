@@ -11,7 +11,8 @@ class PasswordsController < ApplicationController
     @user.assign_attributes(params.expect(user: [ :password ]))
 
     if @user.save(context: :password_change)
-      sign_in @user
+      start_new_session_for @user
+      redirect_to after_authentication_url
     else
       render :edit, status: :unprocessable_content
     end

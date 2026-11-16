@@ -11,7 +11,7 @@ class JoinsController < ApplicationController
     membership = @family.join(Current.user)
 
     if membership.persisted?
-      redirect_to root_path, notice: t(".joined", family: @family.name)
+      redirect_to entries_path, notice: t(".joined", family: @family.name)
     else
       redirect_to join_path(params[:token]), alert: membership.errors.full_messages.to_sentence
     end

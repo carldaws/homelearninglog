@@ -39,7 +39,7 @@
 
   <% if @log.earlier.present? %>
     <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">
-      <%= link_to t(".earlier"), root_path(through: @log.earlier.iso8601), class: "button button--secondary" %>
+      <%= link_to t(".earlier"), entries_path(through: @log.earlier.iso8601), class: "button button--secondary" %>
     </nav>
   <% end %>
 <% end %>

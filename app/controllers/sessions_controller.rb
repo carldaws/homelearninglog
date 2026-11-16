@@ -12,7 +12,8 @@ class SessionsController < ApplicationController
     user = User.authenticate_by(email_address: attempted_email_address, password: params.expect(:password))
 
     if user.present?
-      sign_in user
+      start_new_session_for user
+      redirect_to after_authentication_url
     else
       flash.now[:alert] = t(".invalid")
       render :new, status: :unprocessable_content

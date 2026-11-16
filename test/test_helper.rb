@@ -29,7 +29,7 @@ module SignInHelper
 
   def assert_signed_in
     get new_session_path
-    assert_redirected_to root_path
+    assert_redirected_to entries_path
   end
 
   def assert_not_signed_in

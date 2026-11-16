@@ -4,7 +4,7 @@ class FamiliesTest < ActionDispatch::IntegrationTest
   test "people without a family are asked to start one" do
     sign_in_as users(:dan)
 
-    get root_path
+    get entries_path
 
     assert_redirected_to new_family_path
   end

@@ -4,7 +4,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
   test "the log shows the family's entries" do
     sign_in_as users(:alice)
 
-    get root_path
+    get entries_path
 
     assert_select "##{dom_id(entries(:painting))}"
     assert_select "##{dom_id(entries(:moon))}"
@@ -17,7 +17,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     entries(:den).destroy!
     children(:wren).destroy!
 
-    get root_path
+    get entries_path
 
     assert_select "a[href=?]", new_family_child_path
     assert_select "a[href=?]", new_entry_path, count: 0
@@ -40,7 +40,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
       post entries_path, params: { entry: { notes: entries(:moon).notes, happened_on: Date.current, minutes: 30, child_ids: [ children(:ivy).id ] } }
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to entries_path
     entry = families(:oaks).entries.last
     assert_equal users(:bob), entry.author
     assert_equal [ children(:ivy) ], entry.children
@@ -53,7 +53,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
     post entries_path, params: { entry: { happened_on: Date.current, child_ids: [ children(:sam).id ],
       photos: [ fixture_file_upload("photo.jpg", "image/jpeg"), fixture_file_upload("photo.jpg", "image/jpeg") ] } }
 
-    assert_redirected_to root_path
+    assert_redirected_to entries_path
     assert_equal 2, families(:oaks).entries.last.photos.count
   end
 
@@ -91,7 +91,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
 
     patch entry_path(entries(:painting)), params: { entry: { notes: entries(:moon).notes, minutes: "" } }
 
-    assert_redirected_to root_path
+    assert_redirected_to entries_path
     assert_equal entries(:moon).notes, entries(:painting).reload.notes
     assert_nil entries(:painting).minutes
   end
@@ -105,7 +105,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
 
     patch entry_path(entry), params: { entry: { photos: [ kept.signed_id, "" ] } }
 
-    assert_redirected_to root_path
+    assert_redirected_to entries_path
     assert_equal [ kept.blob ], entry.reload.photos.map(&:blob)
   end
 
@@ -116,7 +116,7 @@ class EntriesTest < ActionDispatch::IntegrationTest
       delete entry_path(entries(:painting))
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to entries_path
   end
 
   test "other families' entries are out of reach" do

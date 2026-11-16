@@ -12,7 +12,7 @@
         <%= link_to t(".sign_in"), new_session_path, class: "button button--secondary" %>
       <% elsif Current.family == @family %>
         <p class="text-muted"><%= t(".already_member") %></p>
-        <%= link_to t(".open"), root_path, class: "button" %>
+        <%= link_to t(".open"), entries_path, class: "button" %>
       <% elsif Current.family.present? %>
         <p class="text-muted"><%= t(".in_another_family", family: Current.family.name) %></p>
       <% else %>

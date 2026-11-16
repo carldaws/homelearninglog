@@ -11,7 +11,8 @@ class RegistrationsController < ApplicationController
     @user = User.new(params.expect(user: [ :name, :email_address, :password ]))
 
     if @user.save
-      sign_in @user
+      start_new_session_for @user
+      redirect_to after_authentication_url
     else
       render :new, status: :unprocessable_content
     end

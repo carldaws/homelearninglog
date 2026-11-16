@@ -15,7 +15,7 @@ class SignInLinksTest < ActionDispatch::IntegrationTest
   test "choosing a new password signs you in" do
     patch password_path(@token), params: { user: { password: "a brand new password" } }
 
-    assert_redirected_to root_url
+    assert_redirected_to entries_url
     assert users(:alice).reload.authenticate_password("a brand new password")
   end
 
