@@ -53,7 +53,17 @@ class LogTest < ActiveSupport::TestCase
   end
 
   test "nonsense dates show the latest page" do
-    assert_equal Date.current, @child.log(through: "not a date").through
+    assert_equal Date.current.end_of_week, @child.log(through: "not a date").through
+  end
+
+  test "a page that starts from a day shows the whole of its week" do
+    log Date.new(2026, 11, 11), minutes: 30
+    log Date.new(2026, 11, 9), minutes: 60
+
+    week = @child.log(through: Date.new(2026, 11, 9)).weeks.first
+
+    assert_equal Date.new(2026, 11, 9), week.starts_on
+    assert_equal 90, week.minutes
   end
 
   test "today's events are shown, and yesterday's until they're logged" do

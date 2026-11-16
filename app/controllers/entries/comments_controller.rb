@@ -8,9 +8,9 @@ class Entries::CommentsController < ApplicationController
     @comment = @entry.comments.build(comment_params.merge(author: Current.user))
 
     if @comment.save
-      redirect_back_or_to helpers.entry_in_log_path(@entry)
+      redirect_back_or_to entry_in_log_path(@entry)
     else
-      redirect_back_or_to helpers.entry_in_log_path(@entry), alert: @comment.errors.full_messages.to_sentence
+      redirect_back_or_to entry_in_log_path(@entry), alert: @comment.errors.full_messages.to_sentence
     end
   end
 
@@ -19,7 +19,7 @@ class Entries::CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      redirect_to helpers.entry_in_log_path(@entry)
+      redirect_to entry_in_log_path(@entry)
     else
       render :edit, status: :unprocessable_content
     end
@@ -27,7 +27,7 @@ class Entries::CommentsController < ApplicationController
 
   def destroy
     @comment.destroy!
-    redirect_to helpers.entry_in_log_path(@entry), status: :see_other
+    redirect_to entry_in_log_path(@entry), status: :see_other
   end
 
   private

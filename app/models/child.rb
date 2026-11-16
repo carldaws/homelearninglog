@@ -21,7 +21,7 @@ class Child < ApplicationRecord
   end
 
   def suggestions
-    ideas.suggested.reorder(created_at: :desc, id: :desc).includes(entry: :author)
+    Idea.suggested.where(entry: entries).order(created_at: :desc, id: :desc).includes(entry: :author)
   end
 
   def log(through: nil)
@@ -30,6 +30,10 @@ class Child < ApplicationRecord
 
   def week(containing: nil)
     Week.new(self, containing:)
+  end
+
+  def occurrences_on(date)
+    occurrences_between(date..date)
   end
 
   def occurrences_between(dates)

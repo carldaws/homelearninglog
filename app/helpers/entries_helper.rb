@@ -24,10 +24,6 @@ module EntriesHelper
     end
   end
 
-  def entry_in_log_path(entry)
-    child_path(entry.child_id, through: entry.happened_on.iso8601, anchor: dom_id(entry))
-  end
-
   def duration(minutes)
     hours, remainder = minutes.divmod(60)
 

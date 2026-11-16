@@ -1,6 +1,6 @@
 class Idea < ApplicationRecord
   belongs_to :entry
-  has_many :follow_ups, class_name: "Entry", foreign_key: :suggestion_id, inverse_of: :suggestion, dependent: :nullify
+  has_many :follow_ups, -> { order(:happened_on, :created_at) }, class_name: "Entry", foreign_key: :suggestion_id, inverse_of: :suggestion, dependent: :nullify
 
   validates :description, presence: true
 

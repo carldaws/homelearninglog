@@ -35,6 +35,10 @@ Rails.application.routes.draw do
     resources :accesses, path: "grown-ups", only: %i[ index destroy ]
   end
 
+  direct :entry_in_log do |entry|
+    route_for :child, entry.child_id, through: entry.happened_on.iso8601, anchor: ActionView::RecordIdentifier.dom_id(entry)
+  end
+
   resources :invitations, only: %i[ new create show ]
   resources :joins, path: "join", only: %i[ show create ], param: :token
   resources :feeds, only: :show, param: :token

@@ -1,26 +1,15 @@
 class Log
   WEEKS_PER_PAGE = 4
-  WEEK_STARTS_ON = Arel.sql("date_trunc('week', happened_on)::date")
-
-  Week = Data.define(:starts_on, :entries) do
-    def days
-      entries.group_by(&:happened_on)
-    end
-
-    def minutes
-      entries.filter_map(&:minutes).sum
-    end
-  end
 
   attr_reader :child, :through
 
   def initialize(child, through: nil)
     @child = child
-    @through = DateParam.cast(through) || Date.current
+    @through = (DateParam.cast(through) || Date.current).end_of_week
   end
 
   def occurrences
-    @occurrences ||= latest? ? recent_occurrences.select { it.today? ? !it.cancelled? : it.due? } : []
+    @occurrences ||= latest? ? [ *unlogged_from_yesterday, *today ] : []
   end
 
   def suggestions
@@ -40,13 +29,17 @@ class Log
       through >= Date.current
     end
 
-    def recent_occurrences
-      child.occurrences_between(Date.yesterday..Date.current)
+    def unlogged_from_yesterday
+      child.occurrences_on(Date.yesterday).select(&:due?)
+    end
+
+    def today
+      child.occurrences_on(Date.current).reject(&:cancelled?)
     end
 
     def week_starts
-      @week_starts ||= child.entries.where(happened_on: ..through).group(WEEK_STARTS_ON)
-        .order(Arel.sql("#{WEEK_STARTS_ON} DESC")).limit(WEEKS_PER_PAGE + 1).pluck(WEEK_STARTS_ON)
+      @week_starts ||= child.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).pluck(:happened_on)
+        .map(&:beginning_of_week).uniq.first(WEEKS_PER_PAGE + 1)
     end
 
     def shown_week_starts
