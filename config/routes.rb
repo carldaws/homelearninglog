@@ -6,7 +6,10 @@ Rails.application.routes.draw do
 
   resources :children, only: %i[ show new create edit update destroy ] do
     resources :entries, only: %i[ new create edit update destroy ] do
-      resources :photos, only: :show, module: :entries
+      scope module: :entries do
+        resources :photos, only: :show
+        resources :comments, only: %i[ create edit update destroy ]
+      end
     end
 
     resource :calendar, only: :show do

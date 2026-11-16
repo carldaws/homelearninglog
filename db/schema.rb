@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_213100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,6 +72,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
     t.bigint "invitation_id", null: false
     t.index ["child_id"], name: "index_children_invitations_on_child_id"
     t.index ["invitation_id", "child_id"], name: "index_children_invitations_on_invitation_id_and_child_id", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "entry_id", null: false
+    t.bigint "author_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["entry_id"], name: "index_comments_on_entry_id"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -151,6 +161,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_213000) do
   add_foreign_key "cancellations", "events"
   add_foreign_key "children_invitations", "children"
   add_foreign_key "children_invitations", "invitations"
+  add_foreign_key "comments", "entries"
+  add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "entries", "children"
   add_foreign_key "entries", "events"
   add_foreign_key "entries", "ideas", column: "suggestion_id"

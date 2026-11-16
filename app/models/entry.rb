@@ -7,6 +7,7 @@ class Entry < ApplicationRecord
   belongs_to :event, optional: true
   belongs_to :suggestion, class_name: "Idea", optional: true, inverse_of: :follow_ups
   has_many :ideas, -> { order(:id) }, dependent: :destroy, inverse_of: :entry
+  has_many :comments, -> { order(:created_at, :id) }, dependent: :destroy
 
   accepts_nested_attributes_for :ideas, reject_if: :new_and_blank_idea?
 
@@ -24,7 +25,7 @@ class Entry < ApplicationRecord
   validate :not_too_many_photos
 
   scope :latest_first, -> { order(happened_on: :desc, created_at: :desc) }
-  scope :preloaded, -> { includes(:author, :event, suggestion: :entry, ideas: :follow_ups).with_attached_photos }
+  scope :preloaded, -> { includes(:author, :event, suggestion: :entry, ideas: :follow_ups, comments: :author).with_attached_photos }
 
   before_validation :forget_blanked_ideas
 

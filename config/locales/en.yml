@@ -194,6 +194,7 @@ en:
       what_was_learned: What was learned
       what_could_come_next: What could come next
       edit: Edit
+      comment: Comment
     form:
       following_on_from: Following on from
       what_we_did: What we did
@@ -216,6 +217,18 @@ en:
       title: Edit entry
       delete: Delete entry
       delete_confirm: Delete this entry?
+    comments:
+      comment:
+        edit: Edit
+      form:
+        body: Comment
+        add: Add
+        save: Save
+        cancel: Cancel
+      edit:
+        title: Edit comment
+        delete: Delete comment
+        delete_confirm: Delete this comment?
 
   ideas:
     suggestion:

@@ -1,0 +1,16 @@
+<%# locals: (entry:, comment:) %>
+<%= form_with model: comment, url: (comment.persisted? ? child_entry_comment_path(entry.child_id, entry, comment) : child_entry_comments_path(entry.child_id, entry)) do |form| %>
+  <%= render "shared/errors", record: comment %>
+
+  <div class="field">
+    <%= form.label :body, t(".body"), class: "label" %>
+    <%= form.textarea :body, rows: 3, required: true, class: "input" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit (comment.persisted? ? t(".save") : t(".add")), class: "button button--wide" %>
+    <% if comment.persisted? %>
+      <%= link_to t(".cancel"), entry_in_log_path(entry), class: "button button--secondary button--wide" %>
+    <% end %>
+  </div>
+<% end %>

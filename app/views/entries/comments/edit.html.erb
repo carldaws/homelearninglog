@@ -1,0 +1,12 @@
+<% content_for :title, t(".title") %>
+
+<header class="page-header">
+  <h1 class="page-title"><%= t(".title") %></h1>
+</header>
+
+<div class="card">
+  <%= render "entries/comments/form", entry: @comment.entry, comment: @comment %>
+</div>
+
+<%= button_to t(".delete"), child_entry_comment_path(@child, @comment.entry, @comment), method: :delete, class: "button button--danger button--wide mt-6",
+      form: { data: { turbo_confirm: t(".delete_confirm") } } %>
