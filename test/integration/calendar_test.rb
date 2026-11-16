@@ -96,6 +96,17 @@ class CalendarTest < ActionDispatch::IntegrationTest
     assert_select "#event_activity_id option[selected][value=?]", activities(:painting).id.to_s
   end
 
+  test "people without a family are sent to start one, even from an old link" do
+    delete session_path
+    sign_in_as users(:dan)
+
+    get new_event_occurrence_entry_path(events(:art_class), "2026-11-16")
+    assert_redirected_to new_family_path
+
+    post event_occurrence_cancellation_path(events(:art_class), "2026-11-23")
+    assert_redirected_to new_family_path
+  end
+
   test "other families' events are out of reach" do
     get edit_event_path(events(:swimming))
     assert_response :not_found

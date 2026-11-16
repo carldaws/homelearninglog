@@ -1,5 +1,5 @@
 class Events::Occurrences::EntriesController < ApplicationController
-  include FamilyScoped, OccurrenceScoped
+  include OccurrenceScoped
 
   before_action :require_children
 

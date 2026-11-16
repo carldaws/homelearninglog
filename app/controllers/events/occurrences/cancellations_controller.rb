@@ -1,5 +1,5 @@
 class Events::Occurrences::CancellationsController < ApplicationController
-  include FamilyScoped, OccurrenceScoped
+  include OccurrenceScoped
 
   def create
     @occurrence.cancel

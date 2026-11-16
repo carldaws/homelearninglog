@@ -1,5 +1,6 @@
 module OccurrenceScoped
   extend ActiveSupport::Concern
+  include FamilyScoped
 
   included do
     before_action :set_occurrence
