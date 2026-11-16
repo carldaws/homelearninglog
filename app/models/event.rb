@@ -39,8 +39,13 @@ class Event < ApplicationRecord
       if never_repeats?
         [ starts_on ].select { dates.cover?(it) }
       else
-        (starts_on..[ repeats_until, dates.end ].compact.min).step(days_between_repeats).select { dates.cover?(it) }
+        first_repeat_from(dates.begin).step([ repeats_until, dates.end ].compact.min, days_between_repeats).to_a
       end
+    end
+
+    def first_repeat_from(date)
+      repeats_since_start = ([ date, starts_on ].max - starts_on).to_i.ceildiv(days_between_repeats)
+      starts_on + repeats_since_start * days_between_repeats
     end
 
     def days_between_repeats

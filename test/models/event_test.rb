@@ -14,6 +14,13 @@ class EventTest < ActiveSupport::TestCase
     assert_equal [ Date.new(2027, 6, 2), Date.new(2027, 6, 16), Date.new(2027, 6, 30) ], dates
   end
 
+  test "repeats far in the future land on the right day" do
+    dates = events(:swimming).occurrences_between(Date.new(9999, 1, 1)..Date.new(9999, 1, 31)).map(&:date)
+
+    assert_equal 2, dates.size
+    assert dates.all? { (it - events(:swimming).starts_on).to_i.modulo(14).zero? }
+  end
+
   test "one-off events happen once" do
     assert_equal [ Date.new(2026, 11, 21) ], events(:visit).occurrences_between(Date.new(2026, 11, 1)..Date.new(2026, 11, 30)).map(&:date)
     assert_empty events(:visit).occurrences_between(Date.new(2026, 12, 1)..Date.new(2026, 12, 31))
