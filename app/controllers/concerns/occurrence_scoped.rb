@@ -12,6 +12,6 @@ module OccurrenceScoped
     end
 
     def occurrence_date
-      ActiveModel::Type::Date.new.cast(params[:occurrence_date]) || raise(ActiveRecord::RecordNotFound)
+      DateParam.cast(params[:occurrence_date]) || raise(ActiveRecord::RecordNotFound)
     end
 end

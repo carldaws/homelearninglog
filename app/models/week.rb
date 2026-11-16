@@ -3,7 +3,7 @@ class Week
 
   def initialize(family, containing: nil)
     @family = family
-    @starts_on = (ActiveModel::Type::Date.new.cast(containing) || Date.current).beginning_of_week
+    @starts_on = (DateParam.cast(containing) || Date.current).beginning_of_week
   end
 
   def dates
@@ -47,8 +47,8 @@ class Week
       entry_counts = entries.joins(:pursuits).group("pursuits.id").count
       minutes = entries.joins(:pursuits).group("pursuits.id").sum(:minutes)
 
-      family.pursuits.current.alphabetically.map do |pursuit|
-        PursuitTally.new(pursuit:, entries: entry_counts.fetch(pursuit.id, 0), minutes: minutes.fetch(pursuit.id, 0))
+      family.pursuits.active_during(dates).alphabetically.map do |pursuit|
+        PursuitTally.new(pursuit:, entry_count: entry_counts.fetch(pursuit.id, 0), minutes: minutes.fetch(pursuit.id, 0))
       end
     end
   end

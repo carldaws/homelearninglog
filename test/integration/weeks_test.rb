@@ -33,4 +33,20 @@ class WeeksTest < ActionDispatch::IntegrationTest
 
     assert_select "textarea", text: entries(:den).notes, count: 0
   end
+
+  test "the week shows each grown-up's time and the children's choices" do
+    families(:oaks).entries.create!(author: users(:bob), happened_on: Date.new(2026, 11, 17), minutes: 45, notes: "Swimming", children: [ children(:sam) ])
+    children(:ivy).choose(activities(:painting))
+
+    get week_path
+
+    assert_select ".row-title", text: users(:bob).name
+    assert_select "a[href=?] .row-title", activity_path(activities(:painting))
+  end
+
+  test "a strange week parameter shows this week" do
+    get week_path, params: { week: [ "2026-11-09" ] }
+
+    assert_response :success
+  end
 end

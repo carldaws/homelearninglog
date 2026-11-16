@@ -12,6 +12,7 @@ class Pursuit < ApplicationRecord
   scope :alphabetically, -> { order(:name) }
   scope :current, -> { where(finished_on: nil) }
   scope :finished, -> { where.not(finished_on: nil) }
+  scope :active_during, ->(dates) { where(started_on: ..dates.end, finished_on: [ nil, dates.begin.. ]) }
 
   def current?
     finished_on.nil?

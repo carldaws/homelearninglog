@@ -31,7 +31,7 @@ class Family < ApplicationRecord
   end
 
   def draft_event(on: nil, **attributes)
-    events.build(starts_on: ActiveModel::Type::Date.new.cast(on) || Date.current, children:, **attributes)
+    events.build(starts_on: DateParam.cast(on) || Date.current, children:, **attributes)
   end
 
   def draft_entry(**attributes)

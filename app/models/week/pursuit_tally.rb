@@ -1,1 +1,1 @@
-Week::PursuitTally = Data.define(:pursuit, :entries, :minutes)
+Week::PursuitTally = Data.define(:pursuit, :entry_count, :minutes)

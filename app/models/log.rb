@@ -5,7 +5,7 @@ class Log
 
   def initialize(family, through: nil)
     @family = family
-    @through = ActiveModel::Type::Date.new.cast(through) || Date.current
+    @through = DateParam.cast(through) || Date.current
   end
 
   def days

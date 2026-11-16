@@ -41,10 +41,10 @@
     <ul class="card card--flush list">
       <% @week.pursuit_tallies.each do |tally| %>
         <li>
-          <%= link_to tally.pursuit, class: "row row--link #{"text-muted" if tally.entries.zero?}" do %>
+          <%= link_to tally.pursuit, class: [ "row row--link", { "text-muted": tally.entry_count.zero? } ] do %>
             <span class="row-title"><%= tally.pursuit.name %></span>
             <span class="ml-auto flex gap-2">
-              <span class="tag"><%= t(".entries", count: tally.entries) %></span>
+              <span class="tag"><%= t(".entries", count: tally.entry_count) %></span>
               <% if tally.minutes.positive? %>
                 <span class="tag"><%= duration(tally.minutes) %></span>
               <% end %>
