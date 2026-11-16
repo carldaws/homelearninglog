@@ -423,11 +423,15 @@
   }
 
   .tabs {
-    @apply mt-4 flex items-end gap-1 border-b border-line-strong;
+    @apply mt-4 flex items-center gap-1 border-b border-line-strong;
   }
 
   .tab {
     @apply -mb-px rounded-t-[4px] border border-transparent px-2 py-2 sm:px-3 font-mono text-xs font-medium tracking-[0.08em] text-muted uppercase no-underline hover:text-ink;
+  }
+
+  .switcher {
+    @apply flex max-w-36 cursor-pointer list-none items-center gap-1 rounded-[4px] border border-line-strong bg-card px-2 py-1 font-mono text-xs font-medium tracking-[0.08em] text-ink uppercase [&::-webkit-details-marker]:hidden;
   }
 
   .tab[aria-current="page"] {
