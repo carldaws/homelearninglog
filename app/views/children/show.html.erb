@@ -2,9 +2,7 @@
 
 <header class="page-header">
   <div>
-    <p class="caption">
-      <%= l(Date.current, format: :short_day) %><% if @log.minutes_this_week.positive? %> · <%= t(".this_week", time: duration(@log.minutes_this_week)) %><% end %>
-    </p>
+    <p class="caption"><%= l(Date.current, format: :short_day) %></p>
     <h1 class="page-title mt-1"><%= @child.name %></h1>
   </div>
 
@@ -15,6 +13,12 @@
     <%= t(".add") %>
   <% end %>
 </header>
+
+<% if @log.occurrences.any? %>
+  <section class="stack mb-10" aria-label="<%= t(".today") %>">
+    <%= render partial: "children/occurrence", collection: @log.occurrences %>
+  </section>
+<% end %>
 
 <% if @log.suggestions.any? %>
   <section class="day" aria-labelledby="suggestions">
@@ -27,7 +31,7 @@
   </section>
 <% end %>
 
-<%= render "entries/days", days: @log.days, unlogged: @log.unlogged %>
+<%= render partial: "entries/week", collection: @log.weeks %>
 
 <% if @log.earlier.present? %>
   <nav class="mt-10 text-center" aria-label="<%= t(".pagination") %>">

@@ -1,0 +1,20 @@
+<%# locals: (week:) %>
+<section class="week" aria-labelledby="week-<%= week.starts_on.iso8601 %>">
+  <header class="week-header">
+    <h2 id="week-<%= week.starts_on.iso8601 %>" class="week-title"><%= week_heading(week.starts_on) %></h2>
+    <% if week.minutes.positive? %>
+      <span class="tag"><%= duration(week.minutes) %></span>
+    <% end %>
+  </header>
+
+  <% week.days.each do |date, entries| %>
+    <section class="day" aria-labelledby="<%= date.iso8601 %>">
+      <div class="ruled">
+        <h3 id="<%= date.iso8601 %>" class="ruled-title"><%= day_heading(date) %></h3>
+      </div>
+      <div class="stack">
+        <%= render partial: "entries/entry", collection: entries %>
+      </div>
+    </section>
+  <% end %>
+</section>

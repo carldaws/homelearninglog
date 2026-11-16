@@ -1,5 +1,8 @@
-<%# locals: (occurrence:) %>
+<%# locals: (occurrence:, with_day: false) %>
 <p class="caption flex flex-wrap gap-x-3">
+  <% if with_day %>
+    <span><%= day_heading(occurrence.date) %></span>
+  <% end %>
   <% if occurrence.start_time.present? %>
     <span><%= times(occurrence) %></span>
   <% end %>

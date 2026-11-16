@@ -10,7 +10,8 @@ class EntriesTest < ActionDispatch::IntegrationTest
     assert_select "##{dom_id(entries(:painting))}"
     assert_select "##{dom_id(entries(:moon))}"
     assert_select "##{dom_id(entries(:den))}", count: 0
-    assert_select "h2", text: I18n.t("entries.days.today")
+    assert_select "h2", text: I18n.t("entries.weeks.this_week")
+    assert_select "h3", text: I18n.t("entries.days.today")
   end
 
   test "adding to the log" do

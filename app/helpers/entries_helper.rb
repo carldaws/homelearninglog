@@ -14,6 +14,16 @@ module EntriesHelper
     end
   end
 
+  def week_heading(starts_on)
+    if starts_on == Date.current.beginning_of_week
+      t("entries.weeks.this_week")
+    elsif starts_on == Date.current.prev_week
+      t("entries.weeks.last_week")
+    else
+      t("entries.weeks.week_of", date: l(starts_on, format: starts_on.year == Date.current.year ? :short : :short_with_year))
+    end
+  end
+
   def entry_in_log_path(entry)
     child_path(entry.child_id, through: entry.happened_on.iso8601, anchor: dom_id(entry))
   end

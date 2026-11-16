@@ -1,5 +1,16 @@
 class Log
-  DAYS_PER_PAGE = 10
+  WEEKS_PER_PAGE = 4
+  WEEK_STARTS_ON = Arel.sql("date_trunc('week', happened_on)::date")
+
+  Week = Data.define(:starts_on, :entries) do
+    def days
+      entries.group_by(&:happened_on)
+    end
+
+    def minutes
+      entries.filter_map(&:minutes).sum
+    end
+  end
 
   attr_reader :child, :through
 
@@ -8,24 +19,20 @@ class Log
     @through = DateParam.cast(through) || Date.current
   end
 
-  def days
-    dates.index_with { |date| entries.fetch(date, []) }
+  def occurrences
+    @occurrences ||= latest? ? recent_occurrences.select { it.today? ? !it.cancelled? : it.due? } : []
   end
 
   def suggestions
     @suggestions ||= latest? ? child.suggestions.to_a : []
   end
 
-  def unlogged
-    @unlogged ||= latest? ? recently_due.group_by(&:date) : {}
+  def weeks
+    @weeks ||= shown_week_starts.map { Week.new(starts_on: it, entries: entries_by_week.fetch(it, [])) }
   end
 
   def earlier
-    entry_dates.last.yesterday if entry_dates.any? && child.entries.where(happened_on: ...entry_dates.last).exists?
-  end
-
-  def minutes_this_week
-    child.entries.where(happened_on: Date.current.all_week).sum(:minutes)
+    shown_week_starts.last.yesterday if week_starts.size > WEEKS_PER_PAGE
   end
 
   private
@@ -33,19 +40,21 @@ class Log
       through >= Date.current
     end
 
-    def recently_due
-      child.occurrences_between(Date.yesterday..Date.current).select(&:due?)
+    def recent_occurrences
+      child.occurrences_between(Date.yesterday..Date.current)
     end
 
-    def dates
-      (entry_dates + unlogged.keys).uniq.sort.reverse
+    def week_starts
+      @week_starts ||= child.entries.where(happened_on: ..through).group(WEEK_STARTS_ON)
+        .order(Arel.sql("#{WEEK_STARTS_ON} DESC")).limit(WEEKS_PER_PAGE + 1).pluck(WEEK_STARTS_ON)
     end
 
-    def entry_dates
-      @entry_dates ||= child.entries.where(happened_on: ..through).distinct.order(happened_on: :desc).limit(DAYS_PER_PAGE).pluck(:happened_on)
+    def shown_week_starts
+      week_starts.first(WEEKS_PER_PAGE)
     end
 
-    def entries
-      @entries ||= child.entries.where(happened_on: entry_dates).latest_first.preloaded.group_by(&:happened_on)
+    def entries_by_week
+      @entries_by_week ||= child.entries.where(happened_on: shown_week_starts.last..through).latest_first.preloaded
+        .group_by { it.happened_on.beginning_of_week }
     end
 end

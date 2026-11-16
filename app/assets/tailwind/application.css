@@ -218,6 +218,18 @@
     @apply mb-4 flex items-center gap-3;
   }
 
+  .week {
+    @apply mb-14;
+  }
+
+  .week-header {
+    @apply mb-6 flex items-baseline justify-between gap-3 border-b-2 border-ink pb-2;
+  }
+
+  .week-title {
+    @apply text-[2rem] leading-tight font-semibold;
+  }
+
   .day {
     @apply mb-10;
   }

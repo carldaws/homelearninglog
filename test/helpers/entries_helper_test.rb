@@ -25,6 +25,18 @@ class EntriesHelperTest < ActionView::TestCase
     assert_equal I18n.l(Date.new(2026, 6, 1), format: :day), day_heading(Date.new(2026, 6, 1))
   end
 
+  test "weeks are named relative to this one" do
+    travel_to Date.new(2026, 1, 7)
+
+    assert_equal I18n.t("entries.weeks.this_week"), week_heading(Date.new(2026, 1, 5))
+    assert_equal I18n.t("entries.weeks.last_week"), week_heading(Date.new(2025, 12, 29))
+    assert_equal I18n.t("entries.weeks.week_of", date: I18n.l(Date.new(2025, 12, 22), format: :short_with_year)), week_heading(Date.new(2025, 12, 22))
+
+    travel_to Date.new(2026, 6, 17)
+
+    assert_equal I18n.t("entries.weeks.week_of", date: I18n.l(Date.new(2026, 6, 1), format: :short)), week_heading(Date.new(2026, 6, 1))
+  end
+
   test "links in text can be followed" do
     url = "https://example.com/moon?phase=full"
     link = Nokogiri::HTML5.fragment(text_with_links("Watched (#{url}).")).at_css("p a")

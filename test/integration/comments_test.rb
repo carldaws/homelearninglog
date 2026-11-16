@@ -14,10 +14,10 @@ class CommentsTest < ActionDispatch::IntegrationTest
     body = "Let's find a book about ships"
 
     assert_difference -> { entries(:painting).comments.count } do
-      post child_entry_comments_path(children(:sam), entries(:painting)), params: { comment: { body: } }
+      post child_entry_comments_path(children(:sam), entries(:painting)), params: { comment: { body: } }, headers: { "Referer" => child_url(children(:sam)) }
     end
 
-    assert_redirected_to child_path(children(:sam), through: entries(:painting).happened_on.iso8601, anchor: dom_id(entries(:painting)))
+    assert_redirected_to child_url(children(:sam))
     comment = entries(:painting).comments.last
     assert_equal users(:alice), comment.author
     assert_equal body, comment.body

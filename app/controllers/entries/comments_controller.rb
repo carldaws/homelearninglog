@@ -8,9 +8,9 @@ class Entries::CommentsController < ApplicationController
     @comment = @entry.comments.build(comment_params.merge(author: Current.user))
 
     if @comment.save
-      redirect_to helpers.entry_in_log_path(@entry)
+      redirect_back_or_to helpers.entry_in_log_path(@entry)
     else
-      redirect_to helpers.entry_in_log_path(@entry), alert: @comment.errors.full_messages.to_sentence
+      redirect_back_or_to helpers.entry_in_log_path(@entry), alert: @comment.errors.full_messages.to_sentence
     end
   end
 

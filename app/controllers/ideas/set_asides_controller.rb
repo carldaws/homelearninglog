@@ -3,6 +3,6 @@ class Ideas::SetAsidesController < ApplicationController
 
   def create
     @idea.set_aside
-    redirect_to @child
+    redirect_back_or_to @child
   end
 end

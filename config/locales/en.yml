@@ -132,12 +132,14 @@ en:
 
   children:
     show:
-      this_week: "%{time} this week"
       edit: Edit
       add: Add to the log
+      today: Today
       suggestions: Suggestions
-      pagination: Earlier days
+      pagination: Earlier weeks
       earlier: Earlier
+    occurrence:
+      log: Log it
     form:
       name: Name
       add: Add
@@ -181,13 +183,15 @@ en:
       today: Today
       yesterday: Yesterday
       tomorrow: Tomorrow
+    weeks:
+      this_week: This week
+      last_week: Last week
+      week_of: Week of %{date}
     duration:
       hours:
         one: "%{count} hr"
         other: "%{count} hrs"
       minutes: "%{count} min"
-    unlogged:
-      log: Log it
     entry:
       following_on_from: Following on from
       open_photo: Open photo %{number}

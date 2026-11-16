@@ -93,17 +93,19 @@ class CalendarTest < ActionDispatch::IntegrationTest
     assert_select "#entry_happened_on[value=?]", "2026-11-16"
   end
 
-  test "a logged event stops asking to be logged" do
+  test "a started event asks to be logged on the child's page until it is" do
+    log_it = new_child_event_occurrence_entry_path(children(:sam), events(:art_class), "2026-11-16")
+    travel_to Time.zone.local(2026, 11, 16, 9)
     get child_path(children(:sam))
-    assert_select "a[href=?]", new_child_event_occurrence_entry_path(children(:sam), events(:art_class), "2026-11-16"), count: 0
+    assert_select "a[href=?]", log_it, count: 0
 
-    travel_to Date.new(2026, 11, 17)
+    travel_to Time.zone.local(2026, 11, 17, 9)
     get child_path(children(:sam))
-    assert_select "a[href=?]", new_child_event_occurrence_entry_path(children(:sam), events(:art_class), "2026-11-16")
+    assert_select "a[href=?]", log_it
 
     post child_entries_path(children(:sam)), params: { entry: { event_id: events(:art_class).id, happened_on: "2026-11-16", what_we_did: entries(:painting).what_we_did } }
     get child_path(children(:sam))
-    assert_select "a[href=?]", new_child_event_occurrence_entry_path(children(:sam), events(:art_class), "2026-11-16"), count: 0
+    assert_select "a[href=?]", log_it, count: 0
   end
 
   test "a cancelled date can be restored, and one-off events can't be cancelled" do
