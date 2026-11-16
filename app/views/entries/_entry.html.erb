@@ -1,0 +1,26 @@
+<article id="<%= dom_id(entry) %>" class="card">
+  <% if entry.photos.attached? %>
+    <div class="prints mb-4">
+      <% entry.photos.each.with_index(1) do |photo, number| %>
+        <%= link_to entry_photo_path(entry, photo), class: "print", target: "_blank", aria: { label: t(".open_photo", number:) } do %>
+          <%= image_tag entry_photo_path(entry, photo, size: :thumbnail), alt: "", loading: "lazy", class: "h-28 w-auto max-w-full sm:h-36" %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if entry.notes.present? %>
+    <div class="grid gap-3"><%= notes_with_links(entry.notes) %></div>
+  <% end %>
+
+  <footer class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+    <span class="caption"><%= entry.author.first_name %></span>
+    <% if Current.family.children.many? %>
+      <span class="caption"><%= t(".with", names: entry.children.map(&:name).sort.to_sentence) %></span>
+    <% end %>
+    <% if entry.minutes.present? %>
+      <span class="tag"><%= duration(entry.minutes) %></span>
+    <% end %>
+    <%= link_to t(".edit"), edit_entry_path(entry), class: "link link--muted ml-auto text-sm" %>
+  </footer>
+</article>

@@ -2,8 +2,20 @@ en:
   app:
     name: Learning Log
 
+  date:
+    formats:
+      short_day: "%a %-d %b"
+      day: "%A %-d %B"
+      day_with_year: "%A %-d %B %Y"
+
   activerecord:
     attributes:
+      entry:
+        happened_on: Date
+        notes: Notes
+        photos: Photos
+        children: Children
+        minutes: Time spent
       family:
         name: Name
       child:
@@ -18,6 +30,19 @@ en:
           attributes:
             email_address:
               taken: is already used by another account
+        child:
+          attributes:
+            base:
+              has_entries: "%{name} is in the log, so they can't be removed."
+        entry:
+          attributes:
+            base:
+              empty: Add a photo or write something.
+              too_many_photos: That's too many photos. Each entry can have up to %{count}.
+              not_a_photo: "%{filename} isn't a photo we can show."
+              photo_too_big: "%{filename} is too big. Photos can be up to 25 MB."
+            happened_on:
+              less_than_or_equal_to: can't be in the future
         membership:
           attributes:
             user:
@@ -189,3 +214,55 @@ en:
       title: Invite expired
       heading: This invite has expired
       intro: Invite links work for seven days. Ask whoever sent it to make you a new one.
+
+  entries:
+    days:
+      today: Today
+      yesterday: Yesterday
+    duration:
+      hours:
+        one: "%{count} hr"
+        other: "%{count} hrs"
+      minutes: "%{count} min"
+    index:
+      title: The log
+      this_week: "%{time} this week"
+      add: Add to the log
+      no_children: Add the children you're home educating, then you can start the log.
+      add_child: Add a child
+      empty: Nothing in the log yet. A photo and a line or two about what they got up to is plenty.
+      pagination: Earlier days
+      earlier: Earlier
+    entry:
+      open_photo: Open photo %{number}
+      with: With %{names}
+      edit: Edit
+    form:
+      photos: Photos
+      photo: Photo %{number}
+      keep: Keep
+      photos_hint: Videos are best kept elsewhere, like YouTube. Put the link in the notes.
+      notes: What happened?
+      notes_hint: What they did, what they said, what worked and what didn't.
+      children: Who was it?
+      happened_on: When
+      minutes: Time spent
+      no_minutes: Not recorded
+      add: Add to the log
+      save: Save
+      saving: Saving…
+      cancel: Cancel
+    new:
+      title: Add to the log
+      heading: Add to the log
+    edit:
+      title: Edit entry
+      heading: Edit entry
+      delete: Delete entry
+      delete_confirm: Delete this entry and its photos? This can't be undone.
+    create:
+      added: Added to the log.
+    update:
+      saved: Saved.
+    destroy:
+      deleted: Deleted.

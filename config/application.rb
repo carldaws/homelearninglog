@@ -34,6 +34,8 @@ module Learninglog
     # in config/environments, which are processed later.
     #
     config.time_zone = "London"
+
+    config.active_storage.draw_routes = false
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_163119) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_163538) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "children", force: :cascade do |t|
     t.bigint "family_id", null: false
@@ -20,6 +48,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_163119) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["family_id"], name: "index_children_on_family_id"
+  end
+
+  create_table "children_entries", id: false, force: :cascade do |t|
+    t.bigint "child_id", null: false
+    t.bigint "entry_id", null: false
+    t.index ["child_id"], name: "index_children_entries_on_child_id"
+    t.index ["entry_id", "child_id"], name: "index_children_entries_on_entry_id_and_child_id", unique: true
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.bigint "author_id", null: false
+    t.date "happened_on", null: false
+    t.text "notes"
+    t.integer "minutes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_entries_on_author_id"
+    t.index ["family_id", "happened_on"], name: "index_entries_on_family_id_and_happened_on"
+    t.index ["family_id"], name: "index_entries_on_family_id"
   end
 
   create_table "families", force: :cascade do |t|
@@ -55,7 +103,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_163119) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "children", "families"
+  add_foreign_key "children_entries", "children"
+  add_foreign_key "children_entries", "entries"
+  add_foreign_key "entries", "families"
+  add_foreign_key "entries", "users", column: "author_id"
   add_foreign_key "memberships", "families"
   add_foreign_key "memberships", "users"
   add_foreign_key "sessions", "users"

@@ -1,0 +1,61 @@
+<%# locals: (entry:) %>
+<%= form_with model: entry do |form| %>
+  <%= render "shared/errors", record: entry %>
+
+  <div class="fields">
+    <div class="field">
+      <%= form.label :photos, t(".photos"), class: "label" %>
+      <% if entry.photos.any?(&:persisted?) %>
+        <div class="prints mb-2">
+          <% entry.photos.select(&:persisted?).each.with_index(1) do |photo, number| %>
+            <label class="print cursor-pointer">
+              <%= image_tag entry_photo_path(entry, photo, size: :thumbnail), alt: t(".photo", number:), class: "h-24 w-auto" %>
+              <span class="absolute right-2 bottom-2 flex items-center gap-1.5 rounded-[3px] bg-card/90 px-1.5 py-1">
+                <%= check_box_tag "entry[photos][]", photo.signed_id, true, id: dom_id(photo), class: "checkbox" %>
+                <span class="caption text-ink"><%= t(".keep") %></span>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      <% end %>
+      <%= form.file_field :photos, multiple: true, accept: "image/*", class: "input", aria: { describedby: "photos-hint" } %>
+      <p id="photos-hint" class="hint"><%= t(".photos_hint") %></p>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, t(".notes"), class: "label" %>
+      <%= form.textarea :notes, rows: 4, class: "input", aria: { describedby: "notes-hint" } %>
+      <p id="notes-hint" class="hint"><%= t(".notes_hint") %></p>
+    </div>
+
+    <% if Current.family.children.many? %>
+      <fieldset class="field">
+        <legend class="label mb-2"><%= t(".children") %></legend>
+        <div class="flex flex-wrap gap-x-6 gap-y-3">
+          <%= form.collection_check_boxes :child_ids, Current.family.children_by_name, :id, :name do |option| %>
+            <%= option.label(class: "choice") { option.check_box(class: "checkbox") + option.text } %>
+          <% end %>
+        </div>
+      </fieldset>
+    <% else %>
+      <%= form.hidden_field :child_ids, multiple: true, value: Current.family.children.first.id %>
+    <% end %>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div class="field">
+        <%= form.label :happened_on, t(".happened_on"), class: "label" %>
+        <%= form.date_field :happened_on, max: Date.current, required: true, class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :minutes, t(".minutes"), class: "label" %>
+        <%= form.select :minutes, duration_options(entry.minutes), { include_blank: t(".no_minutes") }, class: "input select" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit (entry.persisted? ? t(".save") : t(".add")), class: "button button--wide", data: { turbo_submits_with: t(".saving") } %>
+    <%= link_to t(".cancel"), root_path, class: "button button--secondary button--wide" %>
+  </div>
+<% end %>

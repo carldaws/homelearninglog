@@ -20,10 +20,10 @@ class FamiliesTest < ActionDispatch::IntegrationTest
     assert_equal families(:oaks).name, users(:dan).reload.family.name
   end
 
-  test "people in a family see it at the root" do
+  test "the family page shows its children and grown-ups" do
     sign_in_as users(:alice)
 
-    get root_path
+    get family_path
 
     assert_select "h1", text: families(:oaks).name
     assert_select ".row-title", text: children(:sam).name
@@ -76,10 +76,21 @@ class FamiliesTest < ActionDispatch::IntegrationTest
 
   test "removing a child" do
     sign_in_as users(:alice)
+    child = families(:oaks).children.create!(name: children(:wren).name)
 
     assert_difference -> { families(:oaks).children.count }, -1 do
-      delete family_child_path(children(:ivy))
+      delete family_child_path(child)
     end
+  end
+
+  test "children in the log can't be removed" do
+    sign_in_as users(:alice)
+
+    assert_no_difference -> { families(:oaks).children.count } do
+      delete family_child_path(children(:sam))
+    end
+
+    assert_redirected_to edit_family_child_path(children(:sam))
   end
 
   test "other families' children are out of reach" do
