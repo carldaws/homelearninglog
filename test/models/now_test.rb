@@ -12,7 +12,7 @@ class NowTest < ActiveSupport::TestCase
     logged = @child.events.create!(title: events(:visit).title, starts_on: Date.yesterday)
     @child.entries.create!(author: users(:alice), event: logged, happened_on: Date.yesterday, what_we_did: entries(:den).what_we_did)
 
-    assert_equal [ yesterday, today ], @child.now.occurrences.map(&:event)
+    assert_equal({ Date.current => [ today ], Date.yesterday => [ yesterday ] }, @child.now.days.transform_values { it.map(&:event) })
   end
 
   test "cancelled events and older ones aren't shown" do
@@ -21,7 +21,7 @@ class NowTest < ActiveSupport::TestCase
     cancelled.occurrence_on(Date.current).cancel
     @child.events.create!(title: events(:swimming).title, starts_on: Date.current - 2)
 
-    assert_empty @child.now.occurrences
+    assert_empty @child.now.days
   end
 
   test "suggestions and set-aside ideas are kept apart" do

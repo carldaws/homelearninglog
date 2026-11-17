@@ -18,13 +18,13 @@
   <% end %>
 </header>
 
-<% if @now.occurrences.any? %>
-  <section class="day" aria-labelledby="today">
+<% @now.days.each do |date, occurrences| %>
+  <section class="day" aria-labelledby="<%= date.iso8601 %>">
     <div class="ruled">
-      <h2 id="today" class="ruled-title"><%= t(".today") %></h2>
+      <h2 id="<%= date.iso8601 %>" class="ruled-title"><%= day_heading(date) %></h2>
     </div>
     <div class="stack">
-      <%= render partial: "children/occurrence", collection: @now.occurrences %>
+      <%= render partial: "children/occurrence", collection: occurrences %>
     </div>
   </section>
 <% end %>

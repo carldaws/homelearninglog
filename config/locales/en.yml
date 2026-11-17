@@ -239,7 +239,6 @@ en:
       name: Name
       date: Date
       add: Add to the log
-      today: Today
       suggestions: Suggestions
     occurrence:
       log: Log it

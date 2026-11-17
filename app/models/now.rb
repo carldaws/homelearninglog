@@ -5,8 +5,8 @@ class Now
     @child = child
   end
 
-  def occurrences
-    @occurrences ||= [ *unlogged_from_yesterday, *today ]
+  def days
+    @days ||= { Date.current => today, Date.yesterday => unlogged_from_yesterday }.compact_blank
   end
 
   def suggestions
