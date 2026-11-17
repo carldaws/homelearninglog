@@ -109,6 +109,23 @@ class CalendarTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", log_it, count: 0
   end
 
+  test "the child's page puts events under their day, and leaves out today when nothing's on" do
+    travel_to Time.zone.local(2026, 11, 16, 9)
+    get child_path(children(:sam))
+    assert_select "section[aria-labelledby='2026-11-16']" do
+      assert_select "h2", text: I18n.t("entries.days.today")
+      assert_select "h3", text: events(:art_class).title
+    end
+
+    travel_to Time.zone.local(2026, 11, 17, 9)
+    get child_path(children(:sam))
+    assert_select "section[aria-labelledby='2026-11-16']" do
+      assert_select "h2", text: I18n.t("entries.days.yesterday")
+      assert_select "h3", text: events(:art_class).title
+    end
+    assert_select "h2", text: I18n.t("entries.days.today"), count: 0
+  end
+
   test "a cancelled date can be restored, and one-off events can't be cancelled" do
     events(:art_class).occurrence_on(Date.new(2026, 11, 16)).cancel
 
